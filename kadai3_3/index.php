@@ -115,7 +115,7 @@
     <h2>課題3_3へようこそ</h2>
     <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
       <tr>
-        <?php 
+        <?php
           foreach($title_array as $title_text) {
             print "<th>" . $title_text . "</th>" . "\n";
           }
