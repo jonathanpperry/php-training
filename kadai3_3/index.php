@@ -1,11 +1,8 @@
 <?php
-    function console_log( $data ){
-      echo '<script>';
-      echo 'console.log('. json_encode( $data ) .')';
-      echo '</script>';
-  }
-
   $table_data = '';
+  // Variable for number of rows
+  $num_rows = 0;
+  $num_cols = 15;
 
   $db_host        = 'localhost';
   $db_user        = 'root';
@@ -33,6 +30,7 @@
   //declare arrays for saving properties
   $all_property = array();
   $title_array = array();
+  $column_data = array();
 
   while ($row = mysqli_fetch_array($comment_table_query)) {
     array_push($title_array, $row["Comment"]);
@@ -45,62 +43,59 @@
 
   //showing all data
   while ($row = mysqli_fetch_array($result)) {
-    $table_data .= "<tr>";
     foreach ($all_property as $item) {
       if ($item == "town_double_zip_code" || $item == "town_multi_address" || $item == "town_attach_district" || $item == "zip_code_multi_town") {
         if ($row[$item] == 0) {
-          $table_data .= '<td>' . "該当" . '</td>';
+          array_push($column_data, "該当");
         }
         elseif ($row[$item] == 1) {
-          $table_data .= '<td>' . "該当せず" . '</td>';
+          array_push($column_data, "該当せず");
         } else {
-          $table_data .= '<td>' . "不明" . '</td>';
+          array_push($column_data, "不明");
         }
-        $table_data .= "\n";
       } elseif ($item == "update_check") {
         if ($row[$item] == 0) {
-          $table_data .= '<td>' . "変更なし" . '</td>';
+          array_push($column_data, "変更なし");
         } elseif ($row[$item] == 1) {
-          $table_data .= '<td>' . "変更あり" . '</td>';
+          array_push($column_data, "変更あり");
+        } elseif ($row[$item] == 2) {
+          array_push($column_data, "廃止(廃止データのみ使用)");
         } else {
-          $table_data .= '<td>' . "廃止(廃止データのみ使用)" . '</td>';
+          array_push($column_data, "不明");
         }
-        $table_data .= "\n";
       }
       elseif ($item == "update_reason") {
         if ($row[$item] == 0) {
-          $table_data .= '<td>' . "変更なし" . '</td>';
+          array_push($column_data, "変更なし");
         }
         elseif ($row[$item] == 1) {
-          $table_data .= '<td>' . "市政・区政・町政・分区・政令指定都市施行" . '</td>';
+          array_push($column_data, "市政・区政・町政・分区・政令指定都市施行");
         }
         elseif ($row[$item] == 2) {
-          $table_data .= '<td>' . "住居表示の実施" . '</td>';
+          array_push($column_data, "住居表示の実施");
         }
         elseif ($row[$item] == 3) {
-          $table_data .= '<td>' . "区画整理" . '</td>';
+          array_push($column_data, "区画整理");
         }
         elseif ($row[$item] == 4) {
-          $table_data .= '<td>' . "郵便区調整等" . '</td>';
+          array_push($column_data, "郵便区調整等");
         }
         elseif ($row[$item] == 5) {
-          $table_data .= '<td>' . "訂正" . '</td>';
+          array_push($column_data, "訂正");
         }
         elseif ($row[$item] == 6) {
-          $table_data .= '<td>' . "廃止(廃止データのみ使用)" . '</td>';
+          array_push($column_data, "廃止(廃止データのみ使用)");
         }
         else {
-          $table_data .= '<td>' . "不明" . '</td>';
+          array_push($column_data, "不明");
         }
-        $table_data .= "\n";
       }
       else {
         // Just display value from database
-        $table_data .= '<td>' . htmlspecialchars($row[$item]) . '</td>';
-        $table_data .= "\n";
+        array_push($column_data, htmlspecialchars($row[$item]));
       }
     }
-    $table_data .= '</tr>' . "\n";
+    $num_rows++;
   }
 
   /* free result set */
@@ -122,13 +117,21 @@
       <tr>
         <?php 
           foreach($title_array as $title_text) {
-            print "<th>" . $title_text . "</th>";
+            print "<th>" . $title_text . "</th>" . "\n";
           }
-          ?>
+        ?>
       </tr>
       <br />
       <?php
-        print $table_data;
+        for ($x = 0; $x <= sizeof($column_data); $x++) {
+          if ($x % $num_cols == 0) {
+            print "<tr>" . "\n";
+          }
+          print "<td>" . $column_data[$x] . "</td>" . "\n";
+          if ($x % $num_cols == ($num_rows-1)) {
+            print "</tr>" . "\n";
+          }
+        }
       ?>
     </table>
   </body>
