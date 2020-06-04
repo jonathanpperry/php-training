@@ -1,0 +1,6 @@
+<Files index.php>
+    AuthType Basic
+    AuthName "Authentication Required"
+    AuthUserFile /var/www/html/jonathan/kadai1.2_6/.htpasswd
+    Require valid-user
+</Files>
