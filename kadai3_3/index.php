@@ -27,74 +27,22 @@
   /* Select queries return a resultset */
   $result = mysqli_query($link, "SELECT * FROM kadai_jonathan_ziplist");
 
-  $comment_table_query = mysqli_query($link, "SELECT COLUMN_COMMENT FROM information_schema.COLUMNS WHERE TABLE_NAME = 'kadai_jonathan_ziplist'");
+  $comment_table_query = mysqli_query($link,
+    "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist");
 
-  $all_property = array();  //declare an array for saving property
+  //declare arrays for saving properties
+  $all_property = array();
   $title_array = array();
 
-  //showing property
-  $table_data .= '<table style="width:100%" border="1" cellpadding="5" cellspacing="0">';
-  $table_data .= '<tr class="data-heading">';  //initialize table tag
-
-  while ($property = mysqli_fetch_field($comment_table_query)) {
-    array_push($title_array, $property->name);
+  while ($row = mysqli_fetch_array($comment_table_query)) {
+    array_push($title_array, $row["Comment"]);
   }
-  console_log(print_r($title_array));
 
-  $i = 0;
   while ($property = mysqli_fetch_field($result)) {
-    if ($property->name == "public_group_code") {
-      console_log("Property is: " . $property->name);
-      $table_data .= '<td>' . "全国地方公共団体コード" . '</td>' . "\n";
-    }
-    elseif ($property->name == "zip_code_old") {
-      $table_data .= '<td>' . "旧郵便番号" . '</td>' . "\n";
-    }
-    elseif ($property->name == "zip_code") {
-      $table_data .= '<td>' . "郵便番号" . '</td>' . "\n";
-    }
-    elseif ($property->name == "prefecture_kana") {
-      $table_data .= '<td>' . "都道府県名(半角カタカナ)" . '</td>' . "\n";
-    }
-    elseif ($property->name == "city_kana") {
-      $table_data .= '<td>' . "市区町村名(半角カタカナ)" . '</td>' . "\n";
-    }
-    elseif ($property->name == "town_kana") {
-      $table_data .= '<td>' . "町域名(半角カタカナ)" . '</td>' . "\n";
-    }
-    elseif ($property->name == "prefecture") {
-      $table_data .= '<td>' . "都道府県名(漢字)" . '</td>' . "\n";
-    }
-    elseif ($property->name == "city") {
-      $table_data .= '<td>' . "市区町村名(漢字)" . '</td>' . "\n";
-    }
-    elseif ($property->name == "town") {
-      $table_data .= '<td>' . "町域名(漢字)" . '</td>' . "\n";
-    }
-    elseif ($property->name == "town_double_zip_code") {
-      $table_data .= '<td>' . "一町域で複数の郵便番号か" . '</td>' . "\n";
-    }
-    elseif ($property->name == "town_multi_address") {
-      $table_data .= '<td>' . "小字毎に番地が起番されている町域か" . '</td>' . "\n";
-    }
-    elseif ($property->name == "town_attach_district") {
-      $table_data .= '<td>' . "丁目を有する町域名か" . '</td>' . "\n";
-    }
-    elseif ($property->name == "zip_code_multi_town") {
-      $table_data .= '<td>' . "一郵便番号で複数の町域か" . '</td>' . "\n";
-    }
-    elseif ($property->name == "update_check") {
-      $table_data .= '<td>' . "更新確認" . '</td>' . "\n";
-    }
-    elseif ($property->name == "update_reason") {
-      $table_data .= '<td>' . "更新理由" . '</td>' . "\n";
-    }
-    //save it to array
+    //save field names to array to be used for fetching data
     array_push($all_property, $property->name);
-    $i++;
   }
-  $table_data .= '</tr>' . "\n"; //end tr tag
-  
+
   //showing all data
   while ($row = mysqli_fetch_array($result)) {
     $table_data .= "<tr>";
@@ -154,11 +102,12 @@
     }
     $table_data .= '</tr>' . "\n";
   }
-  $table_data .= "</table>" . "\n";
 
   /* free result set */
   mysqli_free_result($result);
 
+  /* free comments result set */
+  mysqli_free_result($comment_table_query);
 ?>
 
 
@@ -169,6 +118,18 @@
   </head>
   <body>
     <h2>課題3_3へようこそ</h2>
-    <?php print $table_data; ?>
+    <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
+      <tr>
+        <?php 
+          foreach($title_array as $title_text) {
+            print "<th>" . $title_text . "</th>";
+          }
+          ?>
+      </tr>
+      <br />
+      <?php
+        print $table_data;
+      ?>
+    </table>
   </body>
 </html>
