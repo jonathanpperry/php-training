@@ -1,9 +1,10 @@
 <?php
-    require_once 'MyDBControllerMySQL.class.php';
+    require_once '../lib/MyDBControllerMySQL.class.php';
     $my_db = new MyDBControllerMySQL();
     $my_db->connect();
     $my_db->query();
-    $data_to_display = $my_db->all_property;
+    $column_data = $my_db->column_data;
+    $title_array = $my_db->title_array;
     $my_db->close();
 ?>
 
@@ -13,13 +14,27 @@
     <title>テストページ</title>
   </head>
   <body>
-    <h2>課題3_X1へようこそ</h2>
-    <ul>
-    <?php
-        foreach ($data_to_display as $item) {
-          print "<li>" . $item . "</li>" . "\n";
+  <h2>課題3_3へようこそ</h2>
+    <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
+      <tr>
+        <?php
+          foreach($title_array as $title_text) {
+            print "<th>" . $title_text . "</th>" . "\n";
+          }
+        ?>
+      </tr>
+      <br />
+      <?php
+        for ($x = 0; $x <= sizeof($column_data); $x++) {
+          if ($x % $my_db->num_cols == 0) {
+            print "<tr>" . "\n";
+          }
+          print "<td>" . $column_data[$x] . "</td>" . "\n";
+          if ($x % $my_db->num_cols == ($my_db->num_rows-1)) {
+            print "</tr>" . "\n";
+          }
         }
-    ?>
-    </ul>
+      ?>
+    </table>
   </body>
 </html>

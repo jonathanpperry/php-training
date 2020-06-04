@@ -1,5 +1,4 @@
 <?php
-  $table_data = '';
   // Variable for number of rows
   $num_rows = 0;
   $num_cols = 15;
