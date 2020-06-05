@@ -1,4 +1,5 @@
 <?php
+
     function console_log( $data ){
         echo '<script>';
         echo 'console.log('. json_encode( $data ) .')';
@@ -9,12 +10,10 @@
     $nameErr = $addrErr = $emailErr = $howManyErr = $favFruitErr = "";
     $name = $address = $email = $howMany = "";
     $favFruit = array();
-    $hasErrors = false;
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      console_log("The request method was post");
         if (empty($_POST["name"])) {
             $nameErr = "Missing";
-            $hasErrors = true;
         }
         else {
             $name = $_POST["name"];
@@ -57,7 +56,7 @@
   </head>
   <body>
     <h2>課題4_1へようこそ</h2>
-    <form action="index.php" method="POST">
+    <form action="confirm.php" method="POST">
       全国地方公共団体コード: <input name="public_group_code" id="public_group_code"><br />
       旧郵便番号: <input name="zip_code_old" id="zip_code_old"><br />
       郵便番号: <input name="zip_code" id="zip_code"><br />

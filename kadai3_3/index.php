@@ -122,7 +122,7 @@
       </tr>
       <br />
       <?php
-        for ($x = 0; $x <= sizeof($column_data); $x++) {
+        for ($x = 0; $x < sizeof($column_data); $x++) {
           if ($x % $num_cols == 0) {
             print "<tr>" . "\n";
           }

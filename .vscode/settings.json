@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+    
+    },
+    "editor.codeActionsOnSave": null,
+    "php-cs-fixer.configFile": "/usr/local/bin/php-cs-fixer"
+}

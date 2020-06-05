@@ -19,15 +19,14 @@
     $postal_data = $my_db->query($row_data_query, "mysqli_fetch_array", null);
     
     // Set data to render in the view
-    setData($postal_data);
+    $column_data = setData($postal_data, $num_cols);
 
     // Close database connection
     $my_db->close();
 
-    function setData($postal_data) {
-      global $my_db;
-      global $column_data;
-      global $num_cols;
+    function setData($postal_data, $num_cols) : array
+    {
+      $column_data = array();
       $num_rows = sizeof($postal_data);
       //showing all data
       for ($x = 0; $x < $num_rows; $x++) {
@@ -36,12 +35,17 @@
               if ($postal_data[$x][$y] == 0) {
                 array_push($column_data, "該当");
               }
-              elseif ($postal_data[$x][$y] == 1) {
+              elseif ($postal_data[$x][$y] == 1)
+              {
                 array_push($column_data, "該当せず");
-              } else {
+              }
+              else
+              {
                 array_push($column_data, "不明");
               }
-            } elseif ($y == 13) {
+            }
+            elseif ($y == 13)
+            {
               if ($postal_data[$x][$y] == 0) {
                 array_push($column_data, "変更なし");
               } elseif ($postal_data[$x][$y] == 1) {
@@ -52,26 +56,33 @@
                 array_push($column_data, "不明");
               }
             }
-            elseif ($y == 14) {
+            elseif ($y == 14)
+            {
               if ($postal_data[$x][$y] == 0) {
                 array_push($column_data, "変更なし");
               }
-              elseif ($postal_data[$x][$y] == 1) {
+              elseif ($postal_data[$x][$y] == 1)
+              {
                 array_push($column_data, "市政・区政・町政・分区・政令指定都市施行");
               }
-              elseif ($postal_data[$x][$y] == 2) {
+              elseif ($postal_data[$x][$y] == 2)
+              {
                 array_push($column_data, "住居表示の実施");
               }
-              elseif ($postal_data[$x][$y] == 3) {
+              elseif ($postal_data[$x][$y] == 3)
+              {
                 array_push($column_data, "区画整理");
               }
-              elseif ($postal_data[$x][$y] == 4) {
+              elseif ($postal_data[$x][$y] == 4)
+              {
                 array_push($column_data, "郵便区調整等");
               }
-              elseif ($postal_data[$x][$y] == 5) {
+              elseif ($postal_data[$x][$y] == 5)
+              {
                 array_push($column_data, "訂正");
               }
-              elseif ($postal_data[$x][$y] == 6) {
+              elseif ($postal_data[$x][$y] == 6)
+              {
                 array_push($column_data, "廃止(廃止データのみ使用)");
               }
               else {
@@ -84,9 +95,8 @@
             }
         }
       }
+      return $column_data;
     }
-
-    
 ?>
 
 <!DOCTYPE html>
@@ -95,7 +105,7 @@
     <title>テストページ</title>
   </head>
   <body>
-  <h2>課題3_3へようこそ</h2>
+  <h2>課題3_X1へようこそ</h2>
     <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
       <tr>
         <?php

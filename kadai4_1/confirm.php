@@ -1,25 +1,15 @@
 <?php
-  function console_log( $data ){
-    echo '<script>';
-    echo 'console.log('. json_encode( $data ) .')';
-    echo '</script>';
-  }
-
-  $public_group_code = ($_POST['public_group_code']);
-  $_SESSION['public_group_code'] = $public_group_code;
-  if (!is_numeric($public_group_code)) {
-    
-  }
-  $last = ($_POST['lname']);
-  $password = ($_POST['password']);
-  $gender = ($_POST['gender']);
-  if ($_POST['receiveemails'] == "yes") {
-    $receiveEmails = true;
-  } else {
-    $receiveEmails = false;
-  }
-  $password = ($_POST['password']);
-  $fileName = ($_POST['fileName']);
+    $first = ($_POST['fname']);
+    $last = ($_POST['lname']);
+    $password = ($_POST['password']);
+    $gender = ($_POST['gender']);
+    if ($_POST['receiveemails'] == "yes") {
+      $receiveEmails = true;
+    } else {
+      $receiveEmails = false;
+    }
+    $password = ($_POST['password']);
+    $fileName = ($_POST['fileName']);
 ?>
 
 <!DOCTYPE html>
