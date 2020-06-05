@@ -27,7 +27,7 @@
     array_push($submission_data, $_SESSION['zip_code_multi_town']);
     array_push($submission_data, $_SESSION['update_check']);
     array_push($submission_data, $_SESSION['update_reason']);
-
+    $_SESSION["submission_data"] = $submission_data;
     $comment_table_fields = $_SESSION["comment_table_fields"];
 ?>
 
@@ -39,7 +39,7 @@
 <body>
     <h3>情報確認</h3>
     <button onclick="history.back();">Back</button></br>
-    <form action="complete.php" method="GET">
+    <form action="index.php" method="GET">
       <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
         <?php
           for($x = 0; $x < sizeof($comment_table_fields); $x++) {
