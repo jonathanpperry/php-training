@@ -12,9 +12,12 @@
     $favFruit = array();
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (empty($_POST["name"])) {
+        if (empty($_POST["public_group_code"])) {
             $nameErr = "Missing";
-        }
+        } 
+        elseif (!is_numeric($_POST["public_group_code"])) {
+    
+        }      
         else {
             $name = $_POST["name"];
         }

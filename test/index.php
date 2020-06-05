@@ -5,48 +5,66 @@
         echo '</script>';
     }
 
+    // Define variables for completed values
+    $publicGroupCode;
+    $zipCodeOld;
+    $zipCode;
+    $prefectureKana;
+    $cityKana;
+    $townKana;
+    $prefecture;
+    $city;
+    $town;
+    $townDoubleZipCode;
+    $townMultiAddress;
+    $townAttachDistrict;
+    $zipCodeMultiTown;
+    $updateCheck;
+    $updateReason;
+
     // define variables and initialize with empty values
-    $nameErr = $addrErr = $emailErr = $howManyErr = $favFruitErr = "";
-    $name = $address = $email = $howMany = "";
-    $favFruit = array();
+    $publicGroupCodeErr = $zipCodeOldErr = $zipCodeErr = "";
+    $prefectureKanaErr = $cityKanaErr = $townKanaErr = $prefectureErr = $cityErr = $townErr = "";
     $hasErrors = false;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      console_log("The request method was post");
-        if (empty($_POST["name"])) {
-            $nameErr = "Missing";
+        console_log("The request method was post");
+        if (empty($_POST["public_group_code"])) {
+            $publicGroupCodeErr = "Missing";
             $hasErrors = true;
         }
-        else {
-            $name = $_POST["name"];
+        elseif (!is_numeric($_POST["public_group_code"])) {
+            $publicGroupCodeErr = "Not numeric";
+            $hasErrors = true;
+        }
+        else
+        {
+            $publicGroupCode = $_POST["public_group_code"];
+        }
+        if (empty($_POST["zip_code_old"])) {
+            $publicGroupCodeErr = "Missing";
+            $hasErrors = true;
+        }
+        elseif (!is_numeric($_POST["zip_code_old"])) {
+            $publicGroupCodeErr = "Not numeric";
+            $hasErrors = true;
+        }
+        else
+        {
+            $publicGroupCode = $_POST["zip_code_old"];
+        }
+        if (empty($_POST["public_group_code"])) {
+            $publicGroupCodeErr = "Missing";
+            $hasErrors = true;
+        }
+        elseif (!is_numeric($_POST["public_group_code"])) {
+            $publicGroupCodeErr = "Not numeric";
+            $hasErrors = true;
+        }
+        else
+        {
+            $publicGroupCode = $_POST["public_group_code"];
         }
 
-        if (empty($_POST["address"])) {
-            $addrErr = "Missing";
-        }
-        else {
-            $address = $_POST["address"];
-        }
-
-        if (empty($_POST["email"]))  {
-            $emailErr = "Missing";
-        }
-        else {
-            $email = $_POST["email"];
-        }
-
-        if (!isset($_POST["howMany"])) {
-            $howManyErr = "You must select 1 option";
-        }
-        else {
-            $howMany = $_POST["howMany"];
-        }
-
-        if (empty($_POST["favFruit"])) {
-            $favFruitErr = "You must select 1 or more";
-        }
-        else {
-            $favFruit = $_POST["favFruit"];
-        }
     }
 ?>
 

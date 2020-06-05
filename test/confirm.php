@@ -1,4 +1,7 @@
 <?php
+  // Start the session
+  session_start();
+
   function console_log( $data ){
     echo '<script>';
     echo 'console.log('. json_encode( $data ) .')';
@@ -7,9 +10,6 @@
 
   $public_group_code = ($_POST['public_group_code']);
   $_SESSION['public_group_code'] = $public_group_code;
-  if (!is_numeric($public_group_code)) {
-    
-  }
   $last = ($_POST['lname']);
   $password = ($_POST['password']);
   $gender = ($_POST['gender']);
