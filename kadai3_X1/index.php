@@ -56,8 +56,7 @@
               array_push($column_data, "市政・区政・町政・分区・政令指定都市施行");
             } elseif ($postal_data[$x][$y] == 2) {
               array_push($column_data, "住居表示の実施");
-            } elseif ($postal_data[$x][$y] == 3)
-            {
+            } elseif ($postal_data[$x][$y] == 3) {
               array_push($column_data, "区画整理");
             } elseif ($postal_data[$x][$y] == 4) {
               array_push($column_data, "郵便区調整等");
@@ -68,8 +67,7 @@
             } else {
               array_push($column_data, "不明");
             }
-          }
-          else {
+          } else {
             // Just display value from database
             array_push($column_data, htmlspecialchars($postal_data[$x][$y]));
           }
