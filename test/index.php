@@ -20,29 +20,27 @@
     $my_db->close();
 
     // Define variables for completed values
-    $publicGroupCode;
-    $zipCodeOld;
-    $zipCode;
-    $prefectureKana;
-    $cityKana;
-    $townKana;
-    $prefecture;
-    $city;
-    $town;
-    $townDoubleZipCode;
-    $townMultiAddress;
-    $townAttachDistrict;
-    $zipCodeMultiTown;
-    $updateCheck;
-    $updateReason;
+    $publicGroupCode = null;
+    $zipCodeOld = null;
+    $zipCode = null;
+    $prefectureKana = null;
+    $cityKana = null;
+    $townKana = null;
+    $prefecture = null;
+    $city = null;
+    $town = null;
+    $townDoubleZipCode = null;
+    $townMultiAddress = null;
+    $townAttachDistrict = null;
+    $zipCodeMultiTown = null;
+    $updateCheck = null;
+    $updateReason = null;
 
     // define variables and initialize with empty values
     $publicGroupCodeErr = $zipCodeOldErr = $zipCodeErr = "";
     $prefectureKanaErr = $cityKanaErr = $townKanaErr = $prefectureErr = $cityErr = $townErr = "";
     $hasErrors = false;
-    // console_log("POST is: " . print_r($_POST));
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        console_log("The request method was post");
         if (empty($_POST["public_group_code"])) {
             array_push($missing_errors, $comment_table_fields[0]);
             $hasErrors = true;
@@ -64,8 +62,7 @@
             array_push($format_errors, $comment_table_fields[1]);
             $_SESSION["zip_code_old"] = $_POST["zip_code_old"];
             $hasErrors = true;
-        } else
-        {
+        } else {
             $zipCodeOld = $_POST["zip_code_old"];
             $_SESSION["zip_code_old"] = $zipCodeOld;
         }
@@ -77,11 +74,11 @@
             array_push($format_errors, $comment_table_fields[2]);
             $_SESSION["zip_code"] = $_POST["zip_code"];
             $hasErrors = true;
-        } else
-        {
+        } else {
             $zipCode = $_POST["zip_code"];
             $_SESSION["zip_code"] = $_POST["zip_code"];
         }
+
         // String inputs
         if (empty($_POST["prefecture_kana"])) {
             array_push($missing_errors, $comment_table_fields[3]);
@@ -90,8 +87,7 @@
             array_push($format_errors, $comment_table_fields[3]);
             $_SESSION["prefecture_kana"] = $_POST["prefecture_kana"];
             $hasErrors = true;
-        } else
-        {
+        } else {
             $prefectureKana = $_POST["prefecture_kana"];
             $_SESSION["prefecture_kana"] = $_POST["prefecture_kana"];
         }
@@ -103,8 +99,7 @@
             $_SESSION["city_kana"] = $_POST["city_kana"];
             array_push($format_errors, $comment_table_fields[4]);
             $hasErrors = true;
-        } else
-        {
+        } else {
             $cityKana = $_POST["city_kana"];
             $_SESSION["city_kana"] = $_POST["city_kana"];
         }
@@ -116,8 +111,7 @@
             $_SESSION["town_kana"] = $_POST["town_kana"];
             array_push($format_errors, $comment_table_fields[5]);
             $hasErrors = true;
-        } else
-        {
+        } else {
             $townKana = $_POST["town_kana"];
             $_SESSION["town_kana"] = $_POST["town_kana"];
         }
@@ -128,11 +122,11 @@
             $_SESSION["prefecture"] = $_POST["prefecture"];
             array_push($format_errors, $comment_table_fields[6]);
             $hasErrors = true;
-        } else
-        {
+        } else {
             $prefecture = $_POST["prefecture"];
             $_SESSION["prefecture"] = $_POST["prefecture"];
         }
+
         if (empty($_POST["city"])) {
             array_push($missing_errors, $comment_table_fields[7]);
             $hasErrors = true;
@@ -140,11 +134,11 @@
             $_SESSION["city"] = $_POST["city"];
             array_push($format_errors, $comment_table_fields[7]);
             $hasErrors = true;
-        } else
-        {
+        } else {
             $city = $_POST["city"];
             $_SESSION["city"] = $_POST["city"];
         }
+
         if (empty($_POST["town"])) {
             array_push($missing_errors, $comment_table_fields[8]);
             $hasErrors = true;
@@ -152,12 +146,83 @@
             $_SESSION["town"] = $_POST["town"];
             array_push($format_errors, $comment_table_fields[8]);
             $hasErrors = true;
-        } else
-        {
+        } else {
             $town = $_POST["town"];
             $_SESSION["town"] = $_POST["town"];
         }
-    
+
+        if (is_null($_POST["town_double_zip_code"])) {
+            array_push($missing_errors, $comment_table_fields[9]);
+            $hasErrors = true;
+        } elseif (!is_numeric($_POST["town_double_zip_code"])) {
+            $_SESSION["town_double_zip_code"] = $_POST["town_double_zip_code"];
+            array_push($format_errors, $comment_table_fields[9]);
+            $hasErrors = true;
+        } else {
+            $townDoubleZipCode = $_POST["town_double_zip_code"];
+            $_SESSION["town_double_zip_code"] = $_POST["town_double_zip_code"];
+        }
+
+        if (is_null($_POST["town_multi_address"])) {
+            array_push($missing_errors, $comment_table_fields[10]);
+            $hasErrors = true;
+        } elseif (!is_numeric($_POST["town_multi_address"])) {
+            $_SESSION["town_multi_address"] = $_POST["town_multi_address"];
+            array_push($format_errors, $comment_table_fields[10]);
+            $hasErrors = true;
+        } else {
+            $townMultiAddress = $_POST["town_multi_address"];
+            $_SESSION["town_multi_address"] = $_POST["town_multi_address"];
+        }
+
+        if (is_null($_POST["town_attach_district"])) {
+            array_push($missing_errors, $comment_table_fields[11]);
+            $hasErrors = true;
+        } elseif (!is_numeric($_POST["town_attach_district"])) {
+            $_SESSION["town_attach_district"] = $_POST["town_attach_district"];
+            array_push($format_errors, $comment_table_fields[11]);
+            $hasErrors = true;
+        } else {
+            $townAttachDistrict = $_POST["town_attach_district"];
+            $_SESSION["town_attach_district"] = $_POST["town_attach_district"];
+        }
+
+        if (is_null($_POST["zip_code_multi_town"])) {
+            array_push($missing_errors, $comment_table_fields[12]);
+            $hasErrors = true;
+        } elseif (!is_numeric($_POST["zip_code_multi_town"])) {
+            $_SESSION["zip_code_multi_town"] = $_POST["zip_code_multi_town"];
+            array_push($format_errors, $comment_table_fields[12]);
+            $hasErrors = true;
+        } else {
+            $zipCodeMultiTown = $_POST["zip_code_multi_town"];
+            $_SESSION["zip_code_multi_town"] = $_POST["zip_code_multi_town"];
+        }
+        $my_db->console_log("Update check value is: " . $_POST["update_check"]);
+        if (is_null($_POST["update_check"])) {
+            array_push($missing_errors, $comment_table_fields[13]);
+            $hasErrors = true;
+        } elseif (!is_numeric($_POST["update_check"])) {
+            $_SESSION["update_check"] = $_POST["update_check"];
+            array_push($format_errors, $comment_table_fields[13]);
+            $hasErrors = true;
+        } else {
+            $updateCheck = $_POST["update_check"];
+            $_SESSION["update_check"] = $_POST["update_check"];
+        }
+
+        if (is_null($_POST["update_reason"])) {
+            array_push($missing_errors, $comment_table_fields[14]);
+            $hasErrors = true;
+        } elseif (!is_numeric($_POST["update_reason"])) {
+            $_SESSION["update_reason"] = $_POST["update_reason"];
+            array_push($format_errors, $comment_table_fields[14]);
+            $hasErrors = true;
+        } else {
+            $updateReason = $_POST["update_reason"];
+            $_SESSION["update_reason"] = $_POST["update_reason"];
+        }
+
         // For now just log a message for errors
         if ($hasErrors) {
             console_log("There are errors!");
@@ -204,7 +269,7 @@
         print "</span><br />";
     }
     ?>
-
+    <br />
     <form action="index.php" method="POST">
         <?php echo $comment_table_fields[0] ?>(数字): <input name="public_group_code" id="public_group_code" value=<?php print htmlspecialchars($_SESSION["public_group_code"], ENT_COMPAT, 'utf-8'); ?>>
         <br />
@@ -225,36 +290,36 @@
         <br />
         <?php echo $comment_table_fields[8] ?>: <input name="town" id="town" value=<?php print htmlspecialchars($_SESSION["town"], ENT_COMPAT, 'utf-8'); ?>>
         <br />
-        <label><?php echo $comment_table_fields[9] ?></label><br />
-        <input type="radio" id="town_double_zip_code" name="town_double_zip_code" value="town_double_zip_code_match">
-        <label for="town_double_zip_code">該当</label><br />
-        <input type="radio" id="town_double_zip_code" name="town_double_zip_code" value="double_zip_code">
-        <label for="town_double_zip_code">該当せず</label><br>
-        <label></label><br />
-        <input type="radio" id="town_multi_address" name="match" value="town_multi_address">
-        <label for="town_multi_address">該当</label><br />
-        <input type="radio" id="town_multi_address" name="town_multi_address" value="town_multi_address_nomatch">
-        <label for="town_multi_address">該当せず</label><br>
-        <label></label><br />
-        <input type="radio" id="town_attach_district" name="match" value="town_attach_district">
-        <label for="town_attach_district">該当</label><br />
-        <input type="radio" id="town_multi_address" name="town_multi_address" value="town_multi_address">
-        <label for="female">該当せず</label><br>
-        <label></label><br />
-        <input type="radio" id="zip_code_multi_town" name="match" value="zip_code_multi_town">
-        <label for="zip_code_multi_town">該当</label><br />
-        <input type="radio" id="zip_code_multi_town" name="zip_code_multi_town" value="zip_code_multi_town">
-        <label for="female">該当せず</label><br>
-        <label><?php echo $comment_table_fields[13] ?></label><br />
-        <input type="radio" id="male" name="gender" value="male">
-        <label for="male">男</label><br />
-        <input type="radio" id="female" name="gender" value="female">
-        <label for="female">女</label><br>
-        <label><?php echo $comment_table_fields[14] ?></label><br />
-        <input type="radio" id="male" name="gender" value="male">
-        <label for="male">男</label><br />
-        <input type="radio" id="female" name="gender" value="female">
-        <label for="female">女</label><br>
+        <?php echo $comment_table_fields[9] ?><select name="town_double_zip_code" id="town_double_zip_code" size="1">
+            <option value="1">該当</option>
+            <option value="0">該当せず</option>
+        </select><br />
+        <?php echo $comment_table_fields[10] ?><select name="town_multi_address" id="town_multi_address" size="1">
+            <option value="1">該当</option>
+            <option value="0">該当せず</option>
+        </select><br />
+        <?php echo $comment_table_fields[11] ?><select name="town_attach_district" id="town_attach_district" size="1">
+            <option value="1">該当</option>
+            <option value="0">該当せず</option>
+        </select><br />
+            <?php echo $comment_table_fields[12] ?><select name="zip_code_multi_town" id="zip_code_multi_town" size="1">
+            <option value="1">該当</option>
+            <option value="0">該当せず</option>
+        </select><br />
+        <?php echo $comment_table_fields[13] ?><select name="update_check" id="update_check" size="1">
+            <option value="0">変更なし</option>    
+            <option value="1">変更あり</option>
+            <option value="2">廃止(廃止データのみ使用)</option>
+        </select><br />
+        <?php echo $comment_table_fields[14] ?><select name="update_reason" id="update_reason" size="1">
+            <option value="0">変更なし</option>
+            <option value="1">市政・区政・町政・分区・政令指定都市施行</option>
+            <option value="2">住居表示の実施</option>
+            <option value="3">区画整理</option>
+            <option value="4">郵便区調整等</option>
+            <option value="5">訂正</option>
+            <option value="6">廃止(廃止データのみ使用)</option>
+        </select><br />
         <!-- Reset and Submit Buttons -->
         <input type="reset" name="reset">
         <input type="submit" name="submit">
