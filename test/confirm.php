@@ -1,25 +1,34 @@
 <?php
-  // Start the session
-  session_start();
+    // Start the session
+    session_start();
 
-  function console_log( $data ){
-    echo '<script>';
-    echo 'console.log('. json_encode( $data ) .')';
-    echo '</script>';
-  }
+    function console_log( $data ){
+      echo '<script>';
+      echo 'console.log('. json_encode( $data ) .')';
+      echo '</script>';
+    }
 
-  $public_group_code = ($_POST['public_group_code']);
-  $_SESSION['public_group_code'] = $public_group_code;
-  $last = ($_POST['lname']);
-  $password = ($_POST['password']);
-  $gender = ($_POST['gender']);
-  if ($_POST['receiveemails'] == "yes") {
-    $receiveEmails = true;
-  } else {
-    $receiveEmails = false;
-  }
-  $password = ($_POST['password']);
-  $fileName = ($_POST['fileName']);
+    // Array for data to loop through
+    $submission_data = array();
+
+    // Define variables for completed values
+    array_push($submission_data, $_SESSION['public_group_code']);
+    array_push($submission_data, $_SESSION['zip_code_old']);
+    array_push($submission_data, $_SESSION['zip_code']);
+    array_push($submission_data, $_SESSION['prefecture_kana']);
+    array_push($submission_data, $_SESSION['city_kana']);
+    array_push($submission_data, $_SESSION['town_kana']);
+    array_push($submission_data, $_SESSION['prefecture']);
+    array_push($submission_data, $_SESSION['city']);
+    array_push($submission_data, $_SESSION['town']);
+    array_push($submission_data, $_SESSION['town_double_zip_code']);
+    array_push($submission_data, $_SESSION['town_multi_address']);
+    array_push($submission_data, $_SESSION['town_attach_district']);
+    array_push($submission_data, $_SESSION['zip_code_multi_town']);
+    array_push($submission_data, $_SESSION['update_check']);
+    array_push($submission_data, $_SESSION['update_reason']);
+
+    $comment_table_fields = $_SESSION["comment_table_fields"];
 ?>
 
 <!DOCTYPE html>
@@ -32,36 +41,16 @@
     <button onclick="history.back();">Back</button></br>
     <form action="complete.php" method="GET">
       <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
+        <?php
+          for($x = 0; $x < sizeof($comment_table_fields); $x++) {
+        ?>
         <tr>
-          <td width="200">名前</td>
-          <td width="400"><?php print htmlspecialchars($first, ENT_COMPAT, 'utf-8'); ?></td>
-          <input type="hidden" name="fname" id="fname" value="<?php echo htmlentities($first); ?>" readonly />
+          <?php
+            print "<td width='200'>" . htmlspecialchars($comment_table_fields[$x], ENT_COMPAT, 'utf-8') . "</td>";
+            print "<td width='400'>" . htmlspecialchars($submission_data[$x], ENT_COMPAT, 'utf-8') . "</td>";
+          ?>
         </tr>
-        <tr>
-          <td>名字</td>
-          <td width="400"><?php print htmlspecialchars($last, ENT_COMPAT, 'utf-8'); ?></td>
-          <input type="hidden" name="lname" id="lname" value="<?php echo htmlentities($last); ?>" readonly />
-        </tr>
-        <tr>
-          <td>パスワード</td>
-          <td width="400"><?php print htmlspecialchars($password, ENT_COMPAT, 'utf-8'); ?></td>
-          <input type="hidden" name="password" id="password" value="<?php echo htmlentities($password); ?>" readonly />
-        </tr>
-        <tr>
-          <td>性別</td>
-          <td width="400"><?php print htmlspecialchars($gender, ENT_COMPAT, 'utf-8'); ?></td>
-          <input type="hidden" id="gender" name="gender" value="<?php echo htmlentities($gender); ?>" readonly />
-        </tr>
-        <tr>
-          <td>メールを受け取る</td>
-          <td><p><?php echo ($receiveEmails) ? "yes" : "no"; ?></p></td>
-          <input type="hidden" id="receiveemails" name="receiveemails" value="<?php echo ($receiveEmails) ?>" readonly />
-        </tr>
-        <tr>
-          <td>ファイル名</td>
-          <td width="400"><?php print htmlspecialchars($fileName, ENT_COMPAT, 'utf-8'); ?></td>
-          <input type="hidden" id="fileName" name="fileName" value="<?php echo htmlentities($fileName); ?>" readonly />
-        </tr>
+          <?php } ?>
       </table>
       <p>この内容で宜しいですか？
       <input type="submit" name="submit" class="button" value="はい" /> 

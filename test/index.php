@@ -1,5 +1,8 @@
 <?php
     require_once '../lib/MyDBControllerMySQL.class.php';
+    // Start the session
+    session_start();
+
     function console_log( $data ){
         echo '<script>';
         echo 'console.log('. json_encode( $data ) .')';
@@ -15,6 +18,8 @@
     $comment_table_query = 
       "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
     $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
+
+    $_SESSION["comment_table_fields"] = $comment_table_fields;
 
     // Close database connection
     $my_db->close();
@@ -229,6 +234,7 @@
         } else {
             // Direct user to confirm page
             header("Location: confirm.php");
+            exit();
         }
     }
 ?>
