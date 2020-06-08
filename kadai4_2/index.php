@@ -1,8 +1,8 @@
 <?php
+    require_once '../lib/MyDBControllerMySQL.class.php';
     // Start the session
     session_start();
 
-    require_once '../lib/MyDBControllerMySQL.class.php';
     //declare arrays for saving properties
     $all_property = array();
     $title_array = array();
@@ -24,36 +24,31 @@
     $blue_success_text = '';
     $red_error_text = '';
 
-    // Set submission data if it exists
-    $submission_data = $_SESSION["submission_data"];
-    // Check for the submission data to set blue success text
-    if ($submission_data) {
-      $data_inserted = $my_db->insert($submission_data);
-      if ($data_inserted == true) {
+    // Set if coming from submission
+    if ($_SESSION["submitted"]) {
+      if ($_SESSION["submit_success"]) {
         $blue_success_text = "1行登録完了しました";
       } else {
         $red_error_text = "登録失敗しました(SQLerror文)";
       }
-      $_SESSION["submission_data"] = null;
+      $_SESSION["submitted"] = false;
     }
 
-    $comment_table_query = 
+    $comment_table_query =
       "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
     /* Query for the rows data */
     $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
     $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
     $postal_data = $my_db->query($row_data_query, "mysqli_fetch_array", null);
 
-    /* If the user is searching perform a filter */
-    $filtered_data = null;
-    $my_db->console_log($search_string);
-    if (strlen($search_string > 0)) {
-      $filtered_data = $my_db->select($search_category, $search_string);
-      $my_db->console_log($filtered_data);
+    if (strlen($search_string) > 0) {
+      $select_data = $my_db->select($row_data_query, $search_category, $search_string);
+      $column_data = setData($select_data, $num_cols);
     }
-
-    // Set data to render in the view
-    $column_data = setData($postal_data, $num_cols);
+    else {
+      // Set data to render in the view
+      $column_data = setData($postal_data, $num_cols);
+    }
 
     // Close database connection
     $my_db->close();
@@ -115,6 +110,14 @@
 <html lang="ja">
   <head>
     <title>テストページ</title>
+    <style>
+      .blue-success-text {
+        color: blue;
+      }
+      .red-error-text {
+        color:red;
+      }
+    </style>
   </head>
   <body>
   <h2>課題4_1へようこそ</h2>
@@ -164,12 +167,3 @@
     </form>
   </body>
 </html>
-
-<style>
-  .blue-success-text {
-    color: blue;
-  }
-  .red-error-text {
-    color:red;
-  }
-</style>
