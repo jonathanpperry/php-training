@@ -30,6 +30,7 @@
       } else {
         $red_error_text = "登録失敗しました(SQLerror文)";
       }
+      $_SESSION["submission_data"] = null;
     }
 
     $comment_table_query = 
@@ -111,6 +112,7 @@
       print "<p class='red-error-text'>" . $red_error_text . "</p>";
     }
     ?>
+
     <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
       <tr>
         <?php

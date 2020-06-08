@@ -313,11 +313,12 @@
             <option value="0">該当せず</option>
         </select><br />
         <?php echo $comment_table_fields[13] ?><select name="update_check" id="update_check" size="1">
-            <option value="0">変更なし</option>    
+            <option value="0">変更なし</option>
             <option value="1">変更あり</option>
             <option value="2">廃止(廃止データのみ使用)</option>
         </select><br />
-        <?php echo $comment_table_fields[14] ?><select name="update_reason" id="update_reason" size="1">
+        <?php echo $comment_table_fields[14] ?>
+        <select name="update_reason" id="update_reason" size="1">
             <option value="0">変更なし</option>
             <option value="1">市政・区政・町政・分区・政令指定都市施行</option>
             <option value="2">住居表示の実施</option>

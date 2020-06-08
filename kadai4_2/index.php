@@ -16,6 +16,10 @@
     // Connect again after insert if it occurred
     $my_db->connect();
 
+    // Get search string if it exists
+    $search_category = $_POST['search_category'];
+    $search_string = $_POST['catsearch'];
+
     // Text to display regarding query
     $blue_success_text = '';
     $red_error_text = '';
@@ -39,6 +43,14 @@
     $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
     $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
     $postal_data = $my_db->query($row_data_query, "mysqli_fetch_array", null);
+
+    /* If the user is searching perform a filter */
+    $filtered_data = null;
+    $my_db->console_log($search_string);
+    if (strlen($search_string > 0)) {
+      $filtered_data = $my_db->select($search_category, $search_string);
+      $my_db->console_log($filtered_data);
+    }
     
     // Set data to render in the view
     $column_data = setData($postal_data, $num_cols);
@@ -112,6 +124,19 @@
       print "<p class='red-error-text'>" . $red_error_text . "</p>";
     }
     ?>
+    <form action="index.php" method="POST">
+      <label for="catsearch">カテゴリで検索:</label>
+      <select name="search_category" id="search_category" size="1">
+        <?php for($x = 0; $x < sizeof($comment_table_fields); $x++) { ?>
+          <option value="<?php print $x ?>"
+            <?php print $search_category == $x ? "selected" : "" ?>>
+            <?php print $comment_table_fields[$x] ?>
+          </option>
+        <?php } ?>
+      </select>
+      <input type="search" name="catsearch" value="<?php print htmlspecialchars($search_string) ?>">
+      <input type="submit">
+    </form>
 
     <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
       <tr>
