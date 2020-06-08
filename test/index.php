@@ -16,17 +16,19 @@
     // Connect again after insert if it occurred
     $my_db->connect();
 
-    // Text to display if query executed successfully
+    // Text to display regarding query
     $blue_success_text = '';
+    $red_error_text = '';
 
     // Set submission data if it exists
     $submission_data = $_SESSION["submission_data"];
-
     // Check for the submission data to set blue success text
-    if (sizeof($submission_data) > 0) {
+    if ($submission_data) {
       $data_inserted = $my_db->insert($submission_data);
       if ($data_inserted == true) {
         $blue_success_text = "1行登録完了しました";
+      } else {
+        $red_error_text = "登録失敗しました(SQLerror文)";
       }
     }
 
@@ -36,9 +38,12 @@
     $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
     $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
     $postal_data = $my_db->query($row_data_query, "mysqli_fetch_array", null);
-
+    
     // Set data to render in the view
     $column_data = setData($postal_data, $num_cols);
+
+    // Close database connection
+    $my_db->close();
 
     function setData($postal_data, $num_cols) : array
     {
@@ -91,7 +96,6 @@
       }
       return $column_data;
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -100,8 +104,13 @@
     <title>テストページ</title>
   </head>
   <body>
-    <h2>課題4_1へようこそ</h2>
-    <p class="blue-success-text"><?php print $blue_success_text ?></p>
+  <h2>課題4_1へようこそ</h2>
+    <?php if(strlen($blue_success_text) > 0) {
+      print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
+    } elseif(strlen($red_error_text) > 0) {
+      print "<p class='red-error-text'>" . $red_error_text . "</p>";
+    }
+    ?>
     <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
       <tr>
         <?php
@@ -132,5 +141,8 @@
 <style>
   .blue-success-text {
     color: blue;
+  }
+  .red-error-text {
+    color:red;
   }
 </style>
