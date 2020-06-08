@@ -39,7 +39,7 @@
       $_SESSION["submitting"] = false;
       clear_session_fields();
       // Set submitted value to use in index page
-      $_SESSION["submitted"] == true;
+      $_SESSION["submitted"] = true;
       // Redirect to the list page
       header("Location: index.php");
       exit();

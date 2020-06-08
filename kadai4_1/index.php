@@ -45,7 +45,6 @@
         $blue_success_text = "1行登録完了しました";
       } else {
         $red_error_text = "登録失敗しました(SQLerror文)";
-        console_log("An error occurreddd");
       }
       $_SESSION["submitted"] = false;
     }
