@@ -1,23 +1,5 @@
 <?php
     require_once '../lib/MyDBControllerMySQL.class.php';
-    function clear_session_fields() {
-      $_SESSION["public_group_code"] = null;
-      $_SESSION["zip_code_old"] = null;
-      $_SESSION["zip_code"] = null;
-      $_SESSION["prefecture_kana"] = null;
-      $_SESSION["city_kana"] = null;
-      $_SESSION["town_kana"] = null;
-      $_SESSION["prefecture"] = null;
-      $_SESSION["city"] = null;
-      $_SESSION["town"] = null;
-      $_SESSION["town_double_zip_code"] = null;
-      $_SESSION["town_multi_address"] = null;
-      $_SESSION["town_attach_district"] = null;
-      $_SESSION["zip_code_multi_town"] = null;
-      $_SESSION["update_check"] = null;
-      $_SESSION["update_reason"] = null;    
-    }
-
     // Start the session
     session_start();
 
@@ -38,24 +20,15 @@
     $blue_success_text = '';
     $red_error_text = '';
 
-    // // Set submission data if it exists
-    $submission_data = $_SESSION["submission_data"];
-    // // Check for the submission data to set blue success text
-    if ($_SESSION["submitting"] != true) {
-      $message = "入力ページや確認ページからこのページに戻ることはできません！";
-      echo "<script type='text/javascript'>alert('$message');</script>";
-      $_SESSION["submitting"] = null;
-    } else {
-      // Submit the data
-      $data_inserted = $my_db->insert($submission_data);
-      if ($data_inserted == true) {
+    // Set if coming from submission
+    $my_db->console_log("session submitted is" . $_SESSION["submitted"]);
+    if ($_SESSION["submitted"]) {
+      if ($_SESSION["submit_success"]) {
         $blue_success_text = "1行登録完了しました";
       } else {
         $red_error_text = "登録失敗しました(SQLerror文)";
       }
-      $_SESSION["submission_data"] = null;
-      $_SESSION["submitting"] = false;
-      clear_session_fields();
+      $_SESSION["submitted"] = false;
     }
 
     $comment_table_query = 
@@ -128,6 +101,14 @@
 <html lang="ja">
   <head>
     <title>テストページ</title>
+    <style>
+      .blue-success-text {
+        color: blue;
+      }
+      .red-error-text {
+        color:red;
+      }
+    </style>
   </head>
   <body>
   <h2>課題4_1へようこそ</h2>
@@ -164,12 +145,3 @@
     </form>
   </body>
 </html>
-
-<style>
-  .blue-success-text {
-    color: blue;
-  }
-  .red-error-text {
-    color:red;
-  }
-</style>

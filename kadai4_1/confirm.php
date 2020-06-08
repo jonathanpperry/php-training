@@ -34,7 +34,7 @@
   <body>
       <h3>情報確認</h3>
       <button onclick="history.back();">Back</button></br>
-      <form action="index.php" method="GET">
+      <form action="regist.php" method="POST">
         <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
           <?php
             for($x = 0; $x < sizeof($comment_table_fields); $x++) {
