@@ -6,21 +6,21 @@
   $submission_data = array();
 
   // Define variables for completed values
-  array_push($submission_data, $_SESSION['public_group_code']);
-  array_push($submission_data, $_SESSION['zip_code_old']);
-  array_push($submission_data, $_SESSION['zip_code']);
-  array_push($submission_data, $_SESSION['prefecture_kana']);
-  array_push($submission_data, $_SESSION['city_kana']);
-  array_push($submission_data, $_SESSION['town_kana']);
-  array_push($submission_data, $_SESSION['prefecture']);
-  array_push($submission_data, $_SESSION['city']);
-  array_push($submission_data, $_SESSION['town']);
-  array_push($submission_data, $_SESSION['town_double_zip_code']);
-  array_push($submission_data, $_SESSION['town_multi_address']);
-  array_push($submission_data, $_SESSION['town_attach_district']);
-  array_push($submission_data, $_SESSION['zip_code_multi_town']);
-  array_push($submission_data, $_SESSION['update_check']);
-  array_push($submission_data, $_SESSION['update_reason']);
+  array_push($submission_data, $_POST['public_group_code']);
+  array_push($submission_data, $_POST['zip_code_old']);
+  array_push($submission_data, $_POST['zip_code']);
+  array_push($submission_data, $_POST['prefecture_kana']);
+  array_push($submission_data, $_POST['city_kana']);
+  array_push($submission_data, $_POST['town_kana']);
+  array_push($submission_data, $_POST['prefecture']);
+  array_push($submission_data, $_POST['city']);
+  array_push($submission_data, $_POST['town']);
+  array_push($submission_data, $_POST['town_double_zip_code']);
+  array_push($submission_data, $_POST['town_multi_address']);
+  array_push($submission_data, $_POST['town_attach_district']);
+  array_push($submission_data, $_POST['zip_code_multi_town']);
+  array_push($submission_data, $_POST['update_check']);
+  array_push($submission_data, $_POST['update_reason']);
   $_SESSION["submission_data"] = $submission_data;
   $comment_table_fields = $_SESSION["comment_table_fields"];
   $_SESSION["submitting"] = true;

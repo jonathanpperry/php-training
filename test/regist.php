@@ -39,14 +39,9 @@
       $_SESSION["submitting"] = false;
       clear_session_fields();
       // Set submitted value to use in index page
-      $_SESSION["submitted"] = true;
-
-      // Close database connection
-      $my_db->close();
-
+      $_SESSION["submitted"] == true;
+      // Redirect to the list page
+      header("Location: index.php");
+      exit();
     }
-
-    // Redirect to the list page
-    header("Location: index.php");
-    exit();
 ?>

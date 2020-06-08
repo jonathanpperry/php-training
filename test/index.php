@@ -1,5 +1,23 @@
 <?php
     require_once '../lib/MyDBControllerMySQL.class.php';
+    function clear_session_fields() {
+      $_SESSION["public_group_code"] = null;
+      $_SESSION["zip_code_old"] = null;
+      $_SESSION["zip_code"] = null;
+      $_SESSION["prefecture_kana"] = null;
+      $_SESSION["city_kana"] = null;
+      $_SESSION["town_kana"] = null;
+      $_SESSION["prefecture"] = null;
+      $_SESSION["city"] = null;
+      $_SESSION["town"] = null;
+      $_SESSION["town_double_zip_code"] = null;
+      $_SESSION["town_multi_address"] = null;
+      $_SESSION["town_attach_district"] = null;
+      $_SESSION["zip_code_multi_town"] = null;
+      $_SESSION["update_check"] = null;
+      $_SESSION["update_reason"] = null;    
+    }
+
     // Start the session
     session_start();
 
@@ -16,39 +34,31 @@
     // Connect again after insert if it occurred
     $my_db->connect();
 
-    // Get search string if it exists
-    $search_category = $_POST['search_category'];
-    $search_string = $_POST['catsearch'];
-
     // Text to display regarding query
     $blue_success_text = '';
     $red_error_text = '';
 
     // Set if coming from submission
-    if ($_SESSION["submitted"]) {
-      if ($_SESSION["submit_success"]) {
+    $my_db->console_log("session submitted is" . $_SESSION["submitted"]);
+    if ($_SESSION["submitted"] == true) {
+      if ($_SESSION["submit_success"] == true) {
         $blue_success_text = "1行登録完了しました";
       } else {
         $red_error_text = "登録失敗しました(SQLerror文)";
+        console_log("An error occurreddd");
       }
       $_SESSION["submitted"] = false;
     }
 
-    $comment_table_query =
+    $comment_table_query = 
       "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
     /* Query for the rows data */
     $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
     $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
     $postal_data = $my_db->query($row_data_query, "mysqli_fetch_array", null);
-
-    if (strlen($search_string) > 0) {
-      $select_data = $my_db->select($row_data_query, $search_category, $search_string);
-      $column_data = setData($select_data, $num_cols);
-    }
-    else {
-      // Set data to render in the view
-      $column_data = setData($postal_data, $num_cols);
-    }
+    
+    // Set data to render in the view
+    $column_data = setData($postal_data, $num_cols);
 
     // Close database connection
     $my_db->close();
@@ -127,19 +137,6 @@
       print "<p class='red-error-text'>" . $red_error_text . "</p>";
     }
     ?>
-    <form action="index.php" method="POST">
-      <label for="catsearch">カテゴリで検索:</label>
-      <select name="search_category" id="search_category" size="1">
-        <?php for($x = 0; $x < sizeof($comment_table_fields); $x++) { ?>
-          <option value="<?php print $x ?>"
-            <?php print $search_category == $x ? "selected" : "" ?>>
-            <?php print $comment_table_fields[$x] ?>
-          </option>
-        <?php } ?>
-      </select>
-      <input type="search" name="catsearch" value="<?php print htmlspecialchars($search_string) ?>">
-      <input type="submit">
-    </form>
 
     <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
       <tr>
