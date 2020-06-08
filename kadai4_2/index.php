@@ -51,7 +51,7 @@
       $filtered_data = $my_db->select($search_category, $search_string);
       $my_db->console_log($filtered_data);
     }
-    
+
     // Set data to render in the view
     $column_data = setData($postal_data, $num_cols);
 

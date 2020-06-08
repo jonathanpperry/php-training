@@ -3,27 +3,6 @@
     // Start the session
     session_start();
 
-    function console_log( $data ){
-        echo '<script>';
-        echo 'console.log('. json_encode( $data ) .')';
-        echo '</script>';
-    }
-
-    //declare arrays for saving properties
-    $missing_errors = array();
-    $format_errors = array();
-
-    $my_db = new MyDBControllerMySQL();
-    $my_db->connect();
-    $comment_table_query = 
-      "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
-    $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
-
-    $_SESSION["comment_table_fields"] = $comment_table_fields;
-
-    // Close database connection
-    $my_db->close();
-
     // Define variables for completed values
     $publicGroupCode = null;
     $zipCodeOld = null;
@@ -41,10 +20,35 @@
     $updateCheck = null;
     $updateReason = null;
 
+    function console_log( $data ){
+        echo '<script>';
+        echo 'console.log('. json_encode( $data ) .')';
+        echo '</script>';
+    }
+
+    if (!$_SESSION["in_progress"]) {
+        $_SESSION["in_progress"] = true;
+    }
+
+    //declare arrays for saving properties
+    $missing_errors = array();
+    $format_errors = array();
+
+    $my_db = new MyDBControllerMySQL();
+    $my_db->connect();
+    $comment_table_query = 
+      "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
+    $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
+
+    $_SESSION["comment_table_fields"] = $comment_table_fields;
+
+    // Close database connection
+    $my_db->close();
+
     // define variables and initialize with empty values
     $publicGroupCodeErr = $zipCodeOldErr = $zipCodeErr = "";
     $prefectureKanaErr = $cityKanaErr = $townKanaErr = $prefectureErr = $cityErr = $townErr = "";
-    $hasErrors = false;
+    $_SESSION["has_errors"] = false;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($_POST["public_group_code"])) {
             array_push($missing_errors, $comment_table_fields[0]);
@@ -166,6 +170,7 @@
         } else {
             $townDoubleZipCode = $_POST["town_double_zip_code"];
             $_SESSION["town_double_zip_code"] = $_POST["town_double_zip_code"];
+            console_log($_SESSION["town_double_zip_code"]);
         }
 
         if (is_null($_POST["town_multi_address"])) {
@@ -297,35 +302,35 @@
         <?php echo $comment_table_fields[8] ?>: <input name="town" id="town" value=<?php print htmlspecialchars($_SESSION["town"], ENT_COMPAT, 'utf-8'); ?>>
         <br />
         <?php echo $comment_table_fields[9] ?><select name="town_double_zip_code" id="town_double_zip_code" size="1">
-            <option value="1">該当</option>
-            <option value="0">該当せず</option>
+            <option value="1" <?php if($_SESSION["town_double_zip_code"] == 1) print 'selected' ?>> 該当</option>
+            <option value="0" <?php if($_SESSION["town_double_zip_code"] == 0) print 'selected' ?>> 該当せず</option>
         </select><br />
         <?php echo $comment_table_fields[10] ?><select name="town_multi_address" id="town_multi_address" size="1">
-            <option value="1">該当</option>
-            <option value="0">該当せず</option>
+            <option value="1" <?php if($_SESSION["town_multi_address"] == 1) print 'selected' ?>> 該当</option>
+            <option value="0" <?php if($_SESSION["town_multi_address"] == 0) print 'selected' ?>> 該当せず</option>
         </select><br />
         <?php echo $comment_table_fields[11] ?><select name="town_attach_district" id="town_attach_district" size="1">
-            <option value="1">該当</option>
-            <option value="0">該当せず</option>
+            <option value="1" <?php if($_SESSION["town_attach_district"] == 1) print 'selected' ?>> 該当</option>
+            <option value="0" <?php if($_SESSION["town_attach_district"] == 0) print 'selected' ?>> 該当せず</option>
         </select><br />
             <?php echo $comment_table_fields[12] ?><select name="zip_code_multi_town" id="zip_code_multi_town" size="1">
-            <option value="1">該当</option>
-            <option value="0">該当せず</option>
+            <option value="1" <?php if($_SESSION["zip_code_multi_town"] == 1) print 'selected' ?>> 該当</option>
+            <option value="0" <?php if($_SESSION["zip_code_multi_town"] == 0) print 'selected' ?>> 該当せず</option>
         </select><br />
         <?php echo $comment_table_fields[13] ?><select name="update_check" id="update_check" size="1">
-            <option value="0">変更なし</option>
-            <option value="1">変更あり</option>
-            <option value="2">廃止(廃止データのみ使用)</option>
+            <option value="0" <?php if($_SESSION["update_check"] == 0) print 'selected' ?>> 変更なし</option>
+            <option value="1" <?php if($_SESSION["update_check"] == 1) print 'selected' ?>> 変更あり</option>
+            <option value="2" <?php if($_SESSION["update_check"] == 2) print 'selected' ?>> 廃止(廃止データのみ使用)</option>
         </select><br />
         <?php echo $comment_table_fields[14] ?>
         <select name="update_reason" id="update_reason" size="1">
-            <option value="0">変更なし</option>
-            <option value="1">市政・区政・町政・分区・政令指定都市施行</option>
-            <option value="2">住居表示の実施</option>
-            <option value="3">区画整理</option>
-            <option value="4">郵便区調整等</option>
-            <option value="5">訂正</option>
-            <option value="6">廃止(廃止データのみ使用)</option>
+            <option value="0" <?php if($_SESSION["update_reason"] == 0) print 'selected' ?>> 変更なし</option>
+            <option value="1" <?php if($_SESSION["update_reason"] == 1) print 'selected' ?>> 市政・区政・町政・分区・政令指定都市施行</option>
+            <option value="2" <?php if($_SESSION["update_reason"] == 2) print 'selected' ?>> 住居表示の実施</option>
+            <option value="3" <?php if($_SESSION["update_reason"] == 3) print 'selected' ?>> 区画整理</option>
+            <option value="4" <?php if($_SESSION["update_reason"] == 4) print 'selected' ?>> 郵便区調整等</option>
+            <option value="5" <?php if($_SESSION["update_reason"] == 5) print 'selected' ?>> 訂正</option>
+            <option value="6" <?php if($_SESSION["update_reason"] == 6) print 'selected' ?>> 廃止(廃止データのみ使用)</option>
         </select><br />
         <!-- Reset and Submit Buttons -->
         <input type="reset" name="reset">
