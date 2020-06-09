@@ -9,6 +9,10 @@
     $title_array = array();
     $column_data = array();
 
+    // Get search string if it exists
+    $search_category = $_POST['search_category'];
+    $search_string = $_POST['catsearch'];
+
     // Set input bool to not display errors at first
     $_SESSION["input_hajimete"] = true;
 
@@ -16,13 +20,15 @@
     $num_rows = null;
     $num_cols = 15;
 
+    $column_names = array("public_group_code", "zip_code_old", "zip_code", "prefecture_kana",  "city_kana",
+     "town_kana", "prefecture", "city", "town", "town_double_zip_code",
+      "town_multi_address", "town_attach_district", "zip_code_multi_town", "update_check", "update_reason"
+    );
+    $_SESSION["column_names"] = $column_names;
+
     $my_db = new MyDBControllerMySQL();
     // Connect again after insert if it occurred
     $my_db->connect();
-
-    // Get search string if it exists
-    $search_category = $_POST['search_category'];
-    $search_string = $_POST['catsearch'];
 
     // Text to display regarding query
     $blue_success_text = '';
@@ -44,7 +50,7 @@
     $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
     $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
     $postal_data = $my_db->query($row_data_query, "mysqli_fetch_array", null);
-
+    
     if (strlen($search_string) > 0) {
       $select_data = $my_db->select($row_data_query, $search_category, $search_string);
       $column_data = setData($select_data, $num_cols);
@@ -60,7 +66,7 @@
     function setData($postal_data, $num_cols) : array
     {
       $column_data = array();
-      $num_rows = sizeof($postal_data);
+      $num_rows = count($postal_data);
       //showing all data
       for ($x = 0; $x < $num_rows; $x++) {
         for ($y = 0; $y < $num_cols; $y++) {
@@ -124,7 +130,7 @@
     </style>
   </head>
   <body>
-  <h2>課題4_1へようこそ</h2>
+  <h2>課題4_2へようこそ</h2>
     <?php if(strlen($blue_success_text) > 0) {
       print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
     } elseif(strlen($red_error_text) > 0) {
@@ -155,7 +161,7 @@
       </tr>
       <br />
       <?php
-        for ($x = 0; $x < sizeof($column_data); $x++) {
+        for ($x = 0; $x < count($column_data); $x++) {
           if ($x % $num_cols == 0) {
             print "<tr>" . "\n";
           }
