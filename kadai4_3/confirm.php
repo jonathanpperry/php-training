@@ -28,6 +28,7 @@
     array_push($submission_data, $_POST['update_check']);
     array_push($submission_data, $_POST['update_reason']);
     $_SESSION["submission_data"] = $submission_data;
+    // $my_db->console_log(("Submission data: " . print_r($_SESSION["submission_data"])));
     $comment_table_fields = $_SESSION["comment_table_fields"];
     $_SESSION["submitting"] = true;
 
@@ -191,7 +192,6 @@
                     for($x = 0; $x < sizeof($comment_table_fields); $x++) {
                 ?>
                 <tr>
-                <input type="hidden" name="<?php echo htmlentities($_SESSION["column_names"][$x]); ?>" value="<?php echo htmlentities($submission_data[$x]); ?>" readonly />
                     <?php
                     print "<td width='200'>" . htmlspecialchars($comment_table_fields[$x], ENT_COMPAT, 'utf-8') . "</td>";
                     if ($x < 9) {

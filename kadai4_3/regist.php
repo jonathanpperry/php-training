@@ -21,26 +21,9 @@
       $_SESSION["update_reason"] = null;    
     }
 
-    // Set the data from hidden POST in confirm.php
-    $submission_data = array();
-    array_push($submission_data, $_POST[$_SESSION["column_names"][0]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][1]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][2]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][3]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][4]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][5]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][6]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][7]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][8]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][9]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][10]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][11]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][12]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][13]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][14]]);
-
     // Check for the submission data to set blue success text
     if ($_SESSION["submitting"] == true) {
+      $submission_data = $_SESSION["submission_data"];
       $my_db = new MyDBControllerMySQL();
       // Connect again after insert if it occurred
       $my_db->connect();

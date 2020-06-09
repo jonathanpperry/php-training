@@ -259,11 +259,11 @@
     <!-- Loop through and display errors at the top -->
     <?php
     // Format
-    if (count($format_errors) != 0 && $_SESSION["input_hajimete"] == false) {
+    if (sizeof($format_errors != 0) && $_SESSION["input_hajimete"] == false) {
         print "<span class='error'>";
-        for ($x=0; $x < count($format_errors); $x++) {
+        for ($x=0; $x < sizeof($format_errors); $x++) {
             // If it's not the last iteration
-            if ($x != count($format_errors)-1) {
+            if ($x != sizeof($format_errors)-1) {
                 echo $format_errors[$x] . ", ";
             } else {
                 echo $format_errors[$x] . "の型が不正です。";
@@ -272,11 +272,11 @@
         print "</span><br />";
     }
     // Missing errors
-    if (count($missing_errors != 0) && $_SESSION["input_hajimete"] == false) {
+    if (sizeof($missing_errors != 0) && $_SESSION["input_hajimete"] == false) {
         print "<span class='error'>";
-        for ($x=0; $x < count($missing_errors); $x++) {
+        for ($x=0; $x < sizeof($missing_errors); $x++) {
             // If it's not the last iteration
-            if ($x != count($missing_errors)-1) {
+            if ($x != sizeof($missing_errors)-1) {
                 echo $missing_errors[$x] . ", ";
             } else {
                 echo $missing_errors[$x] . "が未入力です。";
