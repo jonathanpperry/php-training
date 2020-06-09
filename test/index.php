@@ -1,22 +1,5 @@
 <?php
     require_once '../lib/MyDBControllerMySQL.class.php';
-    function clear_session_fields() {
-      $_SESSION["public_group_code"] = null;
-      $_SESSION["zip_code_old"] = null;
-      $_SESSION["zip_code"] = null;
-      $_SESSION["prefecture_kana"] = null;
-      $_SESSION["city_kana"] = null;
-      $_SESSION["town_kana"] = null;
-      $_SESSION["prefecture"] = null;
-      $_SESSION["city"] = null;
-      $_SESSION["town"] = null;
-      $_SESSION["town_double_zip_code"] = null;
-      $_SESSION["town_multi_address"] = null;
-      $_SESSION["town_attach_district"] = null;
-      $_SESSION["zip_code_multi_town"] = null;
-      $_SESSION["update_check"] = null;
-      $_SESSION["update_reason"] = null;    
-    }
 
     // Start the session
     session_start();
@@ -25,7 +8,10 @@
     $all_property = array();
     $title_array = array();
     $column_data = array();
-  
+
+    // Set input bool to not display errors at first
+    $_SESSION["input_hajimete"] = true;
+
     // number of rows/cols
     $num_rows = null;
     $num_cols = 15;
@@ -39,7 +25,6 @@
     $red_error_text = '';
 
     // Set if coming from submission
-    $my_db->console_log("session submitted is" . $_SESSION["submitted"]);
     if ($_SESSION["submitted"] == true) {
       if ($_SESSION["submit_success"] == true) {
         $blue_success_text = "1行登録完了しました";

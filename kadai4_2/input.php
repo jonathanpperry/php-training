@@ -268,7 +268,7 @@
     }
     ?>
     <br />
-    <form action="input.php" method="POST">
+    <form action="confirm.php" method="POST">
         <?php echo $comment_table_fields[0] ?>(数字): <input name="public_group_code" id="public_group_code" value=<?php print htmlspecialchars($publicGroupCode, ENT_COMPAT, 'utf-8'); ?>>
         <br />
         <?php echo $comment_table_fields[1] ?>(数字): <input name="zip_code_old" id="zip_code_old" value=<?php print htmlspecialchars($zipCodeOld, ENT_COMPAT, 'utf-8'); ?>>
