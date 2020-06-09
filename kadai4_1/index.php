@@ -4,6 +4,24 @@
     // Start the session
     session_start();
 
+  function clear_session_fields() {
+    $_SESSION["submission_data"][0] = null;
+    $_SESSION["submission_data"][1] = null;
+    $_SESSION["submission_data"][2] = null;
+    $_SESSION["submission_data"][3] = null;
+    $_SESSION["submission_data"][4] = null;
+    $_SESSION["submission_data"][5] = null;
+    $_SESSION["submission_data"][6] = null;
+    $_SESSION["submission_data"][7] = null;
+    $_SESSION["submission_data"][8] = null;
+    $_SESSION["submission_data"][9] = null;
+    $_SESSION["submission_data"][10] = null;
+    $_SESSION["submission_data"][11] = null;
+    $_SESSION["submission_data"][12] = null;
+    $_SESSION["submission_data"][13] = null;
+    $_SESSION["submission_data"][14] = null;
+  }
+
     //declare arrays for saving properties
     $all_property = array();
     $title_array = array();
@@ -11,6 +29,11 @@
 
     // Set input bool to not display errors at first
     $_SESSION["input_hajimete"] = true;
+
+    if ($_SESSION["in_progress"] == true) {
+        clear_session_fields();
+        $_SESSION["in_progress"] = false;
+    }
 
     // number of rows/cols
     $num_rows = null;

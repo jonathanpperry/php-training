@@ -45,8 +45,10 @@
       // Connect again after insert if it occurred
       $my_db->connect();
 
+      $table_name = "kadai_jonathan_ziplist";
+
       // Submit the data
-      $data_inserted = $my_db->insert($submission_data);
+      $data_inserted = $my_db->insert($table_name, $submission_data);
       if ($data_inserted == true) {
         $_SESSION["submit_success"] = true;
       } else {
