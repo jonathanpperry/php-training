@@ -25,8 +25,13 @@
     //declare arrays for saving properties
     $all_property = array();
     $title_array = array();
+    $search_data = array();
     $column_data = array();
 
+    // Get search string if it exists
+    $search_category = $_POST['search_category'];
+    $search_string = $_POST['catsearch'];
+    
     // Set input bool to not display errors at first
     $_SESSION["input_hajimete"] = true;
 
@@ -66,6 +71,11 @@
     
     // Set data to render in the view
     $column_data = setData($postal_data, $num_cols);
+
+    if (strlen($search_string) > 0) {
+      $search_data = $my_db->select($row_data_query, $search_category, $search_string);
+      $search_data = setData($search_data, $num_cols);
+    }
 
     // Close database connection
     $my_db->close();
@@ -137,13 +147,54 @@
     </style>
   </head>
   <body>
-  <h2>課題4_1へようこそ</h2>
+  <h2>課題4_3へようこそ</h2>
     <?php if(strlen($blue_success_text) > 0) {
       print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
     } elseif(strlen($red_error_text) > 0) {
       print "<p class='red-error-text'>" . $red_error_text . "</p>";
     }
     ?>
+    <form action="index.php" method="POST">
+      <label for="catsearch">カテゴリで検索:</label>
+      <select name="search_category" id="search_category" size="1">
+        <?php for($x = 0; $x < sizeof($comment_table_fields); $x++) { ?>
+          <option value="<?php print $x ?>"
+            <?php print $search_category == $x ? "selected" : "" ?>>
+            <?php print $comment_table_fields[$x] ?>
+          </option>
+        <?php } ?>
+      </select>
+      <input type="search" name="catsearch" value="<?php print htmlspecialchars($search_string) ?>">
+      <input type="submit">
+    </form>
+    <h3>検索結果</h3>
+    <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
+      <tr>
+      <?php
+          foreach($comment_table_fields as $title_text) {
+            print "<th>" . $title_text . "</th>" . "\n";
+          }
+        ?>
+      </tr>
+      <br />
+      <?php
+        $count = count($search_data);
+        for ($x = 0; $x < $count; $x++) {
+          if ($x % $num_cols == 0) {
+            print "<tr>" . "\n";
+          }
+          if ($x % $num_cols == 2) {
+            print "<td>" . $search_data[$x] . "</td>" . "\n";
+          }
+          else {
+            print "<td>" . $search_data[$x] . "</td>" . "\n";
+          }
+          if ($x % $num_cols == ($my_db->num_rows-1)) {
+            print "</tr>" . "\n";
+          }
+        }
+      ?>
+    </table>
 
     <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
       <tr>
@@ -159,7 +210,12 @@
           if ($x % $num_cols == 0) {
             print "<tr>" . "\n";
           }
-          print "<td>" . $column_data[$x] . "</td>" . "\n";
+          if ($x % $num_cols == 2) {
+            print "<td><a href='update.php'>" . $column_data[$x] . "</a></td>" . "\n";
+          }
+          else {
+            print "<td>" . $column_data[$x] . "</td>" . "\n";
+          }
           if ($x % $num_cols == ($my_db->num_rows-1)) {
             print "</tr>" . "\n";
           }

@@ -34,8 +34,6 @@
     $comment_table_fields = $_SESSION["comment_table_fields"];
     $_SESSION["submitting"] = true;
 
-    $my_db->console_log($comment_table_fields);
-
     $validation = new Validation();
     $return_object = $validation->checkForErrors($submission_data, $comment_table_fields);
     $_SESSION["error_data"] = $return_object;

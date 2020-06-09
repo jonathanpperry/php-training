@@ -1,5 +1,7 @@
 <?php
     require_once '../lib/MyDBControllerMySQL.class.php';
+    require_once '../lib/validation.class.php';
+
     // Start the session
     session_start();
 
@@ -21,23 +23,23 @@
       $_SESSION["update_reason"] = null;    
     }
 
-    // Set the data from hidden POST in confirm.php
     $submission_data = array();
-    array_push($submission_data, $_POST[$_SESSION["column_names"][0]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][1]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][2]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][3]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][4]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][5]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][6]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][7]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][8]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][9]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][10]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][11]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][12]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][13]]);
-    array_push($submission_data, $_POST[$_SESSION["column_names"][14]]);
+    array_push($submission_data, $_POST["public_group_code"]);
+    array_push($submission_data, $_POST["zip_code_old"]);
+    array_push($submission_data, $_POST["zip_code"]);
+    array_push($submission_data, $_POST["prefecture_kana"]);
+    array_push($submission_data, $_POST["city_kana"]);
+    array_push($submission_data, $_POST["town_kana"]);
+    array_push($submission_data, $_POST["prefecture"]);
+    array_push($submission_data, $_POST["city"]);
+    array_push($submission_data, $_POST["town"]);
+    array_push($submission_data, $_POST["town_double_zip_code"]);
+    array_push($submission_data, $_POST["town_multi_address"]);
+    array_push($submission_data, $_POST["town_attach_district"]);
+    array_push($submission_data, $_POST["zip_code_multi_town"]);
+    array_push($submission_data, $_POST["update_check"]);
+    array_push($submission_data, $_POST["update_reason"]);
+    
 
     // Check for the submission data to set blue success text
     if ($_SESSION["submitting"] == true) {
@@ -45,8 +47,19 @@
       // Connect again after insert if it occurred
       $my_db->connect();
 
+      $table_name = "kadai_jonathan_ziplist";
+      $comment_table_fields = $_SESSION["comment_table_fields"];
+
+      $validation = new Validation();
+      $return_object = $validation->checkForErrors($submission_data, $comment_table_fields);
+      $my_db->console_log($return_object);
+      if (count($return_object[0]) > 0 || count($return_object[1]) > 0) {
+        header("Location: input.php");
+        exit();
+      }
+
       // Submit the data
-      $data_inserted = $my_db->insert($submission_data);
+      $data_inserted = $my_db->insert($table_name, $submission_data);
       if ($data_inserted == true) {
         $_SESSION["submit_success"] = true;
       } else {

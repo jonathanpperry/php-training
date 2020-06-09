@@ -25,12 +25,13 @@
     //declare arrays for saving properties
     $all_property = array();
     $title_array = array();
+    $search_data = array();
     $column_data = array();
 
     // Get search string if it exists
     $search_category = $_POST['search_category'];
     $search_string = $_POST['catsearch'];
-
+    
     // Set input bool to not display errors at first
     $_SESSION["input_hajimete"] = true;
 
@@ -42,12 +43,6 @@
     // number of rows/cols
     $num_rows = null;
     $num_cols = 15;
-
-    $column_names = array("public_group_code", "zip_code_old", "zip_code", "prefecture_kana",  "city_kana",
-     "town_kana", "prefecture", "city", "town", "town_double_zip_code",
-      "town_multi_address", "town_attach_district", "zip_code_multi_town", "update_check", "update_reason"
-    );
-    $_SESSION["column_names"] = $column_names;
 
     $my_db = new MyDBControllerMySQL();
     // Connect again after insert if it occurred
@@ -74,13 +69,12 @@
     $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
     $postal_data = $my_db->query($row_data_query, "mysqli_fetch_array", null);
     
+    // Set data to render in the view
+    $column_data = setData($postal_data, $num_cols);
+
     if (strlen($search_string) > 0) {
-      $select_data = $my_db->select($row_data_query, $search_category, $search_string);
-      $column_data = setData($select_data, $num_cols);
-    }
-    else {
-      // Set data to render in the view
-      $column_data = setData($postal_data, $num_cols);
+      $search_data = $my_db->select($row_data_query, $search_category, $search_string);
+      $search_data = setData($search_data, $num_cols);
     }
 
     // Close database connection
@@ -173,6 +167,34 @@
       <input type="search" name="catsearch" value="<?php print htmlspecialchars($search_string) ?>">
       <input type="submit">
     </form>
+    <h3>検索結果</h3>
+    <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
+      <tr>
+      <?php
+          foreach($comment_table_fields as $title_text) {
+            print "<th>" . $title_text . "</th>" . "\n";
+          }
+        ?>
+      </tr>
+      <br />
+      <?php
+        $count = count($search_data);
+        for ($x = 0; $x < $count; $x++) {
+          if ($x % $num_cols == 0) {
+            print "<tr>" . "\n";
+          }
+          if ($x % $num_cols == 2) {
+            print "<td>" . $search_data[$x] . "</td>" . "\n";
+          }
+          else {
+            print "<td>" . $search_data[$x] . "</td>" . "\n";
+          }
+          if ($x % $num_cols == ($my_db->num_rows-1)) {
+            print "</tr>" . "\n";
+          }
+        }
+      ?>
+    </table>
 
     <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
       <tr>
@@ -188,7 +210,12 @@
           if ($x % $num_cols == 0) {
             print "<tr>" . "\n";
           }
-          print "<td>" . $column_data[$x] . "</td>" . "\n";
+          if ($x % $num_cols == 2) {
+            print "<td>" . $column_data[$x] . "</td>" . "\n";
+          }
+          else {
+            print "<td>" . $column_data[$x] . "</td>" . "\n";
+          }
           if ($x % $num_cols == ($my_db->num_rows-1)) {
             print "</tr>" . "\n";
           }
