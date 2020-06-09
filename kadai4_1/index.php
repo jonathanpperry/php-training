@@ -39,12 +39,6 @@
     $num_rows = null;
     $num_cols = 15;
 
-    $column_names = array("public_group_code", "zip_code_old", "zip_code", "prefecture_kana",  "city_kana",
-     "town_kana", "prefecture", "city", "town", "town_double_zip_code",
-      "town_multi_address", "town_attach_district", "zip_code_multi_town", "update_check", "update_reason"
-    );
-    $_SESSION["column_names"] = $column_names;
-
     $my_db = new MyDBControllerMySQL();
     // Connect again after insert if it occurred
     $my_db->connect();

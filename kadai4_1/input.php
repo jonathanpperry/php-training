@@ -20,9 +20,9 @@
         $_SESSION["zip_code_multi_town"] = null;
         $_SESSION["update_check"] = null;
         $_SESSION["update_reason"] = null;    
-      }  
+    }
 
-    function console_log( $data ){
+    function console_log( $data ) {
         echo '<script>';
         echo 'console.log('. json_encode( $data ) .')';
         echo '</script>';

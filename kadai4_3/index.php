@@ -166,8 +166,9 @@
             print "<tr>" . "\n";
           }
           if ($x % $num_cols == 2) {
-
-          } else {
+            print "<td><a href='update.php'>" . $column_data[$x] . "</a></td>" . "\n";
+          }
+          else {
             print "<td>" . $column_data[$x] . "</td>" . "\n";
           }
           if ($x % $num_cols == ($my_db->num_rows-1)) {
