@@ -4,17 +4,36 @@
     // Start the session
     session_start();
 
+  function clear_session_fields() {
+    $_SESSION["submission_data"][0] = null;
+    $_SESSION["submission_data"][1] = null;
+    $_SESSION["submission_data"][2] = null;
+    $_SESSION["submission_data"][3] = null;
+    $_SESSION["submission_data"][4] = null;
+    $_SESSION["submission_data"][5] = null;
+    $_SESSION["submission_data"][6] = null;
+    $_SESSION["submission_data"][7] = null;
+    $_SESSION["submission_data"][8] = null;
+    $_SESSION["submission_data"][9] = null;
+    $_SESSION["submission_data"][10] = null;
+    $_SESSION["submission_data"][11] = null;
+    $_SESSION["submission_data"][12] = null;
+    $_SESSION["submission_data"][13] = null;
+    $_SESSION["submission_data"][14] = null;
+  }
+
     //declare arrays for saving properties
     $all_property = array();
     $title_array = array();
     $column_data = array();
 
-    // Get search string if it exists
-    $search_category = $_POST['search_category'];
-    $search_string = $_POST['catsearch'];
-
     // Set input bool to not display errors at first
     $_SESSION["input_hajimete"] = true;
+
+    if ($_SESSION["in_progress"] == true) {
+        clear_session_fields();
+        $_SESSION["in_progress"] = false;
+    }
 
     // number of rows/cols
     $num_rows = null;
@@ -51,14 +70,8 @@
     $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
     $postal_data = $my_db->query($row_data_query, "mysqli_fetch_array", null);
     
-    if (strlen($search_string) > 0) {
-      $select_data = $my_db->select($row_data_query, $search_category, $search_string);
-      $column_data = setData($select_data, $num_cols);
-    }
-    else {
-      // Set data to render in the view
-      $column_data = setData($postal_data, $num_cols);
-    }
+    // Set data to render in the view
+    $column_data = setData($postal_data, $num_cols);
 
     // Close database connection
     $my_db->close();
@@ -130,26 +143,13 @@
     </style>
   </head>
   <body>
-  <h2>課題4_2へようこそ</h2>
+  <h2>課題4_1へようこそ</h2>
     <?php if(strlen($blue_success_text) > 0) {
       print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
     } elseif(strlen($red_error_text) > 0) {
       print "<p class='red-error-text'>" . $red_error_text . "</p>";
     }
     ?>
-    <form action="index.php" method="POST">
-      <label for="catsearch">カテゴリで検索:</label>
-      <select name="search_category" id="search_category" size="1">
-        <?php for($x = 0; $x < sizeof($comment_table_fields); $x++) { ?>
-          <option value="<?php print $x ?>"
-            <?php print $search_category == $x ? "selected" : "" ?>>
-            <?php print $comment_table_fields[$x] ?>
-          </option>
-        <?php } ?>
-      </select>
-      <input type="search" name="catsearch" value="<?php print htmlspecialchars($search_string) ?>">
-      <input type="submit">
-    </form>
 
     <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
       <tr>

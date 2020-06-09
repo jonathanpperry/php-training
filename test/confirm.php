@@ -1,5 +1,6 @@
 <?php
     require_once '../lib/MyDBControllerMySQL.class.php';
+    require_once '../lib/validation.class.php';
     // Start the session
     session_start();
 
@@ -10,6 +11,8 @@
 
     // Set value for input first time
     $_SESSION["input_hajimete"] = false;
+    // Error boolean
+    $hasErrors = false;
 
     // Define variables for completed values
     array_push($submission_data, $_POST['public_group_code']);
@@ -31,149 +34,22 @@
     $comment_table_fields = $_SESSION["comment_table_fields"];
     $_SESSION["submitting"] = true;
 
-    $hasErrors = false;
-        if (empty($_POST["public_group_code"])) {
-            $hasErrors = true;
-        } elseif (!is_numeric($_POST["public_group_code"])) {
-            $_SESSION["public_group_code"] = $_POST["public_group_code"];
-            $hasErrors = true;
-        } else {
-            // Save the data in the session
-            $_SESSION["public_group_code"] = $publicGroupCode;
-        }
+    $my_db->console_log($comment_table_fields);
 
-        if (empty($_POST["zip_code_old"])) {
-            $hasErrors = true;
-        } elseif (!is_numeric($_POST["zip_code_old"])) {
-            $_SESSION["zip_code_old"] = $_POST["zip_code_old"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["zip_code_old"] = $zipCodeOld;
-        }
+    $validation = new Validation();
+    $return_object = $validation->checkForErrors($submission_data, $comment_table_fields);
+    $_SESSION["error_data"] = $return_object;
+    if (count($return_object[0]) > 0 || count($return_object[1]) > 0) {
+        $hasErrors = true;
+    }
 
-        if (empty($_POST["zip_code"])) {
-            $hasErrors = true;
-        } elseif (!is_numeric($_POST["zip_code"])) {
-            $_SESSION["zip_code"] = $_POST["zip_code"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["zip_code"] = $_POST["zip_code"];
-        }
+    $my_db->console_log($return_object);
 
-        // String inputs
-        if (empty($_POST["prefecture_kana"])) {
-            $hasErrors = true;
-        } elseif (!is_string($_POST["prefecture_kana"])) {
-            $_SESSION["prefecture_kana"] = $_POST["prefecture_kana"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["prefecture_kana"] = $_POST["prefecture_kana"];
-        }
-
-        if (empty($_POST["city_kana"])) {
-            $hasErrors = true;
-        } elseif (!is_string($_POST["city_kana"])) {
-            $_SESSION["city_kana"] = $_POST["city_kana"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["city_kana"] = $_POST["city_kana"];
-        }
-
-        if (empty($_POST["town_kana"])) {
-            $hasErrors = true;
-        } elseif (!is_string($_POST["town_kana"])) {
-            $_SESSION["town_kana"] = $_POST["town_kana"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["town_kana"] = $_POST["town_kana"];
-        }
-        if (empty($_POST["prefecture"])) {
-            $hasErrors = true;
-        } elseif (!is_string($_POST["prefecture"])) {
-            $_SESSION["prefecture"] = $_POST["prefecture"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["prefecture"] = $_POST["prefecture"];
-        }
-
-        if (empty($_POST["city"])) {
-            $hasErrors = true;
-        } elseif (!is_string($_POST["city"])) {
-            $_SESSION["city"] = $_POST["city"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["city"] = $_POST["city"];
-        }
-
-        if (empty($_POST["town"])) {
-            $hasErrors = true;
-        } elseif (!is_string($_POST["town"])) {
-            $_SESSION["town"] = $_POST["town"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["town"] = $_POST["town"];
-        }
-
-        if (is_null($_POST["town_double_zip_code"])) {
-            $hasErrors = true;
-        } elseif (!is_numeric($_POST["town_double_zip_code"])) {
-            $_SESSION["town_double_zip_code"] = $_POST["town_double_zip_code"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["town_double_zip_code"] = $_POST["town_double_zip_code"];
-        }
-
-        if (is_null($_POST["town_multi_address"])) {
-            $hasErrors = true;
-        } elseif (!is_numeric($_POST["town_multi_address"])) {
-            $_SESSION["town_multi_address"] = $_POST["town_multi_address"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["town_multi_address"] = $_POST["town_multi_address"];
-        }
-
-        if (is_null($_POST["town_attach_district"])) {
-            $hasErrors = true;
-        } elseif (!is_numeric($_POST["town_attach_district"])) {
-            $_SESSION["town_attach_district"] = $_POST["town_attach_district"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["town_attach_district"] = $_POST["town_attach_district"];
-        }
-
-        if (is_null($_POST["zip_code_multi_town"])) {
-            $hasErrors = true;
-        } elseif (!is_numeric($_POST["zip_code_multi_town"])) {
-            $_SESSION["zip_code_multi_town"] = $_POST["zip_code_multi_town"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["zip_code_multi_town"] = $_POST["zip_code_multi_town"];
-        }
-        $my_db->console_log("Update check value is: " . $_POST["update_check"]);
-        if (is_null($_POST["update_check"])) {
-            $hasErrors = true;
-        } elseif (!is_numeric($_POST["update_check"])) {
-            $_SESSION["update_check"] = $_POST["update_check"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["update_check"] = $_POST["update_check"];
-        }
-
-        if (is_null($_POST["update_reason"])) {
-            $hasErrors = true;
-        } elseif (!is_numeric($_POST["update_reason"])) {
-            $_SESSION["update_reason"] = $_POST["update_reason"];
-            $hasErrors = true;
-        } else {
-            $_SESSION["update_reason"] = $_POST["update_reason"];
-        }
-        $my_db->console_log("Has errors: " . $hasErrors);
-        // For now just log a message for errors
-        if ($hasErrors) {
-            // Direct user to confirm page
-            header("Location: input.php");
-            exit();
-        }
+    if ($hasErrors == true) {
+        // Direct user to confirm page
+        header("Location: input.php");
+        exit();
+    }
 
     ?>
 

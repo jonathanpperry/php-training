@@ -1,5 +1,6 @@
 <?php
     require_once '../lib/MyDBControllerMySQL.class.php';
+    require_once '../lib/validation.class.php';
     // Start the session
     session_start();
 
@@ -31,10 +32,6 @@
         $_SESSION["in_progress"] = true;
     }
 
-    //declare arrays for saving properties
-    $missing_errors = array();
-    $format_errors = array();
-
     if ($_SESSION["input_hajimete"] == true) {
         clear_session_fields();
     }
@@ -49,6 +46,10 @@
 
     // Close database connection
     $my_db->close();
+
+    // Get errors from validation class
+    $missing_errors = $_SESSION["error_data"][0];
+    $format_errors = $_SESSION["error_data"][1];
 
     // Set data from session if it exists to display previous values
     $publicGroupCode = $_SESSION["submission_data"][0];
@@ -71,171 +72,6 @@
     $publicGroupCodeErr = $zipCodeOldErr = $zipCodeErr = "";
     $prefectureKanaErr = $cityKanaErr = $townKanaErr = $prefectureErr = $cityErr = $townErr = "";
     $_SESSION["has_errors"] = false;
-    if (empty($publicGroupCode)) {
-        array_push($missing_errors, $comment_table_fields[0]);
-        $hasErrors = true;
-    } elseif (!is_numeric($publicGroupCode)) {
-        array_push($format_errors, $comment_table_fields[0]);
-        $_SESSION["public_group_code"] = $_SESSION["public_group_code"];
-        $hasErrors = true;
-    } else {
-        // Save the data in the session
-        $_SESSION["public_group_code"] = $publicGroupCode;
-    }
-
-    if (empty($zipCodeOld)) {
-        array_push($missing_errors, $comment_table_fields[1]);
-        $hasErrors = true;
-    } elseif (!is_numeric($zipCodeOld)) {
-        array_push($format_errors, $comment_table_fields[1]);
-        $_SESSION["zip_code_old"] = $_SESSION["zip_code_old"];
-        $hasErrors = true;
-    } else {
-        $_SESSION["zip_code_old"] = $zipCodeOld;
-    }
-
-    if (empty($zipCode)) {
-        array_push($missing_errors, $comment_table_fields[2]);
-        $hasErrors = true;
-    } elseif (!is_numeric($zipCode)) {
-        array_push($format_errors, $comment_table_fields[2]);
-        $_SESSION["zip_code"] = $_SESSION["zip_code"];
-        $hasErrors = true;
-    } else {
-        $_SESSION["zip_code"] = $_SESSION["zip_code"];
-    }
-
-    // String inputs
-    if (empty($_SESSION["prefecture_kana"])) {
-        array_push($missing_errors, $comment_table_fields[3]);
-        $hasErrors = true;
-    } elseif (!is_string($_SESSION["prefecture_kana"])) {
-        array_push($format_errors, $comment_table_fields[3]);
-        $_SESSION["prefecture_kana"] = $_SESSION["prefecture_kana"];
-        $hasErrors = true;
-    } else {
-        $_SESSION["prefecture_kana"] = $_SESSION["prefecture_kana"];
-    }
-
-    if (empty($_SESSION["city_kana"])) {
-        array_push($missing_errors, $comment_table_fields[4]);
-        $hasErrors = true;
-    } elseif (!is_string($_SESSION["city_kana"])) {
-        $_SESSION["city_kana"] = $_SESSION["city_kana"];
-        array_push($format_errors, $comment_table_fields[4]);
-        $hasErrors = true;
-    } else {
-        $_SESSION["city_kana"] = $_SESSION["city_kana"];
-    }
-
-    if (empty($_SESSION["town_kana"])) {
-        array_push($missing_errors, $comment_table_fields[5]);
-        $hasErrors = true;
-    } elseif (!is_string($_SESSION["town_kana"])) {
-        $_SESSION["town_kana"] = $_SESSION["town_kana"];
-        array_push($format_errors, $comment_table_fields[5]);
-        $hasErrors = true;
-    } else {
-        $_SESSION["town_kana"] = $_SESSION["town_kana"];
-    }
-    if (empty($_SESSION["prefecture"])) {
-        array_push($missing_errors, $comment_table_fields[6]);
-        $hasErrors = true;
-    } elseif (!is_string($_SESSION["prefecture"])) {
-        $_SESSION["prefecture"] = $_SESSION["prefecture"];
-        array_push($format_errors, $comment_table_fields[6]);
-        $hasErrors = true;
-    } else {
-        $_SESSION["prefecture"] = $_SESSION["prefecture"];
-    }
-
-    if (empty($_SESSION["city"])) {
-        array_push($missing_errors, $comment_table_fields[7]);
-        $hasErrors = true;
-    } elseif (!is_string($_SESSION["city"])) {
-        $_SESSION["city"] = $_SESSION["city"];
-        array_push($format_errors, $comment_table_fields[7]);
-        $hasErrors = true;
-    } else {
-        $_SESSION["city"] = $_SESSION["city"];
-    }
-
-    if (empty($_SESSION["town"])) {
-        array_push($missing_errors, $comment_table_fields[8]);
-        $hasErrors = true;
-    } elseif (!is_string($_SESSION["town"])) {
-        $_SESSION["town"] = $_SESSION["town"];
-        array_push($format_errors, $comment_table_fields[8]);
-        $hasErrors = true;
-    } else {
-        $_SESSION["town"] = $_SESSION["town"];
-    }
-
-    if (is_null($_SESSION["town_double_zip_code"])) {
-        array_push($missing_errors, $comment_table_fields[9]);
-        $hasErrors = true;
-    } elseif (!is_numeric($_SESSION["town_double_zip_code"])) {
-        $_SESSION["town_double_zip_code"] = $_SESSION["town_double_zip_code"];
-        array_push($format_errors, $comment_table_fields[9]);
-        $hasErrors = true;
-    } else {
-        $_SESSION["town_double_zip_code"] = $_SESSION["town_double_zip_code"];
-    }
-
-    if (is_null($_SESSION["town_multi_address"])) {
-        array_push($missing_errors, $comment_table_fields[10]);
-        $hasErrors = true;
-    } elseif (!is_numeric($_SESSION["town_multi_address"])) {
-        $_SESSION["town_multi_address"] = $_SESSION["town_multi_address"];
-        array_push($format_errors, $comment_table_fields[10]);
-        $hasErrors = true;
-    } else {
-        $_SESSION["town_multi_address"] = $_SESSION["town_multi_address"];
-    }
-
-    if (is_null($_SESSION["town_attach_district"])) {
-        array_push($missing_errors, $comment_table_fields[11]);
-        $hasErrors = true;
-    } elseif (!is_numeric($_SESSION["town_attach_district"])) {
-        $_SESSION["town_attach_district"] = $_SESSION["town_attach_district"];
-        array_push($format_errors, $comment_table_fields[11]);
-        $hasErrors = true;
-    } else {
-        $_SESSION["town_attach_district"] = $_SESSION["town_attach_district"];
-    }
-
-    if (is_null($_SESSION["zip_code_multi_town"])) {
-        array_push($missing_errors, $comment_table_fields[12]);
-        $hasErrors = true;
-    } elseif (!is_numeric($_SESSION["zip_code_multi_town"])) {
-        $_SESSION["zip_code_multi_town"] = $_SESSION["zip_code_multi_town"];
-        array_push($format_errors, $comment_table_fields[12]);
-        $hasErrors = true;
-    } else {
-        $_SESSION["zip_code_multi_town"] = $_SESSION["zip_code_multi_town"];
-    }
-    $my_db->console_log("Update check value is: " . $_SESSION["update_check"]);
-    if (is_null($_SESSION["update_check"])) {
-        array_push($missing_errors, $comment_table_fields[13]);
-        $hasErrors = true;
-    } elseif (!is_numeric($_SESSION["update_check"])) {
-        $_SESSION["update_check"] = $_SESSION["update_check"];
-        array_push($format_errors, $comment_table_fields[13]);
-        $hasErrors = true;
-    } else {
-        $_SESSION["update_check"] = $_SESSION["update_check"];
-    }
-
-    if (is_null($_SESSION["update_reason"])) {
-        array_push($missing_errors, $comment_table_fields[14]);
-        $hasErrors = true;
-    } elseif (!is_numeric($_SESSION["update_reason"])) {
-        $_SESSION["update_reason"] = $_SESSION["update_reason"];
-        array_push($format_errors, $comment_table_fields[14]);
-        $hasErrors = true;
-    } else {
-        $_SESSION["update_reason"] = $_SESSION["update_reason"];
-    }
 
     // For now just log a message for errors
     if ($hasErrors) {
@@ -261,7 +97,8 @@
     // Format
     if (count($format_errors) != 0 && $_SESSION["input_hajimete"] == false) {
         print "<span class='error'>";
-        for ($x=0; $x < count($format_errors); $x++) {
+        $count = count($format_errors);
+        for ($x=0; $x < $count; $x++) {
             // If it's not the last iteration
             if ($x != count($format_errors)-1) {
                 echo $format_errors[$x] . ", ";
@@ -274,7 +111,8 @@
     // Missing errors
     if (count($missing_errors != 0) && $_SESSION["input_hajimete"] == false) {
         print "<span class='error'>";
-        for ($x=0; $x < count($missing_errors); $x++) {
+        $count = count($missing_errors);
+        for ($x=0; $x < $count; $x++) {
             // If it's not the last iteration
             if ($x != count($missing_errors)-1) {
                 echo $missing_errors[$x] . ", ";
