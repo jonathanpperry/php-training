@@ -40,13 +40,10 @@
       clear_session_fields();
       // Set submitted value to use in index page
       $_SESSION["submitted"] = true;
-
-      // Close database connection
-      $my_db->close();
-
+      // Set input bool to not display errors at first
+      $_SESSION["input_hajimete"] = true;
+      // Redirect to the list page
+      header("Location: index.php");
+      exit();
     }
-
-    // Redirect to the list page
-    header("Location: index.php");
-    exit();
 ?>

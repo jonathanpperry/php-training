@@ -1,5 +1,6 @@
 <?php
     require_once '../lib/MyDBControllerMySQL.class.php';
+
     // Start the session
     session_start();
 
@@ -7,7 +8,10 @@
     $all_property = array();
     $title_array = array();
     $column_data = array();
-  
+
+    // Set input bool to not display errors at first
+    $_SESSION["input_hajimete"] = true;
+
     // number of rows/cols
     $num_rows = null;
     $num_cols = 15;
@@ -25,8 +29,8 @@
     $red_error_text = '';
 
     // Set if coming from submission
-    if ($_SESSION["submitted"]) {
-      if ($_SESSION["submit_success"]) {
+    if ($_SESSION["submitted"] == true) {
+      if ($_SESSION["submit_success"] == true) {
         $blue_success_text = "1行登録完了しました";
       } else {
         $red_error_text = "登録失敗しました(SQLerror文)";
@@ -34,7 +38,7 @@
       $_SESSION["submitted"] = false;
     }
 
-    $comment_table_query =
+    $comment_table_query = 
       "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
     /* Query for the rows data */
     $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
