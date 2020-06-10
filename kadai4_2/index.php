@@ -30,7 +30,7 @@
 
     // Get search string if it exists
     $search_category = $_POST['search_category'];
-    $search_string = $_POST['catsearch'];
+    $search_string = htmlentities($_POST['catsearch']);
     
     // Set input bool to not display errors at first
     $_SESSION["input_hajimete"] = true;

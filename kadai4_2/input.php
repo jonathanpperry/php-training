@@ -59,6 +59,7 @@
     $cityKana = $_SESSION["submission_data"][4];
     $townKana = $_SESSION["submission_data"][5];
     $prefecture = $_SESSION["submission_data"][6];
+    $my_db->console_log($prefecture);
     $city = $_SESSION["submission_data"][7];
     $town = $_SESSION["submission_data"][8];
     $townDoubleZipCode = $_SESSION["submission_data"][9];
@@ -125,24 +126,24 @@
     ?>
     <br />
     <form action="confirm.php" method="POST">
-        <?php echo $comment_table_fields[0] ?>(数字): <input name="public_group_code" id="public_group_code" value=<?php print htmlspecialchars($publicGroupCode, ENT_COMPAT, 'utf-8'); ?>>
+        <?php echo $comment_table_fields[0] ?>(数字): <input name="public_group_code" id="public_group_code" value="<?php print htmlspecialchars($publicGroupCode, ENT_COMPAT, 'utf-8'); ?>">
         <br />
-        <?php echo $comment_table_fields[1] ?>(数字): <input name="zip_code_old" id="zip_code_old" value=<?php print htmlspecialchars($zipCodeOld, ENT_COMPAT, 'utf-8'); ?>>
+        <?php echo $comment_table_fields[1] ?>(数字): <input name="zip_code_old" id="zip_code_old" value="<?php print htmlspecialchars($zipCodeOld, ENT_COMPAT, 'utf-8'); ?>">
         <br />
-        <?php echo $comment_table_fields[2] ?>(数字): <input name="zip_code" id="zip_code" value=<?php print htmlspecialchars($zipCode, ENT_COMPAT, 'utf-8'); ?>>
+        <?php echo $comment_table_fields[2] ?>(数字): <input name="zip_code" id="zip_code" value="<?php print htmlspecialchars($zipCode, ENT_COMPAT, 'utf-8'); ?>">
         <br />
         <!-- Text inputs -->
-        <?php echo $comment_table_fields[3] ?>: <input name="prefecture_kana" id="prefecture_kana" value=<?php print htmlspecialchars($prefectureKana, ENT_COMPAT, 'utf-8'); ?>>
+        <?php echo $comment_table_fields[3] ?>: <input name="prefecture_kana" id="prefecture_kana" value="<?php print htmlspecialchars($prefectureKana, ENT_COMPAT, 'utf-8'); ?>">
         <br />
-        <?php echo $comment_table_fields[4] ?>: <input name="city_kana" id="city_kana" value=<?php print htmlspecialchars($cityKana, ENT_COMPAT, 'utf-8'); ?>>
+        <?php echo $comment_table_fields[4] ?>: <input name="city_kana" id="city_kana" value="<?php print htmlspecialchars($cityKana, ENT_COMPAT, 'utf-8'); ?>">
         <br />
-        <?php echo $comment_table_fields[5] ?>: <input name="town_kana" id="town_kana" value=<?php print htmlspecialchars($townKana, ENT_COMPAT, 'utf-8'); ?>>
+        <?php echo $comment_table_fields[5] ?>: <input name="town_kana" id="town_kana" value="<?php print htmlspecialchars($townKana, ENT_COMPAT, 'utf-8'); ?>">
         <br />
-        <?php echo $comment_table_fields[6] ?>: <input name="prefecture" id="prefecture" value=<?php print htmlspecialchars($prefecture, ENT_COMPAT, 'utf-8'); ?>>
+        <?php echo $comment_table_fields[6] ?>: <input name="prefecture" id="prefecture" value="<?php print htmlspecialchars($prefecture, ENT_COMPAT, 'utf-8'); ?>">
         <br />
-        <?php echo $comment_table_fields[7] ?>: <input name="city" id="city" value=<?php print htmlspecialchars($city, ENT_COMPAT, 'utf-8'); ?>>
+        <?php echo $comment_table_fields[7] ?>: <input name="city" id="city" value="<?php print htmlspecialchars($city, ENT_COMPAT, 'utf-8'); ?>">
         <br />
-        <?php echo $comment_table_fields[8] ?>: <input name="town" id="town" value=<?php print htmlspecialchars($town, ENT_COMPAT, 'utf-8'); ?>>
+        <?php echo $comment_table_fields[8] ?>: <input name="town" id="town" value="<?php print htmlspecialchars($town, ENT_COMPAT, 'utf-8'); ?>">
         <br />
         <?php echo $comment_table_fields[9] ?><select name="town_double_zip_code" id="town_double_zip_code" size="1">
             <option value="1" <?php if($townDoubleZipCode == 1) print 'selected' ?>> 該当</option>
