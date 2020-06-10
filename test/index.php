@@ -54,33 +54,33 @@
 
     // Set if coming from submission
     if ($_SESSION["submitted"] == true) {
-      if ($_SESSION["submit_success"] == true) {
-        $blue_success_text = "1行登録完了しました";
-      } else {
-        $red_error_text = "登録失敗しました(SQLerror文)";
-      }
-      $_SESSION["submitted"] = false;
+        if ($_SESSION["submit_success"] == true) {
+            $blue_success_text = "1行登録完了しました";
+        } else {
+            $red_error_text = "登録失敗しました(SQLerror文)";
+        }
+        $_SESSION["submitted"] = false;
     }
 
     $comment_table_query = 
       "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
     /* Query for the rows data */
     $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
-    $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
-    $postal_data = $my_db->query($row_data_query, "mysqli_fetch_array", null);
-    
+    $comment_table_fields = $my_db->query($comment_table_query, "Comment");
+    $postal_data = $my_db->query($row_data_query, null);
+    $my_db->console_log($postal_data);
     // Set data to render in the view
-    $column_data = setData($postal_data, $num_cols);
+    $column_data = setData($postal_data, $num_cols, $my_db);
 
     if (strlen($search_string) > 0) {
-      $search_data = $my_db->select($row_data_query, $search_category, $search_string);
-      $search_data = setData($search_data, $num_cols);
+        $search_data = $my_db->select($row_data_query, $search_category, $search_string);
+        $search_data = setData($search_data, $num_cols, $my_db);
     }
 
     // Close database connection
     $my_db->close();
 
-    function setData($postal_data, $num_cols) : array
+    function setData($postal_data, $num_cols, $my_db) : array
     {
       $column_data = array();
       $num_rows = count($postal_data);
@@ -125,7 +125,7 @@
             }
           } else {
             // Just display value from database
-            array_push($column_data, htmlspecialchars($postal_data[$x][$y]));
+            array_push($column_data, htmlspecialchars($postal_data[$x][$my_db->column_names[$y]]));
           }
         }
       }

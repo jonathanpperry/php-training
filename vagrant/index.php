@@ -15,8 +15,8 @@
       "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
     /* Query for the rows data */
     $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
-    $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
-    $postal_data = $my_db->query($row_data_query, "mysqli_fetch_array", null);
+    $comment_table_fields = $my_db->query($comment_table_query, "Comment");
+    $postal_data = $my_db->query($row_data_query, null);
     
     // Set data to render in the view
     setData($postal_data);
