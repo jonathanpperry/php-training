@@ -147,7 +147,7 @@ class MyDBControllerMySQL
         $return_array = array();
         $sql = $queryString .
             " WHERE `{$this->column_names[$category]}`
-            LIKE '%$string%'
+            LIKE '%?%'
             ";
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
