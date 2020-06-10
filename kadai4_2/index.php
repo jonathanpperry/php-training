@@ -218,7 +218,7 @@
                 print "<tr>" . "\n";
             }
             if ($x % $num_cols == 2) {
-                print "<td><a href='update.php'>" . $column_data[$x] . "</a></td>" . "\n";
+                print "<td>" . $column_data[$x] . "</td>" . "\n";
             }
             else {
                 print "<td>" . $column_data[$x] . "</td>" . "\n";

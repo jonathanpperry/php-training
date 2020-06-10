@@ -147,7 +147,7 @@
     </style>
   </head>
   <body>
-  <h2>課題4_2へようこそ</h2>
+  <h2>課題4_3へようこそ</h2>
     <?php if(strlen($blue_success_text) > 0) {
       print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
     } elseif(strlen($red_error_text) > 0) {
@@ -218,7 +218,7 @@
                 print "<tr>" . "\n";
             }
             if ($x % $num_cols == 2) {
-                print "<td><a href='update.php'>" . $column_data[$x] . "</a></td>" . "\n";
+              print "<td><a href='update.php'>" . $column_data[$x] . "</a></td>" . "\n";
             }
             else {
                 print "<td>" . $column_data[$x] . "</td>" . "\n";
