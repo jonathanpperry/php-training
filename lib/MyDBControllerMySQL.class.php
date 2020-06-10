@@ -141,14 +141,12 @@ class MyDBControllerMySQL
         return false;
     }
 
-    function select($queryString, $category, $string) : array {
-        $searchString = mysqli_real_escape_string($this->db, $string);
-        $this->console_log($searchString);
+    function select($queryString, $category, $search) : array {
+        $searchString = mysqli_real_escape_string($this->db, $search);
+        $searchString = "%" . $searchString . "%";
         $return_array = array();
         $sql = $queryString .
-            " WHERE `{$this->column_names[$category]}`
-            LIKE '%?%'
-            ";
+            " WHERE `{$this->column_names[$category]}` LIKE ?";
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
         // Prepare the prepared statement

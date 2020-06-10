@@ -68,7 +68,6 @@
     $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
     $comment_table_fields = $my_db->query($comment_table_query, "Comment");
     $postal_data = $my_db->query($row_data_query, null);
-    $my_db->console_log($postal_data);
     // Set data to render in the view
     $column_data = setData($postal_data, $num_cols, $my_db);
 
@@ -147,7 +146,7 @@
     </style>
   </head>
   <body>
-  <h2>課題4_2へようこそ</h2>
+  <h2>課題4_3へようこそ</h2>
     <?php if(strlen($blue_success_text) > 0) {
       print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
     } elseif(strlen($red_error_text) > 0) {
@@ -218,7 +217,7 @@
                 print "<tr>" . "\n";
             }
             if ($x % $num_cols == 2) {
-                print "<td>" . $column_data[$x] . "</td>" . "\n";
+              print "<td><a href='update.php'>" . $column_data[$x] . "</a></td>" . "\n";
             }
             else {
                 print "<td>" . $column_data[$x] . "</td>" . "\n";

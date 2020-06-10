@@ -68,7 +68,6 @@
     $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
     $comment_table_fields = $my_db->query($comment_table_query, "Comment");
     $postal_data = $my_db->query($row_data_query, null);
-    $my_db->console_log($postal_data);
     // Set data to render in the view
     $column_data = setData($postal_data, $num_cols, $my_db);
 
