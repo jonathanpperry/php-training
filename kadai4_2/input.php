@@ -40,7 +40,7 @@
     $my_db->connect();
     $comment_table_query = 
       "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
-    $comment_table_fields = $my_db->query($comment_table_query, "mysqli_fetch_array_with_argument", "Comment");
+    $comment_table_fields = $my_db->query($comment_table_query, "Comment");
 
     $_SESSION["comment_table_fields"] = $comment_table_fields;
 

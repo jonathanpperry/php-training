@@ -9,7 +9,7 @@ class MyDBControllerMySQL
 
     var $db_host        = 'localhost';
     var $db_user        = 'root';
-    var $db_pass        = '';
+    var $db_pass        = 'M1ghty_cr@ft';
     var $db_database    = 'mc_kadai'; 
     var $db_port        = '3306';
     var $charset        = 'utf8mb4';
@@ -104,7 +104,6 @@ class MyDBControllerMySQL
     }
 
     function insert($tableName, $insertData) : bool {
-        // $insertData[0]
         $publicGroupCode = mysqli_real_escape_string($this->db, $insertData[0]);
         $zipCodeOld = mysqli_real_escape_string($this->db, $insertData[1]);
         $zipCode = mysqli_real_escape_string($this->db, $insertData[2]);
@@ -143,19 +142,27 @@ class MyDBControllerMySQL
     }
 
     function select($queryString, $category, $string) : array {
+        $searchString = mysqli_real_escape_string($this->db, $string);
+        $this->console_log($searchString);
         $return_array = array();
         $sql = $queryString .
-        " WHERE `{$this->column_names[$category]}`
-        LIKE '%$string%'
-        ";
-        $queryObject = mysqli_query($this->db, $sql);
-        while ($row = mysqli_fetch_array($queryObject)) {
-        array_push($return_array, $row);
+            " WHERE `{$this->column_names[$category]}`
+            LIKE '%$string%'
+            ";
+        // Create a prepared statement
+        $stmt = mysqli_stmt_init($this->db);
+        // Prepare the prepared statement
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+            echo "SQL statement failed";
+        } else {
+            mysqli_stmt_bind_param($stmt, "s", $searchString);
+            // Run parameters inside database
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            while($row = mysqli_fetch_assoc($result)) {
+                array_push($return_array, $row);
+            }
         }
-        $this->console_log("sql is ". $sql);
-        $this->console_log($return_array);
-        /* free result set */
-        mysqli_free_result($queryObject);
         return $return_array;
     }
 }

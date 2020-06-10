@@ -30,7 +30,7 @@
 
     // Get search string if it exists
     $search_category = $_POST['search_category'];
-    $search_string = $_POST['catsearch'];
+    $search_string = htmlentities($_POST['catsearch']);
     
     // Set input bool to not display errors at first
     $_SESSION["input_hajimete"] = true;
@@ -147,7 +147,7 @@
     </style>
   </head>
   <body>
-  <h2>課題4_3へようこそ</h2>
+  <h2>課題4_2へようこそ</h2>
     <?php if(strlen($blue_success_text) > 0) {
       print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
     } elseif(strlen($red_error_text) > 0) {
@@ -167,34 +167,41 @@
       <input type="search" name="catsearch" value="<?php print htmlspecialchars($search_string) ?>">
       <input type="submit">
     </form>
-    <h3>検索結果</h3>
-    <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
-      <tr>
-      <?php
-          foreach($comment_table_fields as $title_text) {
-            print "<th>" . $title_text . "</th>" . "\n";
-          }
+    <?php if(strlen($search_string) > 0): ?>
+        <h3>検索結果</h3>
+        <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
+            <tr>
+            <?php
+                foreach($comment_table_fields as $title_text) {
+                print "<th>" . $title_text . "</th>" . "\n";
+                }
+            ?>
+            </tr>
+            <br />
+            <?php
+            $count = count($search_data);
+            for ($x = 0; $x < $count; $x++) {
+                if ($x % $num_cols == 0) {
+                print "<tr>" . "\n";
+                }
+                if ($x % $num_cols == 2) {
+                print "<td>" . $search_data[$x] . "</td>" . "\n";
+                }
+                else {
+                print "<td>" . $search_data[$x] . "</td>" . "\n";
+                }
+                if ($x % $num_cols == ($my_db->num_rows-1)) {
+                print "</tr>" . "\n";
+                }
+            }
         ?>
-      </tr>
-      <br />
-      <?php
-        $count = count($search_data);
-        for ($x = 0; $x < $count; $x++) {
-          if ($x % $num_cols == 0) {
-            print "<tr>" . "\n";
-          }
-          if ($x % $num_cols == 2) {
-            print "<td>" . $search_data[$x] . "</td>" . "\n";
-          }
-          else {
-            print "<td>" . $search_data[$x] . "</td>" . "\n";
-          }
-          if ($x % $num_cols == ($my_db->num_rows-1)) {
-            print "</tr>" . "\n";
-          }
-        }
-      ?>
-    </table>
+        </table>
+        <?php if(count($search_data) == 0): ?>
+                <p>このクエリに一致する結果はありません</p>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <h3>全体リスト</h3>
 
     <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
       <tr>
@@ -207,18 +214,18 @@
       <br />
       <?php
         for ($x = 0; $x < count($column_data); $x++) {
-          if ($x % $num_cols == 0) {
-            print "<tr>" . "\n";
-          }
-          if ($x % $num_cols == 2) {
-            print "<td><a href='update.php'>" . $column_data[$x] . "</a></td>" . "\n";
-          }
-          else {
-            print "<td>" . $column_data[$x] . "</td>" . "\n";
-          }
-          if ($x % $num_cols == ($my_db->num_rows-1)) {
-            print "</tr>" . "\n";
-          }
+            if ($x % $num_cols == 0) {
+                print "<tr>" . "\n";
+            }
+            if ($x % $num_cols == 2) {
+                print "<td><a href='update.php'>" . $column_data[$x] . "</a></td>" . "\n";
+            }
+            else {
+                print "<td>" . $column_data[$x] . "</td>" . "\n";
+            }
+            if ($x % $num_cols == ($my_db->num_rows-1)) {
+                print "</tr>" . "\n";
+            }
         }
       ?>
     </table>
