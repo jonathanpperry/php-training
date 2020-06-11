@@ -4,23 +4,23 @@
     // Start the session
     session_start();
 
-  function clear_session_fields() {
-    $_SESSION["submission_data"][0] = null;
-    $_SESSION["submission_data"][1] = null;
-    $_SESSION["submission_data"][2] = null;
-    $_SESSION["submission_data"][3] = null;
-    $_SESSION["submission_data"][4] = null;
-    $_SESSION["submission_data"][5] = null;
-    $_SESSION["submission_data"][6] = null;
-    $_SESSION["submission_data"][7] = null;
-    $_SESSION["submission_data"][8] = null;
-    $_SESSION["submission_data"][9] = null;
-    $_SESSION["submission_data"][10] = null;
-    $_SESSION["submission_data"][11] = null;
-    $_SESSION["submission_data"][12] = null;
-    $_SESSION["submission_data"][13] = null;
-    $_SESSION["submission_data"][14] = null;
-  }
+    function clear_session_fields() {
+        $_SESSION["submission_data"][0] = null;
+        $_SESSION["submission_data"][1] = null;
+        $_SESSION["submission_data"][2] = null;
+        $_SESSION["submission_data"][3] = null;
+        $_SESSION["submission_data"][4] = null;
+        $_SESSION["submission_data"][5] = null;
+        $_SESSION["submission_data"][6] = null;
+        $_SESSION["submission_data"][7] = null;
+        $_SESSION["submission_data"][8] = null;
+        $_SESSION["submission_data"][9] = null;
+        $_SESSION["submission_data"][10] = null;
+        $_SESSION["submission_data"][11] = null;
+        $_SESSION["submission_data"][12] = null;
+        $_SESSION["submission_data"][13] = null;
+        $_SESSION["submission_data"][14] = null;
+    }
 
     //declare arrays for saving properties
     $all_property = array();
@@ -30,7 +30,7 @@
 
     // Get search string if it exists
     $search_category = $_POST['search_category'];
-    $search_string = htmlentities($_POST['catsearch']);
+    $search_string = $_POST['catsearch'];
     
     // Set input bool to not display errors at first
     $_SESSION["input_hajimete"] = true;
@@ -62,13 +62,22 @@
         $_SESSION["submitted"] = false;
     }
 
-    $comment_table_query = 
-      "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
+    // Set if coming from submission
+    if ($_SESSION["updated"] == true) {
+        if ($_SESSION["update_success"] == true) {
+            $blue_success_text = "1行更新完了しました";
+        } else {
+            $red_error_text = "更新失敗しました(SQLerror文)";
+        }
+        $_SESSION["updated"] = false;
+    }
+  
+
+    $comment_table_query = "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
     /* Query for the rows data */
     $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
     $comment_table_fields = $my_db->query($comment_table_query, "Comment");
     $postal_data = $my_db->query($row_data_query, null);
-    $my_db->console_log($postal_data);
     // Set data to render in the view
     $column_data = setData($postal_data, $num_cols, $my_db);
 
@@ -76,6 +85,9 @@
         $search_data = $my_db->select($row_data_query, $search_category, $search_string);
         $search_data = setData($search_data, $num_cols, $my_db);
     }
+
+    // Reset the string back to a safe value after the literal value is searched for
+    $search_string = htmlentities($_POST['catsearch']);
 
     // Close database connection
     $my_db->close();
@@ -88,37 +100,37 @@
       for ($x = 0; $x < $num_rows; $x++) {
         for ($y = 0; $y < $num_cols; $y++) {
           if ($y == 9 || $y == 10 || $y == 11 || $y == 12) {
-            if ($postal_data[$x][$y] == 0) {
+            if ($postal_data[$x][$my_db->column_names[$y]] == 0) {
               array_push($column_data, "該当");
-            } elseif ($postal_data[$x][$y] == 1) {
+            } elseif ($postal_data[$x][$my_db->column_names[$y]] == 1) {
               array_push($column_data, "該当せず");
             } else {
               array_push($column_data, "不明");
             }
           } elseif ($y == 13) {
-            if ($postal_data[$x][$y] == 0) {
+            if ($postal_data[$x][$my_db->column_names[$y]] == 0) {
               array_push($column_data, "変更なし");
-            } elseif ($postal_data[$x][$y] == 1) {
+            } elseif ($postal_data[$x][$my_db->column_names[$y]] == 1) {
               array_push($column_data, "変更あり");
-            } elseif ($postal_data[$x][$y] == 2) {
+            } elseif ($postal_data[$x][$my_db->column_names[$y]] == 2) {
               array_push($column_data, "廃止(廃止データのみ使用)");
             } else {
               array_push($column_data, "不明");
             }
           } elseif ($y == 14) {
-            if ($postal_data[$x][$y] == 0) {
+            if ($postal_data[$x][$my_db->column_names[$y]] == 0) {
               array_push($column_data, "変更なし");
-            } elseif ($postal_data[$x][$y] == 1) {
+            } elseif ($postal_data[$x][$my_db->column_names[$y]] == 1) {
               array_push($column_data, "市政・区政・町政・分区・政令指定都市施行");
-            } elseif ($postal_data[$x][$y] == 2) {
+            } elseif ($postal_data[$x][$my_db->column_names[$y]] == 2) {
               array_push($column_data, "住居表示の実施");
-            } elseif ($postal_data[$x][$y] == 3) {
+            } elseif ($postal_data[$x][$my_db->column_names[$y]] == 3) {
               array_push($column_data, "区画整理");
-            } elseif ($postal_data[$x][$y] == 4) {
+            } elseif ($postal_data[$x][$my_db->column_names[$y]] == 4) {
               array_push($column_data, "郵便区調整等");
-            } elseif ($postal_data[$x][$y] == 5) {
+            } elseif ($postal_data[$x][$my_db->column_names[$y]] == 5) {
               array_push($column_data, "訂正");
-            } elseif ($postal_data[$x][$y] == 6) {
+            } elseif ($postal_data[$x][$my_db->column_names[$y]] == 6) {
               array_push($column_data, "廃止(廃止データのみ使用)");
             } else {
               array_push($column_data, "不明");
@@ -147,7 +159,7 @@
     </style>
   </head>
   <body>
-  <h2>課題4_2へようこそ</h2>
+  <h2>課題4_3へようこそ</h2>
     <?php if(strlen($blue_success_text) > 0) {
       print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
     } elseif(strlen($red_error_text) > 0) {
@@ -164,7 +176,7 @@
           </option>
         <?php } ?>
       </select>
-      <input type="search" name="catsearch" value="<?php print htmlspecialchars($search_string) ?>">
+      <input type="search" name="catsearch" value="<?php print $search_string ?>">
       <input type="submit">
     </form>
     <?php if(strlen($search_string) > 0): ?>
@@ -182,16 +194,11 @@
             $count = count($search_data);
             for ($x = 0; $x < $count; $x++) {
                 if ($x % $num_cols == 0) {
-                print "<tr>" . "\n";
+                  print "<tr>" . "\n";
                 }
-                if ($x % $num_cols == 2) {
                 print "<td>" . $search_data[$x] . "</td>" . "\n";
-                }
-                else {
-                print "<td>" . $search_data[$x] . "</td>" . "\n";
-                }
                 if ($x % $num_cols == ($my_db->num_rows-1)) {
-                print "</tr>" . "\n";
+                  print "</tr>" . "\n";
                 }
             }
         ?>
@@ -218,7 +225,7 @@
                 print "<tr>" . "\n";
             }
             if ($x % $num_cols == 2) {
-              print "<td><a href='update.php?public_group_code={$column_data[$x-2]}&zip_code_old={$column_data[$x-1]}&zip_code={$column_data[$x]}'>" . $column_data[$x] . "</a></td>" . "\n";
+                print "<td><a href='update.php?public_group_code={$column_data[$x-2]}&zip_code_old={$column_data[$x-1]}&zip_code={$column_data[$x]}'>" . $column_data[$x] . "</a></td>" . "\n";
             }
             else {
                 print "<td>" . $column_data[$x] . "</td>" . "\n";

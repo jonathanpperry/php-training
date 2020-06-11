@@ -62,6 +62,17 @@
         $_SESSION["submitted"] = false;
     }
 
+    // Set if coming from submission
+    if ($_SESSION["updated"] == true) {
+        if ($_SESSION["update_success"] == true) {
+            $blue_success_text = "1行更新完了しました";
+        } else {
+            $red_error_text = "更新失敗しました(SQLerror文)";
+        }
+        $_SESSION["updated"] = false;
+    }
+  
+
     $comment_table_query = "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
     /* Query for the rows data */
     $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
@@ -148,7 +159,7 @@
     </style>
   </head>
   <body>
-  <h2>課題4_2へようこそ</h2>
+  <h2>課題4_3へようこそ</h2>
     <?php if(strlen($blue_success_text) > 0) {
       print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
     } elseif(strlen($red_error_text) > 0) {

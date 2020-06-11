@@ -9,7 +9,7 @@ class MyDBControllerMySQL
 
     var $db_host        = 'localhost';
     var $db_user        = 'root';
-    var $db_pass        = 'M1ghty_cr@ft';
+    var $db_pass        = '';
     var $db_database    = 'mc_kadai'; 
     var $db_port        = '3306';
     var $charset        = 'utf8mb4';
@@ -168,7 +168,9 @@ class MyDBControllerMySQL
     function selectByZip($publicGroupCode, $zipCodeOld, $zipCode, $tableName) {
         $return_data = array();
         $sql = "SELECT * from $tableName WHERE 
-            
+            {$this->column_names[0]}=$publicGroupCode AND
+            {$this->column_names[1]}=$zipCodeOld AND
+            {$this->column_names[2]}=$zipCode
         ";
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
@@ -181,11 +183,59 @@ class MyDBControllerMySQL
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
             while($row = mysqli_fetch_assoc($result)) {
-                array_push($return_array, $row);
+                array_push($return_data, $row);
             }
         }
-        return $return_array;
+        return $return_data;
+    }
 
+    function update($tableName, $updateData) {
+        $publicGroupCode = $updateData[0];
+        $zipCodeOld = $updateData[1];
+        $zipCode = $updateData[2];
+        $prefectureKana = $updateData[3];
+        $cityKana = $updateData[4];
+        $townKana = $updateData[5];
+        $prefecture = $updateData[6];
+        $city = $updateData[7];
+        $town = $updateData[8];
+        $townDoubleZipCode = $updateData[9];
+        $townMultiAddress = $updateData[10];
+        $townAttachDistrict = $updateData[11];
+        $zipCodeMultiTown = $updateData[12];
+        $updateCheck = $updateData[13];
+        $updateReason = $updateData[14];
+    
+        $sql = "UPDATE " . $tableName . " SET 
+            {$this->column_names[3]} = '$prefectureKana',
+            {$this->column_names[4]} = '$cityKana',
+            {$this->column_names[5]} = '$townKana',
+            {$this->column_names[6]} = '$prefecture',
+            {$this->column_names[7]} = '$city',
+            {$this->column_names[8]} = '$town',
+            {$this->column_names[9]} = '$townDoubleZipCode',
+            {$this->column_names[10]} = '$townMultiAddress',
+            {$this->column_names[11]} = '$townAttachDistrict',
+            {$this->column_names[12]} = '$zipCodeMultiTown',
+            {$this->column_names[13]} = '$updateCheck',
+            {$this->column_names[14]} = '$updateReason'
+            WHERE {$this->column_names[0]} = $publicGroupCode AND
+            {$this->column_names[1]} = $zipCodeOld AND
+            {$this->column_names[2]} = $zipCode";
+        // Create a prepared statement
+        $stmt = mysqli_stmt_init($this->db);
+        // Prepare the prepared statement
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+            echo "SQL error";
+            return false;
+        } else {
+            mysqli_stmt_bind_param($stmt, "iiissssssiiiiii", $publicGroupCode, $zipCodeOld, $zipCode,
+                $prefectureKana, $cityKana, $townKana, $prefecture, $city, $town, $townDoubleZipCode,
+                $townMultiAddress, $townAttachDistrict, $zipCodeMultiTown, $updateCheck, $updateReason
+            );
+            return mysqli_stmt_execute($stmt);
+        }
+        return false;
     }
 }
 ?>

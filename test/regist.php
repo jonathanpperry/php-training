@@ -43,37 +43,37 @@
 
     // Check for the submission data to set blue success text
     if ($_SESSION["submitting"] == true) {
-      $my_db = new MyDBControllerMySQL();
-      // Connect again after insert if it occurred
-      $my_db->connect();
+        $my_db = new MyDBControllerMySQL();
+        // Connect again after insert if it occurred
+        $my_db->connect();
 
-      $table_name = "kadai_jonathan_ziplist";
-      $comment_table_fields = $_SESSION["comment_table_fields"];
+        $table_name = "kadai_jonathan_ziplist";
+        $comment_table_fields = $_SESSION["comment_table_fields"];
 
-      $validation = new Validation();
-      $return_object = $validation->checkForErrors($submission_data, $comment_table_fields);
-      $my_db->console_log("The return object is : " . $return_object);
-      if (count($return_object[0]) > 0 || count($return_object[1]) > 0) {
-        // header("Location: input.php");
-        // exit();
-      }
+        $validation = new Validation();
+        $return_object = $validation->checkForErrors($submission_data, $comment_table_fields);
+        $my_db->console_log("The return object is : " . $return_object);
+        if (count($return_object[0]) > 0 || count($return_object[1]) > 0) {
+            header("Location: input.php");
+            exit();
+        }
 
-      // Submit the data
-      $data_inserted = $my_db->insert($table_name, $submission_data);
-      if ($data_inserted == true) {
-        $_SESSION["submit_success"] = true;
-      } else {
-        $_SESSION["submit_success"] = false;
-      }
-      $_SESSION["submission_data"] = null;
-      $_SESSION["submitting"] = false;
-      clear_session_fields();
-      // Set submitted value to use in index page
-      $_SESSION["submitted"] = true;
-      // Set input bool to not display errors at first
-      $_SESSION["input_hajimete"] = true;
-      // Redirect to the list page
-      header("Location: index.php");
-      exit();
+        // Submit the data
+        $data_inserted = $my_db->insert($table_name, $submission_data);
+        if ($data_inserted == true) {
+            $_SESSION["submit_success"] = true;
+        } else {
+            $_SESSION["submit_success"] = false;
+        }
+        $_SESSION["submission_data"] = null;
+        $_SESSION["submitting"] = false;
+        clear_session_fields();
+        // Set submitted value to use in index page
+        $_SESSION["submitted"] = true;
+        // Set input bool to not display errors at first
+        $_SESSION["input_hajimete"] = true;
+        // Redirect to the list page
+        header("Location: index.php");
+        exit();
     }
 ?>
