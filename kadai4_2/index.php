@@ -30,7 +30,7 @@
 
     // Get search string if it exists
     $search_category = $_POST['search_category'];
-    $search_string = htmlentities($_POST['catsearch']);
+    $search_string = $_POST['catsearch'];
     
     // Set input bool to not display errors at first
     $_SESSION["input_hajimete"] = true;
@@ -47,7 +47,7 @@
     $my_db = new MyDBControllerMySQL();
     // Connect again after insert if it occurred
     $my_db->connect();
-
+    $my_db->console_log($search_string);
     // Text to display regarding query
     $blue_success_text = '';
     $red_error_text = '';
@@ -75,6 +75,9 @@
         $search_data = $my_db->select($row_data_query, $search_category, $search_string);
         $search_data = setData($search_data, $num_cols, $my_db);
     }
+
+    // Reset the string back to a safe value after the literal value is searched for
+    $search_string = htmlentities($_POST['catsearch']);
 
     // Close database connection
     $my_db->close();
@@ -146,7 +149,7 @@
     </style>
   </head>
   <body>
-  <h2>課題4_3へようこそ</h2>
+  <h2>課題4_2へようこそ</h2>
     <?php if(strlen($blue_success_text) > 0) {
       print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
     } elseif(strlen($red_error_text) > 0) {
@@ -163,7 +166,7 @@
           </option>
         <?php } ?>
       </select>
-      <input type="search" name="catsearch" value="<?php print htmlspecialchars($search_string) ?>">
+      <input type="search" name="catsearch" value="<?php print $search_string ?>">
       <input type="submit">
     </form>
     <?php if(strlen($search_string) > 0): ?>
@@ -217,7 +220,7 @@
                 print "<tr>" . "\n";
             }
             if ($x % $num_cols == 2) {
-              print "<td><a href='update.php'>" . $column_data[$x] . "</a></td>" . "\n";
+              print "<td>" . $column_data[$x] . "</td>" . "\n";
             }
             else {
                 print "<td>" . $column_data[$x] . "</td>" . "\n";

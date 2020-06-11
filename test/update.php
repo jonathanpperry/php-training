@@ -1,3 +1,20 @@
+<?php
+    require_once '../lib/MyDBControllerMySQL.class.php';
+
+    // Start the session
+    session_start();
+
+    $publicGroupCode = $_GET['public_group_code'];
+    $zipCodeOld = $_GET['zip_code_old'];
+    $zipCode = $_GET['zip_code'];
+
+    $my_db = new MyDBControllerMySQL();
+    // Connect again after insert if it occurred
+    $my_db->connect();
+
+    $my_db->console_log($publicGroupCode);
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
   <head>
