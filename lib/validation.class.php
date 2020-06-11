@@ -170,7 +170,8 @@ class Validation
         } elseif (!is_numeric($updateReason)) {
             array_push($this->format_errors, $comment_table_fields[14]);
         }
-        $this->console_log($this->missing_errors);
+        $this->console_log("Missing errors is: " . json_encode($this->missing_errors));
+        $this->console_log("Format errors is: " . json_encode($this->format_errors));
         return array($this->missing_errors, $this->format_errors);
     }
 

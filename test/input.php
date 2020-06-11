@@ -22,12 +22,6 @@
         $_SESSION["update_reason"] = null;    
     }
 
-    function console_log( $data ) {
-        echo '<script>';
-        echo 'console.log('. json_encode( $data ) .')';
-        echo '</script>';
-    }
-
     if (!$_SESSION["in_progress"]) {
         $_SESSION["in_progress"] = true;
     }
@@ -44,12 +38,15 @@
 
     $_SESSION["comment_table_fields"] = $comment_table_fields;
 
-    // Close database connection
-    $my_db->close();
-
     // Get errors from validation class
     $missing_errors = $_SESSION["error_data"][0];
     $format_errors = $_SESSION["error_data"][1];
+    
+    $my_db->console_log($missing_errors);
+    $my_db->console_log($format_errors);
+
+    // Close database connection
+    $my_db->close();
 
     // Set data from session if it exists to display previous values
     $publicGroupCode = $_SESSION["submission_data"][0];
@@ -62,7 +59,11 @@
     $my_db->console_log($prefecture);
     $city = $_SESSION["submission_data"][7];
     $town = $_SESSION["submission_data"][8];
-    $townDoubleZipCode = $_SESSION["submission_data"][9];
+    if ($townDoubleZipCode) {
+        $townDoubleZipCode = $_SESSION["submission_data"][9];
+    } else {
+        $townDoubleZipCode = 0;
+    }
     $townMultiAddress = $_SESSION["submission_data"][10];
     $townAttachDistrict = $_SESSION["submission_data"][11];
     $zipCodeMultiTown = $_SESSION["submission_data"][12];
@@ -146,20 +147,20 @@
         <?php echo $comment_table_fields[8] ?>: <input name="town" id="town" value="<?php print htmlspecialchars($town, ENT_COMPAT, 'utf-8'); ?>">
         <br />
         <?php echo $comment_table_fields[9] ?><select name="town_double_zip_code" id="town_double_zip_code" size="1">
-            <option value="1" <?php if($townDoubleZipCode == 1) print 'selected' ?>> 該当</option>
-            <option value="0" <?php if($townDoubleZipCode == 0) print 'selected' ?>> 該当せず</option>
+            <option value="0" <?php if($townDoubleZipCode == 0) print 'selected' ?>> 該当</option>
+            <option value="1" <?php if($townDoubleZipCode == 1) print 'selected' ?>> 該当せず</option>
         </select><br />
         <?php echo $comment_table_fields[10] ?><select name="town_multi_address" id="town_multi_address" size="1">
-            <option value="1" <?php if($townMultiAddress == 1) print 'selected' ?>> 該当</option>
-            <option value="0" <?php if($townMultiAddress == 0) print 'selected' ?>> 該当せず</option>
+            <option value="0" <?php if($townMultiAddress == 0) print 'selected' ?>> 該当</option>
+            <option value="1" <?php if($townMultiAddress == 1) print 'selected' ?>> 該当せず</option>
         </select><br />
         <?php echo $comment_table_fields[11] ?><select name="town_attach_district" id="town_attach_district" size="1">
-            <option value="1" <?php if($townAttachDistrict == 1) print 'selected' ?>> 該当</option>
-            <option value="0" <?php if($townAttachDistrict == 0) print 'selected' ?>> 該当せず</option>
+            <option value="0" <?php if($townAttachDistrict == 0) print 'selected' ?>> 該当</option>
+            <option value="1" <?php if($townAttachDistrict == 1) print 'selected' ?>> 該当せず</option>
         </select><br />
             <?php echo $comment_table_fields[12] ?><select name="zip_code_multi_town" id="zip_code_multi_town" size="1">
-            <option value="1" <?php if($zipCodeMultiTown == 1) print 'selected' ?>> 該当</option>
-            <option value="0" <?php if($zipCodeMultiTown == 0) print 'selected' ?>> 該当せず</option>
+            <option value="0" <?php if($zipCodeMultiTown == 0) print 'selected' ?>> 該当</option>
+            <option value="1" <?php if($zipCodeMultiTown == 1) print 'selected' ?>> 該当せず</option>
         </select><br />
         <?php echo $comment_table_fields[13] ?><select name="update_check" id="update_check" size="1">
             <option value="0" <?php if($updateCheck == 0) print 'selected' ?>> 変更なし</option>

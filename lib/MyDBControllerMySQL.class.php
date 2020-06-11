@@ -80,7 +80,7 @@ class MyDBControllerMySQL
     }
 
     // SQL実行
-    function query($queryString, $fieldName) {
+    function query($queryString, $fieldName) : array {
         $return_array = array();
 
         // Create a prepared statement
@@ -93,32 +93,33 @@ class MyDBControllerMySQL
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
             while($row = mysqli_fetch_assoc($result)) {
-                if ($fieldName) {
+                if ($fieldName != null) {
                     array_push($return_array, $row[$fieldName]);
                 } else {
                     array_push($return_array, $row);
                 }
             }
+            return $return_array;
         }
-        return $return_array;
+        return null;
     }
 
     function insert($tableName, $insertData) : bool {
-        $publicGroupCode = mysqli_real_escape_string($this->db, $insertData[0]);
-        $zipCodeOld = mysqli_real_escape_string($this->db, $insertData[1]);
-        $zipCode = mysqli_real_escape_string($this->db, $insertData[2]);
-        $prefectureKana = mysqli_real_escape_string($this->db, $insertData[3]);
-        $cityKana = mysqli_real_escape_string($this->db, $insertData[4]);
-        $townKana = mysqli_real_escape_string($this->db, $insertData[5]);
-        $prefecture = mysqli_real_escape_string($this->db, $insertData[6]);
-        $city = mysqli_real_escape_string($this->db, $insertData[7]);
-        $town = mysqli_real_escape_string($this->db, $insertData[8]);
-        $townDoubleZipCode = mysqli_real_escape_string($this->db, $insertData[9]);
-        $townMultiAddress = mysqli_real_escape_string($this->db, $insertData[10]);
-        $townAttachDistrict = mysqli_real_escape_string($this->db, $insertData[11]);
-        $zipCodeMultiTown = mysqli_real_escape_string($this->db, $insertData[12]);
-        $updateCheck = mysqli_real_escape_string($this->db, $insertData[13]);
-        $updateReason = mysqli_real_escape_string($this->db, $insertData[14]);
+        $publicGroupCode = $insertData[0];
+        $zipCodeOld = $insertData[1];
+        $zipCode = $insertData[2];
+        $prefectureKana = $insertData[3];
+        $cityKana = $insertData[4];
+        $townKana = $insertData[5];
+        $prefecture = $insertData[6];
+        $city = $insertData[7];
+        $town = $insertData[8];
+        $townDoubleZipCode = $insertData[9];
+        $townMultiAddress = $insertData[10];
+        $townAttachDistrict = $insertData[11];
+        $zipCodeMultiTown = $insertData[12];
+        $updateCheck = $insertData[13];
+        $updateReason = $insertData[14];
 
         $sql = "INSERT INTO " . $tableName . "(`{$this->column_names[0]}`, `{$this->column_names[1]}`,`{$this->column_names[2]}`,`{$this->column_names[3]}`,`{$this->column_names[4]}`,
             `{$this->column_names[5]}`,`{$this->column_names[6]}`,`{$this->column_names[7]}`,`{$this->column_names[8]}`,`{$this->column_names[9]}`,
@@ -164,24 +165,26 @@ class MyDBControllerMySQL
         return $return_array;
     }
 
-    function selectByZip($publicGroupCode, $zipCodeOld, $zipCode) {
-        // $return_data = array();
-        // $sql = "SELECT * from "
-        // // Create a prepared statement
-        // $stmt = mysqli_stmt_init($this->db);
-        // // Prepare the prepared statement
-        // if (!mysqli_stmt_prepare($stmt, $sql)) {
-        //     echo "SQL statement failed";
-        // } else {
-        //     mysqli_stmt_bind_param($stmt, "s", $searchString);
-        //     // Run parameters inside database
-        //     mysqli_stmt_execute($stmt);
-        //     $result = mysqli_stmt_get_result($stmt);
-        //     while($row = mysqli_fetch_assoc($result)) {
-        //         array_push($return_array, $row);
-        //     }
-        // }
-        // return $return_array;
+    function selectByZip($publicGroupCode, $zipCodeOld, $zipCode, $tableName) {
+        $return_data = array();
+        $sql = "SELECT * from $tableName WHERE 
+            
+        ";
+        // Create a prepared statement
+        $stmt = mysqli_stmt_init($this->db);
+        // Prepare the prepared statement
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+            echo "SQL statement failed";
+        } else {
+            mysqli_stmt_bind_param($stmt, "s", $searchString);
+            // Run parameters inside database
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            while($row = mysqli_fetch_assoc($result)) {
+                array_push($return_array, $row);
+            }
+        }
+        return $return_array;
 
     }
 }

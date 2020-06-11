@@ -8,6 +8,9 @@
     $submission_data = array();
 
     $my_db = new MyDBControllerMySQL();
+    $my_db->connect();
+    $column_names = $my_db->column_names;
+    $my_db->close();
 
     // Set value for input first time
     $_SESSION["input_hajimete"] = false;
@@ -41,8 +44,6 @@
         $hasErrors = true;
     }
 
-    $my_db->console_log($return_object);
-
     if ($hasErrors == true) {
         // Direct user to confirm page
         header("Location: input.php");
@@ -65,7 +66,7 @@
                     for($x = 0; $x < sizeof($comment_table_fields); $x++) {
                 ?>
                 <tr>
-                <input type="hidden" name="<?php echo htmlentities($_SESSION["column_names"][$x]); ?>" value="<?php echo htmlentities($submission_data[$x]); ?>" readonly />
+                    <input type="hidden" name="<?php echo "{$column_names[$x]}" ?>" value="<?php echo htmlentities($submission_data[$x]); ?>" readonly />
                     <?php
                     print "<td width='200'>" . htmlspecialchars($comment_table_fields[$x], ENT_COMPAT, 'utf-8') . "</td>";
                     if ($x < 9) {

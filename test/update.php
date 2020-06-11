@@ -4,6 +4,8 @@
     // Start the session
     session_start();
 
+    $table_name = "kadai_jonathan_ziplist";
+
     $publicGroupCode = $_GET['public_group_code'];
     $zipCodeOld = $_GET['zip_code_old'];
     $zipCode = $_GET['zip_code'];
@@ -13,6 +15,10 @@
     $my_db->connect();
 
     $my_db->console_log($publicGroupCode);
+
+    // Close database connection
+    $my_db->close();
+
 ?>
 
 <!DOCTYPE html>
