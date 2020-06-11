@@ -46,12 +46,11 @@
         <form action="update_confirm.php" method="POST">
             <input type="hidden" name="old_public_group_code" value="<?php print htmlspecialchars($publicGroupCode, ENT_COMPAT, 'utf-8'); ?>">
             <input type="hidden" name="old_zip_code_old" value="<?php print htmlspecialchars($zipCodeOld, ENT_COMPAT, 'utf-8'); ?>">
-            <input type="hidden" name="old_zip_code" value="<?php print htmlspecialchars($zipCode, ENT_COMPAT, 'utf-8'); ?>">
             <?php echo $comment_table_fields[0] ?>(数字): <input name="public_group_code" id="public_group_code" value="<?php print htmlspecialchars($publicGroupCode, ENT_COMPAT, 'utf-8'); ?>">
             <br />
             <?php echo $comment_table_fields[1] ?>(数字): <input name="zip_code_old" id="zip_code_old" value="<?php print htmlspecialchars($zipCodeOld, ENT_COMPAT, 'utf-8'); ?>">
             <br />
-            <?php echo $comment_table_fields[2] ?>(数字): <input name="zip_code" id="zip_code" value="<?php print htmlspecialchars($zipCode, ENT_COMPAT, 'utf-8'); ?>">
+            <?php echo $comment_table_fields[2] ?>(数字): <input name="zip_code" id="zip_code" value="<?php print htmlspecialchars($zipCode, ENT_COMPAT, 'utf-8'); ?>" readonly>
             <br />
             <!-- Text inputs -->
             <?php echo $comment_table_fields[3] ?>: <input name="prefecture_kana" id="prefecture_kana" value="<?php print htmlspecialchars($postal_row["prefecture_kana"], ENT_COMPAT, 'utf-8'); ?>">

@@ -41,8 +41,7 @@
     array_push($submission_data, $_POST["update_reason"]);
     $oldPublicGroupCode = $_POST['old_public_group_code'];
     $oldZipCodeOld = $_POST['old_zip_code_old'];
-    $oldZipCode = $_POST['old_zip_code'];
-    $oldZipArray = array($oldPublicGroupCode, $oldZipCodeOld, $oldZipCode);
+    $oldZipArray = array($oldPublicGroupCode, $oldZipCodeOld);
 
     // Check for the submission data to set blue success text
     if ($_SESSION["updating"] == true) {
@@ -63,7 +62,7 @@
         }
 
         // Submit the data
-        $data_updated = $my_db->update($table_name, $submission_data);
+        $data_updated = $my_db->update($table_name, $submission_data, $oldZipArray);
         if ($data_updated == true) {
             $_SESSION["update_success"] = true;
         } else {

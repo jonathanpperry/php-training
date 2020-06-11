@@ -35,13 +35,13 @@
     array_push($submission_data, $_POST['update_reason']);
     $oldPublicGroupCode = $_POST['old_public_group_code'];
     $oldZipCodeOld = $_POST['old_zip_code_old'];
-    $oldZipCode = $_POST['old_zip_code'];
 
     $_SESSION["submission_data"] = $submission_data;
     $comment_table_fields = $_SESSION["comment_table_fields"];
     $_SESSION["updating"] = true;
 
     $validation = new Validation();
+    $my_db->console_log($submission_data);
     $return_object = $validation->checkForErrors($submission_data, $comment_table_fields);
     $_SESSION["error_data"] = $return_object;
     if (count($return_object[0]) > 0 || count($return_object[1]) > 0) {
@@ -50,7 +50,7 @@
 
     if ($hasErrors == true) {
         // Direct user to confirm page
-        header("Location: input.php");
+        header("Location: update.php");
         exit();
     }
 ?>
@@ -66,7 +66,6 @@
         <form action="update_regist.php" method="POST">
             <input type="hidden" name="old_public_group_code" value="<?php print htmlspecialchars($oldPublicGroupCode, ENT_COMPAT, 'utf-8'); ?>">
             <input type="hidden" name="old_zip_code_old" value="<?php print htmlspecialchars($oldZipCodeOld, ENT_COMPAT, 'utf-8'); ?>">
-            <input type="hidden" name="old_zip_code" value="<?php print htmlspecialchars($oldZipCode, ENT_COMPAT, 'utf-8'); ?>">
             <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
             <?php
                 for($x = 0; $x < sizeof($comment_table_fields); $x++) {

@@ -9,7 +9,7 @@ class MyDBControllerMySQL
 
     var $db_host        = 'localhost';
     var $db_user        = 'root';
-    var $db_pass        = '';
+    var $db_pass        = 'M1ghty_cr@ft';
     var $db_database    = 'mc_kadai'; 
     var $db_port        = '3306';
     var $charset        = 'utf8mb4';
@@ -189,7 +189,7 @@ class MyDBControllerMySQL
         return $return_data;
     }
 
-    function update($tableName, $updateData) {
+    function update($tableName, $updateData, $zipArray) {
         $publicGroupCode = $updateData[0];
         $zipCodeOld = $updateData[1];
         $zipCode = $updateData[2];
@@ -205,8 +205,12 @@ class MyDBControllerMySQL
         $zipCodeMultiTown = $updateData[12];
         $updateCheck = $updateData[13];
         $updateReason = $updateData[14];
+        $oldPublicGroupCode = $zipArray[0];
+        $oldZipCodeOld = $zipArray[1];
     
         $sql = "UPDATE " . $tableName . " SET 
+            {$this->column_names[0]} = '$publicGroupCode',
+            {$this->column_names[1]} = '$zipCodeOld',
             {$this->column_names[3]} = '$prefectureKana',
             {$this->column_names[4]} = '$cityKana',
             {$this->column_names[5]} = '$townKana',
@@ -219,8 +223,8 @@ class MyDBControllerMySQL
             {$this->column_names[12]} = '$zipCodeMultiTown',
             {$this->column_names[13]} = '$updateCheck',
             {$this->column_names[14]} = '$updateReason'
-            WHERE {$this->column_names[0]} = $publicGroupCode AND
-            {$this->column_names[1]} = $zipCodeOld AND
+            WHERE {$this->column_names[0]} = $oldPublicGroupCode AND
+            {$this->column_names[1]} = $oldZipCodeOld AND
             {$this->column_names[2]} = $zipCode";
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
