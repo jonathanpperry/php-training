@@ -11,9 +11,10 @@
 
     // The data will be in either the GET request or the session
     if ($_GET['public_group_code']) {
-        $run_select_query = true;
         $publicGroupCode = $_GET['public_group_code'];
-        $_SESSION["input_hajimete"] = false;
+        // Setting these values here isn't the best but works for now
+        $_SESSION["error_data"] == null;
+        $run_select_query = true;
     }
     if ($_GET['zip_code_old']) {
         $zipCodeOld = $_GET['zip_code_old'];
@@ -98,7 +99,7 @@
         <!-- Loop through and display errors at the top -->
         <?php
         // Format
-        if (count($format_errors) != 0 && $_SESSION["input_hajimete"] == false) {
+        if (count($format_errors) != 0 && $_SESSION["update_hajimete"] == false) {
             print "<span class='error'>";
             $count = count($format_errors);
             for ($x=0; $x < $count; $x++) {
@@ -112,7 +113,7 @@
             print "</span><br />";
         }
         // Missing errors
-        if (count($missing_errors != 0) && $_SESSION["input_hajimete"] == false) {
+        if (count($missing_errors != 0) && $_SESSION["update_hajimete"] == false) {
             print "<span class='error'>";
             $count = count($missing_errors);
             for ($x=0; $x < $count; $x++) {

@@ -8,10 +8,15 @@
     $submission_data = array();
 
     $my_db = new MyDBControllerMySQL();
+
+    $my_db->connect();
     $column_names = $my_db->column_names;
 
-    // Set value for input first time
-    $_SESSION["input_hajimete"] = false;
+    $comment_table_query = "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
+    $comment_table_fields = $my_db->query($comment_table_query, "Comment");
+
+    // Set value for update first time
+    $_SESSION["update_hajimete"] = false;
     // Error boolean
     $hasErrors = false;
 
@@ -34,8 +39,9 @@
     $oldPublicGroupCode = $_POST['old_public_group_code'];
     $oldZipCodeOld = $_POST['old_zip_code_old'];
     $_SESSION["submission_data"] = $submission_data;
-    $comment_table_fields = $_SESSION["comment_table_fields"];
     $_SESSION["updating"] = true;
+
+    $my_db->close();
 
     $validation = new Validation();
     $my_db->console_log($submission_data);
@@ -66,7 +72,7 @@
             <input type="hidden" name="old_zip_code_old" value="<?php print htmlspecialchars($oldZipCodeOld, ENT_COMPAT, 'utf-8'); ?>">
             <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
             <?php
-                for($x = 0; $x < sizeof($comment_table_fields); $x++) {
+                for($x = 0; $x < sizeof($column_names); $x++) {
             ?>
             <tr>
                 <input type="hidden" name="<?php echo "{$column_names[$x]}" ?>" value="<?php echo htmlentities($submission_data[$x]); ?>" readonly />

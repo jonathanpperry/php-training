@@ -63,6 +63,7 @@
 
         // Submit the data
         $data_updated = $my_db->update($table_name, $submission_data, $oldZipArray);
+        $my_db->console_log($data_updated);
         if ($data_updated == true) {
             $_SESSION["update_success"] = true;
         } else {

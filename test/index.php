@@ -160,7 +160,7 @@
     </style>
   </head>
   <body>
-  <h2>課題4_3へようこそ</h2>
+  <h2>課題4_4へようこそ</h2>
     <?php if(strlen($blue_success_text) > 0) {
       print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
     } elseif(strlen($red_error_text) > 0) {

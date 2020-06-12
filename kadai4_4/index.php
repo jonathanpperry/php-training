@@ -160,7 +160,7 @@
     </style>
   </head>
   <body>
-  <h2>課題4_4へようこそ</h2>
+  <h2>課題4_3へようこそ</h2>
     <?php if(strlen($blue_success_text) > 0) {
       print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
     } elseif(strlen($red_error_text) > 0) {
@@ -241,22 +241,7 @@
     </table>
     <form action="input.php" method="GET">
       <input type="submit" name="submit" value="入力へ">
-      <button onclick="document.getElementById('id01').style.display='block'">Open Modal</button>
     </form>
-    <div id="id01" class="modal">
-      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Delete Selected">&times;</span>
-      <form class="modal-content" action="/action_page.php">
-        <div class="container">
-          <h1>Delete Account</h1>
-          <p>Are you sure you want to delete your account?</p>
-
-          <div class="clearfix">
-            <button type="button" class="cancelbtn">Cancel</button>
-            <button type="button" class="deletebtn">Delete</button>
-          </div>
-        </div>
-      </form>
-    </div>
 
   </body>
 </html>
