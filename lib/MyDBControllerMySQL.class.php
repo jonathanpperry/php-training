@@ -87,7 +87,7 @@ class MyDBControllerMySQL
         $stmt = mysqli_stmt_init($this->db);
         // Prepare the prepared statement
         if (!mysqli_stmt_prepare($stmt, $queryString)) {
-            echo "SQL statement failed";
+            echo "Query SQL statement failed";
         } else {
             // Run parameters inside database
             mysqli_stmt_execute($stmt);
@@ -152,7 +152,7 @@ class MyDBControllerMySQL
         $stmt = mysqli_stmt_init($this->db);
         // Prepare the prepared statement
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            echo "SQL statement failed";
+            echo "Select SQL statement failed";
         } else {
             mysqli_stmt_bind_param($stmt, "s", $searchString);
             // Run parameters inside database
@@ -176,7 +176,7 @@ class MyDBControllerMySQL
         $stmt = mysqli_stmt_init($this->db);
         // Prepare the prepared statement
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            echo "SQL statement failed";
+            echo "Select ZIP SQL statement failed";
         } else {
             mysqli_stmt_bind_param($stmt, "s", $searchString);
             // Run parameters inside database

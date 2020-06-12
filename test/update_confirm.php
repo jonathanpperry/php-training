@@ -8,9 +8,7 @@
     $submission_data = array();
 
     $my_db = new MyDBControllerMySQL();
-    $my_db->connect();
     $column_names = $my_db->column_names;
-    $my_db->close();
 
     // Set value for input first time
     $_SESSION["input_hajimete"] = false;
@@ -35,7 +33,6 @@
     array_push($submission_data, $_POST['update_reason']);
     $oldPublicGroupCode = $_POST['old_public_group_code'];
     $oldZipCodeOld = $_POST['old_zip_code_old'];
-
     $_SESSION["submission_data"] = $submission_data;
     $comment_table_fields = $_SESSION["comment_table_fields"];
     $_SESSION["updating"] = true;
@@ -44,6 +41,7 @@
     $my_db->console_log($submission_data);
     $return_object = $validation->checkForErrors($submission_data, $comment_table_fields);
     $_SESSION["error_data"] = $return_object;
+    $my_db->console_log($return_object);
     if (count($return_object[0]) > 0 || count($return_object[1]) > 0) {
         $hasErrors = true;
     }
