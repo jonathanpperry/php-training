@@ -34,6 +34,7 @@
     
     // Set input bool to not display errors at first
     $_SESSION["input_hajimete"] = true;
+    $_SESSION["update_hajimete"] = true;
 
     if ($_SESSION["in_progress"] == true) {
         clear_session_fields();
@@ -239,5 +240,6 @@
     <form action="input.php" method="GET">
       <input type="submit" name="submit" value="入力へ">
     </form>
+
   </body>
 </html>
