@@ -10,8 +10,8 @@
     $my_db = new MyDBControllerMySQL();
     $column_names = $my_db->column_names;
 
-    // Set value for input first time
-    $_SESSION["input_hajimete"] = false;
+    // Set value for update first time
+    $_SESSION["update_hajimete"] = false;
     // Error boolean
     $hasErrors = false;
 
