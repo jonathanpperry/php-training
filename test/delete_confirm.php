@@ -63,7 +63,7 @@
                 ?>
                 </table>
                 <p>この内容で宜しいですか？
-                <input type="submit" name="submit" class="button" value="はい" />
+                <input type="submit" name="submit" class="button" value="はい" /> 
             </form>
     </body>
 </html>

@@ -243,5 +243,28 @@ class MyDBControllerMySQL
         }
         return false;
     }
+
+    function delete($publicGroupCode, $zipCodeOld, $zipCode, $tableName) {
+        $this->console_log($publicGroupCode);
+        $this->console_log($zipCodeOld);
+        $this->console_log($zipCode);
+        
+        $sql = "DELETE FROM $tableName WHERE 
+            {$this->column_names[0]}=? AND
+            {$this->column_names[1]}=? AND
+            {$this->column_names[2]}=?
+        ";
+        // Create a prepared statement
+        $stmt = mysqli_stmt_init($this->db);
+        // Prepare the prepared statement
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+            echo "SQL error";
+            return false;
+        } else {
+            mysqli_stmt_bind_param($stmt, "iii", $publicGroupCode, $zipCodeOld, $zipCode);
+            return mysqli_stmt_execute($stmt);
+        }
+        return false;
+    }
 }
 ?>

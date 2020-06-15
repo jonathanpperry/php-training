@@ -111,7 +111,7 @@
             </tr>
                 <?php } ?>
             </table>
-            <p>この内容で宜しいですか？
+            <p>この内容で宜しいですか？</p>
             <input type="submit" name="submit" class="button" value="はい" /> 
         </form>
     </body>
