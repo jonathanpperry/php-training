@@ -19,7 +19,8 @@ class MyDBControllerMySQL
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
 
-    function console_log( $data ) {
+    function console_log($data)
+    {
         echo '<script>';
         echo 'console.log('. json_encode( $data ) .')';
         echo '</script>';
@@ -31,7 +32,8 @@ class MyDBControllerMySQL
     // 操作
     //------------
     // コンストラクタ(DB接続)
-        function __construct() {
+    function __construct()
+    {
         array_push($this->column_names, "public_group_code");
         array_push($this->column_names, "zip_code_old");
         array_push($this->column_names, "zip_code");
@@ -50,12 +52,14 @@ class MyDBControllerMySQL
     }
 
     // デストラクタ(DB切断)
-    function __destruct() {
+    function __destruct()
+    {
       $this->console_log("Destroying " . __CLASS__ . "\n");
     }
 
     // 接続
-    function connect() {
+    function connect()
+    {
         $this->db = mysqli_connect($this->db_host, $this->db_user, $this->db_pass, $this->db_database, $this->db_port);
         if (!$this->db) {
             echo "Error: Unable to connect to MySQL." . PHP_EOL;
@@ -74,13 +78,37 @@ class MyDBControllerMySQL
     }
 
     // 切断
-    function close() {
+    function close()
+    {
       // Close the DB connection
       mysqli_close($this->db);
     }
 
+    function mapFieldsToArray($inputArray) : array
+    {
+        $firstEntry = $inputArray[0];
+        $return_array = array();
+        array_push($return_array, $firstEntry["public_group_code"]);
+        array_push($return_array, $firstEntry["zip_code_old"]);
+        array_push($return_array, $firstEntry["zip_code"]);
+        array_push($return_array, $firstEntry["prefecture_kana"]);
+        array_push($return_array, $firstEntry["city_kana"]);
+        array_push($return_array, $firstEntry["town_kana"]);
+        array_push($return_array, $firstEntry["prefecture"]);
+        array_push($return_array, $firstEntry["city"]);
+        array_push($return_array, $firstEntry["town"]);
+        array_push($return_array, $firstEntry["town_double_zip_code"]);
+        array_push($return_array, $firstEntry["town_multi_address"]);
+        array_push($return_array, $firstEntry["town_attach_district"]);
+        array_push($return_array, $firstEntry["zip_code_multi_town"]);
+        array_push($return_array, $firstEntry["update_check"]);
+        array_push($return_array, $firstEntry["update_reason"]);
+        return $return_array;
+    }
+
     // SQL実行
-    function query($queryString, $fieldName) : array {
+    function query($queryString, $fieldName) : array
+    {
         $return_array = array();
 
         // Create a prepared statement
@@ -104,7 +132,9 @@ class MyDBControllerMySQL
         return null;
     }
 
-    function insert($tableName, $insertData) : bool {
+    function insert($tableName, $insertData) : bool
+    {
+        $this->console_log($insertData);
         $publicGroupCode = $insertData[0];
         $zipCodeOld = $insertData[1];
         $zipCode = $insertData[2];
@@ -142,7 +172,8 @@ class MyDBControllerMySQL
         return false;
     }
 
-    function select($queryString, $category, $search) : array {
+    function select($queryString, $category, $search) : array
+    {
         $searchString = mysqli_real_escape_string($this->db, $search);
         $searchString = "%" . $searchString . "%";
         $return_array = array();
@@ -165,9 +196,10 @@ class MyDBControllerMySQL
         return $return_array;
     }
 
-    function selectByZip($publicGroupCode, $zipCodeOld, $zipCode, $tableName) {
+    function selectByZip($publicGroupCode, $zipCodeOld, $zipCode, $tableName) : array
+    {
         $return_data = array();
-        $sql = "SELECT * from $tableName WHERE 
+        $sql = "SELECT * from $tableName WHERE
             {$this->column_names[0]}=? AND
             {$this->column_names[1]}=? AND
             {$this->column_names[2]}=?
@@ -177,6 +209,7 @@ class MyDBControllerMySQL
         // Prepare the prepared statement
         if (!mysqli_stmt_prepare($stmt, $sql)) {
             echo "Select ZIP SQL statement failed";
+            return null;
         } else {
             mysqli_stmt_bind_param($stmt, "iii", $publicGroupCode, $zipCodeOld, $zipCode);
             // Run parameters inside database
@@ -189,7 +222,8 @@ class MyDBControllerMySQL
         return $return_data;
     }
 
-    function update($tableName, $updateData, $zipArray) {
+    function update($tableName, $updateData, $zipArray)
+    {
         $publicGroupCode = $updateData[0];
         $zipCodeOld = $updateData[1];
         $zipCode = $updateData[2];
@@ -226,7 +260,6 @@ class MyDBControllerMySQL
             WHERE {$this->column_names[0]} = ? AND
             {$this->column_names[1]} = ? AND
             {$this->column_names[2]} = ?;";
-            $this->console_log($sql);
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
         // Prepare the prepared statement
@@ -244,16 +277,14 @@ class MyDBControllerMySQL
         return false;
     }
 
-    function delete($publicGroupCode, $zipCodeOld, $zipCode, $tableName) {
-        $this->console_log($publicGroupCode);
-        $this->console_log($zipCodeOld);
-        $this->console_log($zipCode);
-        
-        $sql = "DELETE FROM $tableName WHERE 
+    function delete($publicGroupCode, $zipCodeOld, $zipCode, $tableName)
+    {
+        $sql = "DELETE FROM $tableName WHERE
             {$this->column_names[0]}=? AND
             {$this->column_names[1]}=? AND
             {$this->column_names[2]}=?
         ";
+
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
         // Prepare the prepared statement

@@ -14,16 +14,7 @@
             array_push($two_dim_array, $postal_data_array);
         }
     }
-    $my_db->console_log($delete_data);
 
-    // // Array of data to delete
-    // $delete_data_array = array();
-
-    // $data_count = count($_POST)-1;
-    // for ($x = 0; $x < $data_count; $x++) {
-    //     $data = $_POST["delete_data_" . $x];
-    //     array_push($delete_data_array, $data);
-    // }
 
     $my_db->connect();
     $table_name = "kadai_jonathan_ziplist";
@@ -36,7 +27,7 @@
         }
     }
 
-    header("Location: index.php");
-    exit();
+    // header("Location: index.php");
+    // exit();
 
 ?>
