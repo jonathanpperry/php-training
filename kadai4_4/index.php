@@ -211,7 +211,7 @@
         <?php endif; ?>
 
         <h3>全体リスト</h3>
-        <form name="selectform" action="delete_confirm.php" method="POST">
+        <form name="selectform" action="delete_regist.php" method="POST" onsubmit="return confirm('選択したエントリを削除しますか?');">
             <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
                 <tr>
                     <th>削除/一斉チェック<input type='checkbox' id="select-all"></th>
