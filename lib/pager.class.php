@@ -24,6 +24,7 @@ class Pager
     //------------
     // コンストラクタ(DB接続)
     function __construct($cur_page) {
+        $this->current_page = $cur_page;
         $this->db_controller = new MyDBControllerMySQL();
         $this->db_controller->connect();
         $table_name = "kadai_jonathan_ziplist";
@@ -34,7 +35,6 @@ class Pager
         if ($cur_page == 0) {
             $this->can_go_back = false;
             $this->can_go_forward = true;
-            $this->console_log($this->can_go_forward);
         } elseif ($cur_page == $this->num_pages - 1) {
             $this->can_go_back = true;
             $this->can_go_forward = false;
@@ -48,6 +48,25 @@ class Pager
 
     // デストラクタ(DB切断)
     function __destruct() {
+    }
+
+    function generate_pager_html() {
+        $htmlReturnString = "";        
+        if ($this->can_go_back) {
+            $htmlReturnString .= "<a href=\"index.php?pageno=" . ($this->current_page-1) . "\">&laquo;</a>";
+            $this->console_log($htmlReturnString);
+        }
+        for($x = 0; $x < $this->num_pages; $x++) {
+            $htmlReturnString .= "<a href=\"index.php?pageno=" . $x . "\"";
+            if ($x == $this->current_page) $htmlReturnString .= " class=\"active\"";
+            $htmlReturnString .= ">" . ($x+1) . "</a>";
+        }
+        if ($this->can_go_forward) {
+            $this->console_log($this->can_go_forward);
+            $htmlReturnString .= "<a href=\"index.php?pageno=" . ($this->current_page+1) . "\">&raquo;</a>";
+            $this->console_log($htmlReturnString);
+        }
+        return $htmlReturnString;
     }
 
     function console_log($data)

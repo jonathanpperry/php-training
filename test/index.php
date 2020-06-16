@@ -4,8 +4,16 @@
     // Start the session
     session_start();
 
+    function console_log($data)
+    {
+        echo '<script>';
+        echo 'console.log('. json_encode( $data ) .')';
+        echo '</script>';
+    }
+
     if ($_GET["pageno"]) {
         $pageno = $_GET["pageno"];
+        console_log($_GET["pageno"]);
     } else {
         $pageno = 0;
     }
@@ -16,8 +24,7 @@
     $num_pages = $pager->num_pages;
     $can_go_back = $pager->can_go_back;
     $can_go_forward = $pager->can_go_forward;
-    $pager->console_log($can_go_forward);
-
+    $pager_html = $pager->generate_pager_html();
 
     function clear_session_fields()
     {
@@ -283,21 +290,10 @@
         </form>
         <div class="pagination-parent">
             <div class="pagination">
-                <?php if ($can_go_back) : ?>
-                    <a href="index.php?pageno=<?php print $pageno-1; ?>">
-                        &laquo;
-                    </a>
-                <?php endif; ?>
-                <?php for($x = 0; $x < $num_pages; $x++) { ?>
-                    <a href='index.php?pageno=<?php print $x ?>' <?php if ($x == $pageno) print "class='active'" ?>>
-                        <?php print $x+1 ?>
-                    </a> 
-                <?php } ?>
-                <?php if ($can_go_forward) : ?>
-                    <a href="index.php?pageno=<?php print $pageno+1; ?>">
-                        &raquo;
-                    </a>
-                <?php endif; ?>
+                <!-- Insert the html generated string from pager class here -->
+                <?php
+                    print $pager_html;
+                ?>
             </div>
         </div>
         <script type="text/javascript">
