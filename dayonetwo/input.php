@@ -35,7 +35,7 @@
     $my_db->connect();
     $comment_table_query = 
       "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
-    $comment_table_fields = $my_db->query($comment_table_query, "Comment", null, null);
+    $comment_table_fields = $my_db->query($comment_table_query, "Comment");
 
     $_SESSION["comment_table_fields"] = $comment_table_fields;
 
@@ -43,6 +43,9 @@
     $missing_errors = $_SESSION["error_data"][0];
     $format_errors = $_SESSION["error_data"][1];
     
+    $my_db->console_log($missing_errors);
+    $my_db->console_log($format_errors);
+
     // Close database connection
     $my_db->close();
 
@@ -54,6 +57,7 @@
     $cityKana = $_SESSION["submission_data"][4];
     $townKana = $_SESSION["submission_data"][5];
     $prefecture = $_SESSION["submission_data"][6];
+    $my_db->console_log($prefecture);
     $city = $_SESSION["submission_data"][7];
     $town = $_SESSION["submission_data"][8];
     if ($townDoubleZipCode) {
@@ -72,6 +76,10 @@
     $prefectureKanaErr = $cityKanaErr = $townKanaErr = $prefectureErr = $cityErr = $townErr = "";
     $_SESSION["has_errors"] = false;
 
+    // For now just log a message for errors
+    if ($hasErrors) {
+        console_log("There are errors!");
+    }
 
 ?>
 

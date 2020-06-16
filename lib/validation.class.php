@@ -4,7 +4,6 @@ class Validation
     //------------
     // 属性
     //------------
-    var $db;      // DB接続オブジェクト
 
     // define variables and initialize with empty values
     var $publicGroupCodeErr;

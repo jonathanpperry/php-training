@@ -19,13 +19,6 @@ class MyDBControllerMySQL
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
 
-    function console_log($data)
-    {
-        echo '<script>';
-        echo 'console.log('. json_encode( $data ) .')';
-        echo '</script>';
-    }
-
     public $column_names = array();
 
     //------------
@@ -51,10 +44,16 @@ class MyDBControllerMySQL
         array_push($this->column_names, "update_reason");
     }
 
+    function console_log($data)
+    {
+        echo '<script>';
+        echo 'console.log('. json_encode( $data ) .')';
+        echo '</script>';
+    }
+
     // デストラクタ(DB切断)
     function __destruct()
     {
-      $this->console_log("Destroying " . __CLASS__ . "\n");
     }
 
     // 接続
@@ -107,9 +106,17 @@ class MyDBControllerMySQL
     }
 
     // SQL実行
-    function query($queryString, $fieldName) : array
+    function query($queryString, $fieldName, $limit, $offset) : array
     {
         $return_array = array();
+        // If there is a limit, set a limit
+        if ($limit) {
+            $queryString .= " LIMIT $limit ";
+        }
+        // If there is an offset, set the offset
+        if ($offset) {
+            $queryString .= " OFFSET $offset";
+        }
 
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
@@ -134,7 +141,6 @@ class MyDBControllerMySQL
 
     function insert($tableName, $insertData) : bool
     {
-        $this->console_log($insertData);
         $publicGroupCode = $insertData[0];
         $zipCodeOld = $insertData[1];
         $zipCode = $insertData[2];

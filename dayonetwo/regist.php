@@ -53,6 +53,7 @@
 
         $validation = new Validation();
         $return_object = $validation->checkForErrors($submission_data, $comment_table_fields);
+        $my_db->console_log("The return object is : " . $return_object);
         if (count($return_object[0]) > 0 || count($return_object[1]) > 0) {
             header("Location: input.php");
             exit();
