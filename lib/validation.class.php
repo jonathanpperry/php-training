@@ -5,7 +5,7 @@ class Validation
     // 属性
     //------------
 
-    // define variables and initialize with empty values
+    // Define variables and initialize with empty values
     var $publicGroupCodeErr;
     var $zipCodeOldErr;
     var $zipCodeErr;
@@ -21,7 +21,8 @@ class Validation
     var $missing_errors = array();
     var $format_errors = array();
 
-    function console_log( $data ) {
+    function console_log( $data )
+    {
         echo '<script>';
         echo 'console.log('. json_encode( $data ) .')';
         echo '</script>';
@@ -40,15 +41,18 @@ class Validation
     // 操作
     //------------
     // コンストラクタ(DB接続)
-    function __construct() {
+    function __construct()
+    {
     }
 
     // デストラクタ(DB切断)
-    function __destruct() {
+    function __destruct()
+    {
         $this->console_log("Destroying " . __CLASS__ . "\n");
     }
 
-    function clearErrors() {
+    function clearErrors()
+    {
         $this->publicGroupCodeErr = null;
         $this->zipCodeOldErr = null;
         $this->zipCodeErr = null;
@@ -60,7 +64,8 @@ class Validation
         $this->townErr = null;
     }
 
-    function checkForErrors($submissionData, $comment_table_fields) {
+    function checkForErrors($submissionData, $comment_table_fields)
+    {
         // Set data from session if it exists to display previous values
         $publicGroupCode = $submissionData[0];
         $zipCodeOld = $submissionData[1];

@@ -11,15 +11,23 @@
         echo '</script>';
     }
 
+    $my_db = new MyDBControllerMySQL();
+    // Connect again after insert if it occurred
+    $my_db->connect();
+
+    $table_name = "kadai_jonathan_ziplist";
+    $total_pages_sql = "SELECT COUNT(*) FROM $table_name";
+    $allDataArray = $my_db->query($total_pages_sql, null, null, null);
+    $total_count = $allDataArray[0]["COUNT(*)"];
+
     if ($_GET["pageno"]) {
         $pageno = $_GET["pageno"];
-        console_log($_GET["pageno"]);
     } else {
         $pageno = 0;
     }
 
     // Create the pager class
-    $pager = new Pager($pageno);
+    $pager = new Pager($pageno, $total_count);
 
     $num_pages = $pager->num_pages;
     $can_go_back = $pager->can_go_back;
@@ -68,10 +76,6 @@
     $num_rows = null;
     $num_cols = 15;
 
-    $my_db = new MyDBControllerMySQL();
-    // Connect again after insert if it occurred
-    $my_db->connect();
-
     // Text to display regarding query
     $blue_success_text = '';
     $red_error_text = '';
@@ -97,9 +101,9 @@
     }
   
 
-    $comment_table_query = "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
+    $comment_table_query = "SHOW FULL COLUMNS FROM $table_name";
     /* Query for the rows data */
-    $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
+    $row_data_query = "SELECT * FROM $table_name";
     $comment_table_fields = $my_db->query($comment_table_query, "Comment", null, null);
     $postal_data = $my_db->query($row_data_query, null, $pager->items_per_page, $pager->items_per_page*$pageno);
     // Set data to render in the view

@@ -4,6 +4,22 @@
     // Start the session
     session_start();
 
+    function console_log($data)
+    {
+        echo '<script>';
+        echo 'console.log('. json_encode( $data ) .')';
+        echo '</script>';
+    }
+
+    $my_db = new MyDBControllerMySQL();
+    // Connect again after insert if it occurred
+    $my_db->connect();
+
+    $table_name = "kadai_jonathan_ziplist";
+    $total_pages_sql = "SELECT COUNT(*) FROM $table_name";
+    $allDataArray = $my_db->query($total_pages_sql, null, null, null);
+    $total_count = $allDataArray[0]["COUNT(*)"];
+
     if ($_GET["pageno"]) {
         $pageno = $_GET["pageno"];
     } else {
@@ -11,13 +27,12 @@
     }
 
     // Create the pager class
-    $pager = new Pager($pageno);
+    $pager = new Pager($pageno, $total_count);
 
     $num_pages = $pager->num_pages;
     $can_go_back = $pager->can_go_back;
     $can_go_forward = $pager->can_go_forward;
-    $pager->console_log($can_go_forward);
-
+    $pager_html = $pager->generate_pager_html();
 
     function clear_session_fields()
     {
@@ -61,10 +76,6 @@
     $num_rows = null;
     $num_cols = 15;
 
-    $my_db = new MyDBControllerMySQL();
-    // Connect again after insert if it occurred
-    $my_db->connect();
-
     // Text to display regarding query
     $blue_success_text = '';
     $red_error_text = '';
@@ -90,9 +101,9 @@
     }
   
 
-    $comment_table_query = "SHOW FULL COLUMNS FROM kadai_jonathan_ziplist";
+    $comment_table_query = "SHOW FULL COLUMNS FROM $table_name";
     /* Query for the rows data */
-    $row_data_query = "SELECT * FROM kadai_jonathan_ziplist";
+    $row_data_query = "SELECT * FROM $table_name";
     $comment_table_fields = $my_db->query($comment_table_query, "Comment", null, null);
     $postal_data = $my_db->query($row_data_query, null, $pager->items_per_page, $pager->items_per_page*$pageno);
     // Set data to render in the view
@@ -283,21 +294,10 @@
         </form>
         <div class="pagination-parent">
             <div class="pagination">
-                <?php if ($can_go_back) : ?>
-                    <a href="index.php?pageno=<?php print $pageno-1; ?>">
-                        &laquo;
-                    </a>
-                <?php endif; ?>
-                <?php for($x = 0; $x < $num_pages; $x++) { ?>
-                    <a href='index.php?pageno=<?php print $x ?>' <?php if ($x == $pageno) print "class='active'" ?>>
-                        <?php print $x+1 ?>
-                    </a> 
-                <?php } ?>
-                <?php if ($can_go_forward) : ?>
-                    <a href="index.php?pageno=<?php print $pageno+1; ?>">
-                        &raquo;
-                    </a>
-                <?php endif; ?>
+                <!-- Insert the html generated string from pager class here -->
+                <?php
+                    print $pager_html;
+                ?>
             </div>
         </div>
         <script type="text/javascript">
