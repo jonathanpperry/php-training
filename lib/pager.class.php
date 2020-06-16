@@ -41,7 +41,9 @@ class Pager
         }
         for($x = 0; $x < $this->num_pages; $x++) {
             $htmlReturnString .= '<a href="index.php?pageno=' . $x . '"';
-            if ($x == $this->current_page) $htmlReturnString .= " class=\"active\"";
+            if ($x == $this->current_page) {
+                $htmlReturnString .= ' class="active"';
+            }
             $htmlReturnString .= ">" . ($x+1) . "</a>";
         }
         if ($this->can_go_forward) {
