@@ -5,7 +5,7 @@
     session_start();
 
     $table_name = "kadai_jonathan_ziplist";
-    
+
     // Run the DB query if coming from index
     $run_select_query = false;
 
@@ -43,7 +43,7 @@
     $comment_table_query = "SHOW FULL COLUMNS FROM $table_name";
     /* Query for the rows data */
     $row_data_query = "SELECT * FROM $table_name";
-    $comment_table_fields = $my_db->query($comment_table_query, "Comment", null, null);
+    $comment_table_fields = $my_db->query($comment_table_query, "Comment", null, null, null);
 
     // If coming from a GET request
     if ($run_select_query) {

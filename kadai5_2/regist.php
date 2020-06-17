@@ -47,11 +47,8 @@
         $my_db = new MyDBControllerMySQL();
         // Connect again after insert if it occurred
         $my_db->connect();
-
+        
         $table_name = "kadai_jonathan_ziplist";
-        $town_code_master_table = "kadai_jonathan_town_code_mst";
-        $update_check_code_master_table = "kadai_jonathan_update_check_code_mst";
-        $update_reason_code_master_table = "kadai_jonathan_update_reason_code_mst";
 
         $comment_table_fields = $_SESSION["comment_table_fields"];
 
@@ -63,7 +60,7 @@
         }
 
         // Submit the data
-        $data_inserted = $my_db->insert($table_name, $town_code_master_table, $update_check_code_master_table, $update_reason_code_master_table, $submission_data);
+        $data_inserted = $my_db->insert($table_name, $submission_data);
         if ($data_inserted == true) {
             $_SESSION["submit_success"] = true;
         } else {

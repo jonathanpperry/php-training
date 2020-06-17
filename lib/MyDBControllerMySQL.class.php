@@ -124,7 +124,6 @@ class MyDBControllerMySQL
         if ($offset) {
             $queryString .= " OFFSET $offset";
         }
-        $this->console_log("Query string is : " . $queryString);
 
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
@@ -139,7 +138,6 @@ class MyDBControllerMySQL
                 if ($fieldName != null) {
                     array_push($return_array, $row[$fieldName]);
                 } else {
-                    $this->console_log($row);
                     array_push($return_array, $row);
                 }
             }
@@ -187,13 +185,22 @@ class MyDBControllerMySQL
         return false;
     }
 
-    function select($queryString, $category, $search) : array
+    function select($queryString, $category, $search, $joins) : array
     {
         $searchString = mysqli_real_escape_string($this->db, $search);
         $searchString = "%" . $searchString . "%";
         $return_array = array();
-        $sql = $queryString .
-            " WHERE `{$this->column_names[$category]}` LIKE ?";
+
+        // If there are joins, apply the joins
+        if ($joins) {
+            foreach($joins as $join) {
+                $queryString .= $join;
+            }
+        }
+        $this->console_log("Query string is : " . $queryString);
+
+        $sql = $queryString . " WHERE `{$this->column_names[$category]}` LIKE ?";
+
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
         // Prepare the prepared statement
