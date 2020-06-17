@@ -106,9 +106,16 @@ class MyDBControllerMySQL
     }
 
     // SQL実行
-    function query($queryString, $fieldName, $limit, $offset) : array
+    function query($queryString, $fieldName, $joins, $limit, $offset) : array
     {
         $return_array = array();
+        // If there are joins, apply the joins
+        if ($joins) {
+            foreach($joins as $join) {
+                $queryString .= $join;
+            }
+        }
+
         // If there is a limit, set a limit
         if ($limit) {
             $queryString .= " LIMIT $limit ";
@@ -117,6 +124,7 @@ class MyDBControllerMySQL
         if ($offset) {
             $queryString .= " OFFSET $offset";
         }
+        $this->console_log("Query string is : " . $queryString);
 
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
@@ -131,6 +139,7 @@ class MyDBControllerMySQL
                 if ($fieldName != null) {
                     array_push($return_array, $row[$fieldName]);
                 } else {
+                    $this->console_log($row);
                     array_push($return_array, $row);
                 }
             }
