@@ -27,6 +27,7 @@
         $pageno = $_GET["pageno"];
     } else if ($_COOKIE["pageno"] != null) {
         $pageno = number_format($_COOKIE["pageno"]);
+        setcookie("pageno", $pageno);
     } else {
         $pageno = 0;
     }
