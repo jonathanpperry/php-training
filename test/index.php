@@ -144,6 +144,7 @@
 <html lang="ja">
     <head>
         <title>テストページ</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
             .blue-success-text {
                 color: blue;
@@ -243,6 +244,7 @@
                             print "</th>\n";
                         }
                     ?>
+                    <th>ダウンロード</th>
                 </tr>
                 <br />
                 <?php
@@ -263,10 +265,9 @@
                             else {
                                 print "<td>" . htmlspecialchars($data_row[$my_db->column_names[$x]], ENT_COMPAT, 'utf-8') . "</td>" . "\n";
                             }
-                            if ($x % $num_cols == ($my_db->num_rows-1)) {
-                                print "</tr>" . "\n";
-                            }
                         }
+                        print '<td><button class="btn"><i class="fa fa-download"></i> Download</button></td>' . "\n";
+                        print "</tr>\n";
                     }
                 ?>
             </table>
@@ -298,7 +299,7 @@
                     checkbox.checked = this.checked;
                 }
             }
-            console.log("Cookies are: ", document.cookie);
+            // console.log("Cookies are: ", document.cookie);
             function setSortingField(my_val) {
                 let ascendingCookie;
                 if (ascendingCookie = getCookie("ascending")) {
