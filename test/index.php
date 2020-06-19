@@ -122,7 +122,7 @@ $join6 = " LEFT JOIN $update_reason_code_mst_table_name AS mst_table6 ON $table_
 $joinArray = array($join1, $join2, $join3, $join4, $join5, $join6);
 
 $orderingClause = null;
-// Add an order by clause to SQL statement if 
+// Add an order by clause to SQL statement if
 if ($_COOKIE["ascending"] == true) {
     $orderingClause .= " ORDER BY $table_name.{$_COOKIE['sort_field']} ASC";
 } else if ($_COOKIE["descending"] == true) {
@@ -134,9 +134,8 @@ $comment_table_query = "SHOW FULL COLUMNS FROM $table_name";
 $row_data_query = "SELECT * FROM $table_name";
 $comment_table_fields = $my_db->query($comment_table_query, "Comment", null, null, null, null);
 $postal_data = $my_db->query($row_data_query, null, $joinArray, $orderingClause, $pager->items_per_page, $pager->items_per_page * $pageno);
-// Set data to render in the view
-// $column_data = setData($postal_data, $num_cols, $my_db);
 
+// Set data to render in the view
 if (strlen($search_string) > 0) {
     $search_data = $my_db->select($row_data_query, $search_category, $search_string, $joinArray);
 }
@@ -242,12 +241,13 @@ $my_db->close();
         <?php endif; ?>
     <?php endif; ?>
 
-    <h3>全体リスト</h3>
     <form id="downloadForm" action="download.php" method="POST">
         <input type="submit" form='downloadForm' id="download-button" class="btn" value="ダウンロード" />
     </form>
-    <label for="download-all">全部をダウンロードする</label>
-    <input type='checkbox' id="download-all" />
+    <label for="download-all">全件チェック</label>
+    <input type='checkbox' id="download-all" name="downloadingAll" value="true" form="downloadForm" />
+
+    <h3>全体リスト</h3>
 
     <form name="selectform" action="delete_regist.php" method="POST" onsubmit="return confirm('選択したエントリを削除しますか?');">
         <table style="width:100%" border="1" cellpadding="5" cellspacing="0">
@@ -266,7 +266,6 @@ $my_db->close();
                     print "</th>\n";
                 }
                 ?>
-                <th>ダウンロード・一斉チェック<input type='checkbox' id="select-all-download"></th>
             </tr>
             <br />
             <?php
@@ -287,7 +286,7 @@ $my_db->close();
                         print "<td>" . htmlspecialchars($data_row[$my_db->column_names[$x]], ENT_COMPAT, 'utf-8') . "</td>" . "\n";
                     }
                 }
-                print "<td><input type='checkbox' name='downloadcheckboxval[]' form='downloadForm' value='{$data_row['public_group_code']}/{$data_row['zip_code_old']}/{$data_row['zip_code']}'></td>";
+                print "<input type='hidden' name='downloadcheckboxval[]' form='downloadForm' value='{$data_row['public_group_code']}/{$data_row['zip_code_old']}/{$data_row['zip_code']}'>";
                 print "</tr>\n";
             }
             ?>
@@ -320,12 +319,20 @@ $my_db->close();
                 checkbox.checked = this.checked;
             }
         }
-        document.getElementById('select-all-download').onclick = function() {
-            var checkboxes = document.getElementsByName('downloadcheckboxval[]');
-            for (var checkbox of checkboxes) {
-                checkbox.checked = this.checked;
-            }
-        }
+        // document.getElementById('select-all-download').onclick = function() {
+        //     var checkboxes = document.getElementsByName('downloadcheckboxval[]');
+        //     for (var checkbox of checkboxes) {
+        //         checkbox.checked = this.checked;
+        //     }
+        // }
+        // document.getElementById('download-all').onclick = function() {
+        //     var selectAllDownloadCheckbox = document.getElementById('select-all-download');
+        //     selectAllDownloadCheckbox.checked = false;
+        //     var checkboxes = document.getElementsByName('downloadcheckboxval[]');
+        //     for (var checkbox of checkboxes) {
+        //         checkbox.checked = false;
+        //     }
+        // }
 
         function setSortingField(my_val) {
             let ascendingCookie;

@@ -202,7 +202,7 @@ class MyDBControllerMySQL
                 $queryString .= $join;
             }
         }
-        // $this->console_log("Query string is : " . $queryString);
+        $this->console_log("Query string is : " . $queryString);
 
         $sql = $queryString . " WHERE `{$this->column_names[$category]}` LIKE ?";
 
