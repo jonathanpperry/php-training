@@ -130,8 +130,6 @@ class MyDBControllerMySQL
             $queryString .= " OFFSET $offset";
         }
 
-        $this->console_log($queryString);
-
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
         // Prepare the prepared statement
@@ -204,7 +202,7 @@ class MyDBControllerMySQL
                 $queryString .= $join;
             }
         }
-        $this->console_log("Query string is : " . $queryString);
+        // $this->console_log("Query string is : " . $queryString);
 
         $sql = $queryString . " WHERE `{$this->column_names[$category]}` LIKE ?";
 
