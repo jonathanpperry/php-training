@@ -173,7 +173,7 @@ class MyDBControllerMySQL
             `{$this->column_names[5]}`,`{$this->column_names[6]}`,`{$this->column_names[7]}`,`{$this->column_names[8]}`,`{$this->column_names[9]}`,
             `{$this->column_names[10]}`,`{$this->column_names[11]}`,`{$this->column_names[12]}`,`{$this->column_names[13]}`,`{$this->column_names[14]}`)
             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-
+        $this->console_log($insertData);
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
         // Prepare the prepared statement
@@ -202,7 +202,6 @@ class MyDBControllerMySQL
                 $queryString .= $join;
             }
         }
-        $this->console_log("Query string is : " . $queryString);
 
         $sql = $queryString . " WHERE `{$this->column_names[$category]}` LIKE ?";
 

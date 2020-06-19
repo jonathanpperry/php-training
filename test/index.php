@@ -191,7 +191,7 @@ $my_db->close();
 </head>
 
 <body>
-    <h2>課題6_2へようこそ</h2>
+    <h2>課題6_3へようこそ</h2>
     <?php if (strlen($blue_success_text) > 0) {
         print "<p class='blue-success-text'>" . $blue_success_text . "</p>";
     } elseif (strlen($red_error_text) > 0) {
@@ -240,13 +240,15 @@ $my_db->close();
             <p>このクエリに一致する結果はありません</p>
         <?php endif; ?>
     <?php endif; ?>
-
     <form id="downloadForm" action="download.php" method="POST">
         <input type="submit" form='downloadForm' id="download-button" class="btn" value="ダウンロード" />
     </form>
     <label for="download-all">全件チェック</label>
     <input type='checkbox' id="download-all" name="downloadingAll" value="true" form="downloadForm" />
-
+    <form id="uploadForm" action="upload.php" method="POST" style="text-align: right;" enctype="multipart/form-data">
+        <p>Upload CSV: <input type="file" name="file" /></p>
+        <p><input type="submit" name="upload" value="アップロード" /></p>
+    </form>
     <h3>全体リスト</h3>
 
     <form name="selectform" action="delete_regist.php" method="POST" onsubmit="return confirm('選択したエントリを削除しますか?');">

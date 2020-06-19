@@ -45,13 +45,13 @@ foreach ($download_data as $data_row) {
 $fp = fopen('php://output', 'w');
 
 //set headers to download file rather than display
-header('Content-Type: application/csv; charset=utf-8');
+header('Content-Type: application/csv; charset="shift-jis"');
 header('Content-disposition: attachment; filename="export.csv"');
 header('Pragma: no-cache');
 header('Expires: 0');
 
 for ($x = 0; $x < count($csv_array); $x++) {
-    echo $csv_array[$x];
+    echo mb_convert_encoding($csv_array[$x], "SJIS");
 }
 
 // Rewind the file pointer
