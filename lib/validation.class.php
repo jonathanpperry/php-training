@@ -177,6 +177,20 @@ class Validation
     }
 
     function errorsExist($submissionData) : bool {
+        $this->console_log(gettype($submissionData[0]));
+        $this->console_log(gettype($submissionData[1]));
+        $this->console_log(gettype($submissionData[2]));
+        $this->console_log(gettype($submissionData[3]));
+        $this->console_log(gettype($submissionData[4]));
+        $this->console_log(gettype($submissionData[5]));
+        $this->console_log(gettype($submissionData[6]));
+        $this->console_log(gettype($submissionData[7]));
+        $this->console_log(gettype($submissionData[8]));
+        $this->console_log(gettype($submissionData[9]));
+        $this->console_log(gettype($submissionData[10]));
+        $this->console_log(gettype($submissionData[11]));
+        $this->console_log(gettype($submissionData[12]));
+        $this->console_log(gettype($submissionData[13]));
         $this->console_log(gettype($submissionData[14]));
         if (empty($submissionData[0])) {
             return true;
@@ -199,19 +213,19 @@ class Validation
         // String inputs
         if (empty($submissionData[3])) {
             return true;
-        } elseif (!is_string($submissionData[3]) || !$this->is_hankatakana($submissionData[3])) {
+        } elseif (!is_string($submissionData[3])) {
             return true;
         }
 
         if (empty($submissionData[4])) {
             return true;
-        } elseif (!is_string($submissionData[4]) || !$this->is_hankatakana($submissionData[4])) {
+        } elseif (!is_string($submissionData[4])) {
             return true;
         }
 
         if (empty($submissionData[5])) {
             return true;
-        } elseif (!is_string($submissionData[5]) || !$this->is_hankatakana($submissionData[5])) {
+        } elseif (!is_string($submissionData[5])) {
             return true;
         }
 

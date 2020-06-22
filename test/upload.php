@@ -31,6 +31,7 @@ if (isset($_POST["upload"])) {
             if ($handle !== false) {
                 while ($data = fgetcsv($handle)) {
                     $my_db->console_log($data);
+                    $my_db->console_log(count($data));
                     // If there is a row that has the wrong # of entries, interrupt upload
                     if (count($data) != $num_cols) {
                         $_SESSION["upload_success"] = false;
@@ -43,8 +44,11 @@ if (isset($_POST["upload"])) {
                         $insert_item = mysqli_real_escape_string($my_db->db, mb_convert_encoding($data[$x], "utf-8", "SJIS"));
                         array_push($insert_item_array, $insert_item);
                     }
+                    $insert_item_array = convertToInts($insert_item_array);
+                    // $my_db->console_log($insert_item_array);
                     // Check for the validity of the rows
-                    if ($validation->errorsExist($data) == true) {
+                    $my_db->console_log($validation->errorsExist($insert_item_array));
+                    if ($validation->errorsExist($insert_item_array) == true) {
                         $_SESSION["upload_success"] = false;
                         $_SESSION["upload_error"] = "アップロードが中断されました。 データに1つ以上の不正な行があります。";
                         header("Location: index.php");
@@ -88,3 +92,16 @@ $my_db->close();
 
 header("Location: index.php");
 exit();
+
+function convertToInts($data) {
+    $data[0] = intval($data[0]);
+    $data[1] = intval($data[1]);
+    $data[2] = intval($data[2]);
+    $data[9] = intval($data[9]);
+    $data[10] = intval($data[10]);
+    $data[11] = intval($data[11]);
+    $data[12] = intval($data[12]);
+    $data[13] = intval($data[13]);
+    $data[14] = intval($data[14]);
+    return $data;
+}
