@@ -10,7 +10,7 @@ class MyDBControllerMySQL
     var $db_host        = 'localhost';
     var $db_user        = 'root';
     var $db_pass        = 'M1ghty_cr@ft';
-    var $db_database    = 'mc_kadai'; 
+    var $db_database    = 'mc_kadai';
     var $db_port        = '3306';
     var $charset        = 'utf8mb4';
     var $options = [
@@ -47,7 +47,7 @@ class MyDBControllerMySQL
     function console_log($data)
     {
         echo '<script>';
-        echo 'console.log('. json_encode( $data ) .')';
+        echo 'console.log(' . json_encode($data) . ')';
         echo '</script>';
     }
 
@@ -66,24 +66,24 @@ class MyDBControllerMySQL
             echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
             exit;
         }
-        
+
         $successString = "Success: A proper connection to MySQL was made! The my_db database is great." . PHP_EOL;
         $successString .= "Host information: " . mysqli_get_host_info($this->db) . PHP_EOL;
-        
+
         // Log the success string
 
         // Set UTF-8
-        mysqli_set_charset($this->db, "utf8");
+        mysqli_set_charset($this->db, $this->charset);
     }
 
     // 切断
     function close()
     {
-      // Close the DB connection
-      mysqli_close($this->db);
+        // Close the DB connection
+        mysqli_close($this->db);
     }
 
-    function mapFieldsToArray($inputArray) : array
+    function mapFieldsToArray($inputArray): array
     {
         $firstEntry = $inputArray[0];
         $return_array = array();
@@ -106,12 +106,12 @@ class MyDBControllerMySQL
     }
 
     // SQL実行
-    function query($queryString, $fieldName, $joins, $order_clause, $limit, $offset) : array
+    function query($queryString, $fieldName, $joins, $order_clause, $limit, $offset): array
     {
         $return_array = array();
         // If there are joins, apply the joins
         if ($joins) {
-            foreach($joins as $join) {
+            foreach ($joins as $join) {
                 $queryString .= $join;
             }
         }
@@ -139,7 +139,7 @@ class MyDBControllerMySQL
             // Run parameters inside database
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
-            while($row = mysqli_fetch_assoc($result)) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 if ($fieldName != null) {
                     array_push($return_array, $row[$fieldName]);
                 } else {
@@ -151,7 +151,7 @@ class MyDBControllerMySQL
         return null;
     }
 
-    function insert($tableName, $insertData) : bool
+    function insert($tableName, $insertData): bool
     {
         $publicGroupCode = $insertData[0];
         $zipCodeOld = $insertData[1];
@@ -173,7 +173,7 @@ class MyDBControllerMySQL
             `{$this->column_names[5]}`,`{$this->column_names[6]}`,`{$this->column_names[7]}`,`{$this->column_names[8]}`,`{$this->column_names[9]}`,
             `{$this->column_names[10]}`,`{$this->column_names[11]}`,`{$this->column_names[12]}`,`{$this->column_names[13]}`,`{$this->column_names[14]}`)
             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-        $this->console_log($insertData);
+
         // Create a prepared statement
         $stmt = mysqli_stmt_init($this->db);
         // Prepare the prepared statement
@@ -181,16 +181,31 @@ class MyDBControllerMySQL
             echo "SQL error";
             return false;
         } else {
-            mysqli_stmt_bind_param($stmt, "iiissssssiiiiii", $publicGroupCode, $zipCodeOld, $zipCode,
-                $prefectureKana, $cityKana, $townKana, $prefecture, $city, $town, $townDoubleZipCode,
-                $townMultiAddress, $townAttachDistrict, $zipCodeMultiTown, $updateCheck, $updateReason
+            mysqli_stmt_bind_param(
+                $stmt,
+                "iiissssssiiiiii",
+                $publicGroupCode,
+                $zipCodeOld,
+                $zipCode,
+                $prefectureKana,
+                $cityKana,
+                $townKana,
+                $prefecture,
+                $city,
+                $town,
+                $townDoubleZipCode,
+                $townMultiAddress,
+                $townAttachDistrict,
+                $zipCodeMultiTown,
+                $updateCheck,
+                $updateReason
             );
             return mysqli_stmt_execute($stmt);
         }
         return false;
     }
 
-    function select($queryString, $category, $search, $joins) : array
+    function select($queryString, $category, $search, $joins): array
     {
         $searchString = mysqli_real_escape_string($this->db, $search);
         $searchString = "%" . $searchString . "%";
@@ -198,7 +213,7 @@ class MyDBControllerMySQL
 
         // If there are joins, apply the joins
         if ($joins) {
-            foreach($joins as $join) {
+            foreach ($joins as $join) {
                 $queryString .= $join;
             }
         }
@@ -215,14 +230,14 @@ class MyDBControllerMySQL
             // Run parameters inside database
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
-            while($row = mysqli_fetch_assoc($result)) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 array_push($return_array, $row);
             }
         }
         return $return_array;
     }
 
-    function selectByZip($publicGroupCode, $zipCodeOld, $zipCode, $tableName) : array
+    function selectByZip($publicGroupCode, $zipCodeOld, $zipCode, $tableName): array
     {
         $return_data = array();
         $sql = "SELECT * from $tableName WHERE
@@ -241,7 +256,7 @@ class MyDBControllerMySQL
             // Run parameters inside database
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
-            while($row = mysqli_fetch_assoc($result)) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 array_push($return_data, $row);
             }
         }
@@ -267,7 +282,7 @@ class MyDBControllerMySQL
         $updateReason = $updateData[14];
         $oldPublicGroupCode = $zipArray[0];
         $oldZipCodeOld = $zipArray[1];
-    
+
         $sql = "UPDATE " . $tableName . " SET 
             {$this->column_names[0]} = ?,
             {$this->column_names[1]} = ?,
@@ -293,10 +308,26 @@ class MyDBControllerMySQL
             echo "SQL error";
             return false;
         } else {
-            mysqli_stmt_bind_param($stmt, "iissssssiiiiiiiii", $publicGroupCode, $zipCodeOld,
-                $prefectureKana, $cityKana, $townKana, $prefecture, $city, $town, $townDoubleZipCode,
-                $townMultiAddress, $townAttachDistrict, $zipCodeMultiTown, $updateCheck, $updateReason,
-                $oldPublicGroupCode, $oldZipCodeOld, $zipCode
+            mysqli_stmt_bind_param(
+                $stmt,
+                "iissssssiiiiiiiii",
+                $publicGroupCode,
+                $zipCodeOld,
+                $prefectureKana,
+                $cityKana,
+                $townKana,
+                $prefecture,
+                $city,
+                $town,
+                $townDoubleZipCode,
+                $townMultiAddress,
+                $townAttachDistrict,
+                $zipCodeMultiTown,
+                $updateCheck,
+                $updateReason,
+                $oldPublicGroupCode,
+                $oldZipCodeOld,
+                $zipCode
             );
             return mysqli_stmt_execute($stmt);
         }
@@ -324,4 +355,3 @@ class MyDBControllerMySQL
         return false;
     }
 }
-?>

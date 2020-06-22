@@ -82,7 +82,6 @@ class Validation
         $zipCodeMultiTown = $submissionData[12];
         $updateCheck = $submissionData[13];
         $updateReason = $submissionData[14];
-
         if (empty($publicGroupCode)) {
             array_push($this->missing_errors, $comment_table_fields[0]);
         } elseif (!is_numeric($publicGroupCode)) {
@@ -175,6 +174,101 @@ class Validation
             array_push($this->format_errors, $comment_table_fields[14]);
         }
         return array($this->missing_errors, $this->format_errors);
+    }
+
+    function errorsExist($submissionData) : bool {
+        $this->console_log(gettype($submissionData[14]));
+        if (empty($submissionData[0])) {
+            return true;
+        } elseif (!is_numeric($submissionData[0])) {
+            return true;
+        }
+
+        if (empty($submissionData[1])) {
+            return true;
+        } elseif (!is_numeric($submissionData[1])) {
+            return true;
+        }
+
+        if (empty($submissionData[2])) {
+            return true;
+        } elseif (!is_numeric($submissionData[2])) {
+            return true;
+        }
+
+        // String inputs
+        if (empty($submissionData[3])) {
+            return true;
+        } elseif (!is_string($submissionData[3]) || !$this->is_hankatakana($submissionData[3])) {
+            return true;
+        }
+
+        if (empty($submissionData[4])) {
+            return true;
+        } elseif (!is_string($submissionData[4]) || !$this->is_hankatakana($submissionData[4])) {
+            return true;
+        }
+
+        if (empty($submissionData[5])) {
+            return true;
+        } elseif (!is_string($submissionData[5]) || !$this->is_hankatakana($submissionData[5])) {
+            return true;
+        }
+
+        if (empty($submissionData[6])) {
+            return true;
+        } elseif (!is_string($submissionData[6])) {
+            return true;
+        }
+
+        if (empty($submissionData[7])) {
+            return true;
+        } elseif (!is_string($submissionData[7])) {
+            return true;
+        }
+
+        if (empty($submissionData[8])) {
+            return true;
+        } elseif (!is_string($submissionData[8])) {
+            return true;
+        }
+
+        if (is_null($submissionData[9])) {
+            return true;
+        } elseif (!is_numeric($submissionData[9])) {
+            return true;
+        }
+
+        if (is_null($submissionData[10])) {
+            return true;
+        } elseif (!is_numeric($submissionData[10])) {
+            return true;
+        }
+
+        if (is_null($submissionData[11])) {
+            return true;
+        } elseif (!is_numeric($submissionData[11])) {
+            return true;
+        }
+
+        if (is_null($submissionData[12])) {
+            return true;
+        } elseif (!is_numeric($submissionData[12])) {
+            return true;
+        }
+
+        if (is_null($submissionData[13])) {
+            return true;
+        } elseif (!is_numeric($submissionData[13])) {
+            return true;
+        }
+
+        if (is_null($submissionData[14])) {
+            return true;
+        } elseif (!is_numeric($submissionData[14])) {
+            return true;
+        }
+        return false;
     }
 
 }
