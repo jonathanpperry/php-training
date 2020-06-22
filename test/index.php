@@ -108,7 +108,7 @@ if ($_SESSION["updated"] == true) {
 if ($_SESSION["no_files_selected_error"] != null) {
     $my_db->console_log($_SESSION["no_files_selected_error"]);
     if ($_SESSION["no_files_selected_error"] == true) {
-        $red_error_text = "ダウンロードするファイルを少なくとも1つ選択する必要があります";
+        $red_error_text = "ダウンロードするファイルを少なくとも1つ選択する必要があります。";
     }
     $_SESSION["no_files_selected_error"] = null;
 }
@@ -245,10 +245,6 @@ $my_db->close();
     </form>
     <label for="download-all">全件チェック</label>
     <input type='checkbox' id="download-all" name="downloadingAll" value="true" form="downloadForm" />
-    <form id="uploadForm" action="upload.php" method="POST" style="text-align: right;" enctype="multipart/form-data">
-        <p>Upload CSV: <input type="file" name="file" /></p>
-        <p><input type="submit" name="upload" value="アップロード" /></p>
-    </form>
     <h3>全体リスト</h3>
 
     <form name="selectform" action="delete_regist.php" method="POST" onsubmit="return confirm('選択したエントリを削除しますか?');">
@@ -321,20 +317,6 @@ $my_db->close();
                 checkbox.checked = this.checked;
             }
         }
-        // document.getElementById('select-all-download').onclick = function() {
-        //     var checkboxes = document.getElementsByName('downloadcheckboxval[]');
-        //     for (var checkbox of checkboxes) {
-        //         checkbox.checked = this.checked;
-        //     }
-        // }
-        // document.getElementById('download-all').onclick = function() {
-        //     var selectAllDownloadCheckbox = document.getElementById('select-all-download');
-        //     selectAllDownloadCheckbox.checked = false;
-        //     var checkboxes = document.getElementsByName('downloadcheckboxval[]');
-        //     for (var checkbox of checkboxes) {
-        //         checkbox.checked = false;
-        //     }
-        // }
 
         function setSortingField(my_val) {
             let ascendingCookie;
