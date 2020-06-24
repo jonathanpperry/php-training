@@ -21,10 +21,10 @@ class Validation
     var $missing_errors = array();
     var $format_errors = array();
 
-    function console_log( $data )
+    function console_log($data)
     {
         echo '<script>';
-        echo 'console.log('. json_encode( $data ) .')';
+        echo 'console.log(' . json_encode($data) . ')';
         echo '</script>';
     }
 
@@ -102,7 +102,6 @@ class Validation
 
         // String inputs
         if (empty($prefectureKana)) {
-            $this->console_log($comment_table_fields[3]);
             array_push($this->missing_errors, $comment_table_fields[3]);
         } elseif (!is_string($prefectureKana) || !$this->is_hankatakana($prefectureKana)) {
             array_push($this->format_errors, $comment_table_fields[3]);
@@ -176,22 +175,8 @@ class Validation
         return array($this->missing_errors, $this->format_errors);
     }
 
-    function errorsExist($submissionData) : bool {
-        $this->console_log(gettype($submissionData[0]));
-        $this->console_log(gettype($submissionData[1]));
-        $this->console_log(gettype($submissionData[2]));
-        $this->console_log(gettype($submissionData[3]));
-        $this->console_log(gettype($submissionData[4]));
-        $this->console_log(gettype($submissionData[5]));
-        $this->console_log(gettype($submissionData[6]));
-        $this->console_log(gettype($submissionData[7]));
-        $this->console_log(gettype($submissionData[8]));
-        $this->console_log(gettype($submissionData[9]));
-        $this->console_log(gettype($submissionData[10]));
-        $this->console_log(gettype($submissionData[11]));
-        $this->console_log(gettype($submissionData[12]));
-        $this->console_log(gettype($submissionData[13]));
-        $this->console_log(gettype($submissionData[14]));
+    function errorsExist($submissionData): bool
+    {
         if (empty($submissionData[0])) {
             return true;
         } elseif (!is_numeric($submissionData[0])) {
@@ -213,19 +198,20 @@ class Validation
         // String inputs
         if (empty($submissionData[3])) {
             return true;
-        } elseif (!is_string($submissionData[3])) {
+        } elseif (!is_string($submissionData[3]) || !$this->is_hankatakana($submissionData[3])) {
+            $this->console_log("Something wasn't string or half katakana");
             return true;
         }
 
         if (empty($submissionData[4])) {
             return true;
-        } elseif (!is_string($submissionData[4])) {
+        } elseif (!is_string($submissionData[4]) || !$this->is_hankatakana($submissionData[4])) {
             return true;
         }
 
         if (empty($submissionData[5])) {
             return true;
-        } elseif (!is_string($submissionData[5])) {
+        } elseif (!is_string($submissionData[5]) || !$this->is_hankatakana($submissionData[5])) {
             return true;
         }
 
@@ -284,6 +270,4 @@ class Validation
         }
         return false;
     }
-
 }
-?>

@@ -44,8 +44,10 @@ $_SESSION["updating"] = true;
 $my_db->close();
 
 $validation = new Validation();
+$my_db->console_log($submission_data);
 $return_object = $validation->checkForErrors($submission_data, $comment_table_fields);
 $_SESSION["error_data"] = $return_object;
+$my_db->console_log($return_object);
 if (count($return_object[0]) > 0 || count($return_object[1]) > 0) {
     $hasErrors = true;
 }

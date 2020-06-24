@@ -121,14 +121,16 @@ if ($_SESSION["upload_success"] !== null) {
         $blue_success_text = "アップロードが正常に終了しました。";
     } else if ($_SESSION["upload_success"] == false) {
         if (count($_SESSION["duplicate_entries"]) > 0) {
-            $my_db->console_log(count($_SESSION["duplicate_entries"]));
-            $red_error_text = $_SESSION["duplicate_entries"] . "件の重複したエントリがありました";
+            $lastDuplicates = $_SESSION["duplicate_entries"];
+            $red_error_text = $lastDuplicates . "件の重複したエントリがありました";
             $_SESSION["duplicate_entries"] = 0;
         } else {
             $red_error_text = $_SESSION["upload_error"];
         }
     }
     $_SESSION["upload_success"] = null;
+    // Set duplicate entries back to 0
+    $_SESSION["duplicate_entries"] = null;
 }
 
 $join1 = " LEFT JOIN $town_code_mst_table_name AS mst_table1 ON $table_name.town_double_zip_code = mst_table1.code_key_index ";
