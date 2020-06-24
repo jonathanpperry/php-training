@@ -30,7 +30,7 @@ class Validation
 
     function is_hankatakana($text)
     {
-        if (mb_ereg("^[ｱ-ﾝﾞﾟｧ-ｫｬ-ｮｰ｡｢｣､]+$", $text)) {
+        if (mb_ereg("^[｡-ﾝﾞﾟｧ-ｫｬ-ｮｰ｡･｢｣､0-9\(\)]+$", $text)) {
             return TRUE;
         } else {
             return FALSE;
@@ -199,7 +199,6 @@ class Validation
         if (empty($submissionData[3])) {
             return true;
         } elseif (!is_string($submissionData[3]) || !$this->is_hankatakana($submissionData[3])) {
-            $this->console_log("Something wasn't string or half katakana");
             return true;
         }
 
