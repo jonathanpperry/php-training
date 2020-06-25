@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\UserService;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
@@ -10,10 +11,11 @@ use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
-    public function index()
+    private $userService;
+
+    public function __construct(UserService $userService)
     {
-        $users = User::orderBy('id', 'desc')->get();
-        return view('users.index')->with('users', $users);
+        $this->userService = $userService;
     }
 
     /**
@@ -31,12 +33,7 @@ class UserController extends Controller
             exit;
         }
 
-        $user = new User;
-
-        $user->nickname = $request->nickname;
-        $user->level = $request->level;
-        $user->exp = $request->exp;
-
-        $user->save();
+        $request_data = $request->all();
+        return $this->userService->insertUser($request_data);
     }
 }

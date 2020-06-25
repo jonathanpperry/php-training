@@ -15,13 +15,24 @@ class UserModel extends Model
     // The primary key associated with the table.
     protected $primaryKey = 'id';
 
+public $timestamps = false;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'access_token', 'nickname', 'level', 'exp'
+    ];
+
     /**
      * The model's default values for attributes.
      *
      * @var array
      */
     protected $attributes = [
-        'access_token' => 0,
+        'access_token' => null,
         'level' => 1,
         'exp' => 0
     ];
