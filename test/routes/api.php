@@ -1,8 +1,8 @@
 <?php
 
 use App\User;
-use App\Http\Resources\UserResource;
-use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ApiController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 
 /*
@@ -16,6 +16,4 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/users', 'UsersController@create');
-
-Route::post('/user', 'ApiController@create');
+Route::post('/user/create', 'UserController@create');

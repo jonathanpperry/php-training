@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\UserResource;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
     public function index()
     {
         $users = User::orderBy('id', 'desc')->get();
         return view('users.index')->with('users', $users);
     }
+
+    /**
+     * Create a user
+     *
+     * @param UserCreateRequest $request
+     * @return JsonResponse
+     */
 
     public function create(Request $request)
     {
@@ -23,11 +31,12 @@ class UsersController extends Controller
             exit;
         }
 
-        User::create([
-            'nickname' => $request['nickname'],
-            'level' => $request['level'],
-            'exp' => $request['exp'],
-        ]);
-        return new UserResource(User::orderBy('id', 'desc')->first());
+        $user = new User;
+
+        $user->nickname = $request->nickname;
+        $user->level = $request->level;
+        $user->exp = $request->exp;
+
+        $user->save();
     }
 }
