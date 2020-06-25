@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\UserService;
 use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\UserResource;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -25,15 +24,9 @@ class UserController extends Controller
      * @return JsonResponse
      */
 
-    public function create(Request $request)
+    public function create(UserRequest $request)
     {
-        if (empty($request['nickname'])) {
-            $error_msg = array("nickname_error" => "ユーザー名を入力してください");
-            return response()->json($error_msg);
-            exit;
-        }
-
-        $request_data = $request->all();
-        return $this->userService->insertUser($request_data);
+        $validated = $request->validated();
+        return $this->userService->insertUser($request->only(['nickname']));
     }
 }

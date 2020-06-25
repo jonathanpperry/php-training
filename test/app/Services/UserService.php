@@ -25,7 +25,7 @@ class UserService
     }
 
     /**
-     * ユーザーデータ登録
+     * Insert user data
      *
      * @param array $input
      * @return array
