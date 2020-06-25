@@ -21,7 +21,7 @@ class UserModel extends Model
      * @var array
      */
     protected $attributes = [
-        'access_token' => 0,
+        'access_token' => null,
         'level' => 1,
         'exp' => 0
     ];
