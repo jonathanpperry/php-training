@@ -38,4 +38,11 @@ class UserController extends Controller
         return $result;
     }
 
+    public function confirm(ConfirmRequest $request)
+    {
+        // validationされる
+        $request->validated();
+
+
+    }
 }

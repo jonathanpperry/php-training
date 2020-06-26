@@ -1,12 +1,16 @@
 <?php
 
+/**
+ * ユーザー登録
+ */
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Exceptions\HttpResponseException;  // 追加
 
-class LoginRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,7 +37,7 @@ class LoginRequest extends FormRequest
         $response['errors']  = $validator->errors()->toArray();
 
         throw new HttpResponseException(
-        response()->json($response, 422)
+            response()->json($response, 422)
         );
     }
 
@@ -46,15 +50,14 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|integer'
+            'nickname' => 'required'
         ];
     }
 
     public function messages()
     {
         return [
-            'id.required' => 'IDを入力して下さい。',
-            'id.integer' => 'IDを入力して下さい。',
+            'nickname.required' => 'ユーザ名を入力して下さい。',
         ];
     }
 }
