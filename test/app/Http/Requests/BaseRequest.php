@@ -27,13 +27,11 @@ class BaseRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        $response['data']    = [];
-        $response['status']  = 450;
-        $response['summary'] = 'Failed validation.';
-        $response['errors']  = $validator->errors()->toArray();
-
+        if ($validator->errors()->get('id')) {
+            $response['data'] = $validator->errors()->get('id');
+        }
         throw new HttpResponseException(
-            response()->json($response, 450)
+            response()->json($response, 500)
         );
     }
 }

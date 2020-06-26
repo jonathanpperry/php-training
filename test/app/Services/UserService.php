@@ -66,7 +66,7 @@ class UserService
             $this->userRepository->assignTokenToUser($UserId, $token);
             return $token;
         } else {
-            return false;
+            return 500;
         }
         return null;
     }

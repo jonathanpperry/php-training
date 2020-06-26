@@ -23,7 +23,7 @@ class LoginRequest extends BaseRequest
     {
         return [
             'id.required' => 'IDを入力して下さい。',
-            'id.integer' => 'IDを入力して下さい。',
+            'id.integer' => '整数を入力してください。',
         ];
     }
 }

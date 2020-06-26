@@ -32,8 +32,8 @@ class UserController extends Controller
     public function login(LoginRequest $request)
     {
         $loginResponse = $this->userService->assignTokenToUser($request->id);
-        if (!$loginResponse) {
-            return response()->json(['data' => 'IDを入力して下さい。'], 450);
+        if ($loginResponse == 500) {
+            return response()->json(['data' => '存在しないIDです。'], 500);
         } else {
             return $loginResponse;
         }
