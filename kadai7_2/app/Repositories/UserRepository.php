@@ -16,7 +16,7 @@ class UserRepository
      * @param int $UserId
      * @return User
      */
-    public function getByUserId(int $UserId)
+    public function getUserByUserId(int $UserId)
     {
         return UserModel::query()->where('id', $UserId)->first();
     }

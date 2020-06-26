@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ConfirmRequest extends FormRequest
+class ConfirmRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,8 +14,10 @@ class ConfirmRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
+
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,7 +27,18 @@ class ConfirmRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'id' => 'required|integer',
+            'token' => 'required|string'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'id.required' => 'IDを入力して下さい。',
+            'id.integer' => 'IDを入力して下さい。',
+            'token.required' => 'tokenを入力して下さい。',
+            'token.string' => 'tokenを入力して下さい。',
         ];
     }
 }

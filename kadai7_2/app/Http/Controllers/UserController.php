@@ -25,17 +25,16 @@ class UserController extends Controller
 
     public function create(UserRequest $request)
     {
-        $request->validated();
         return $this->userService->insertUser($request->only(['nickname']));
     }
 
     public function login(LoginRequest $request)
     {
-        // validationされる
-        $request->validated();
-
-        $result = $this->userService->assignTokenToUser($request->id);
-        return $result;
+        $loginResponse = $this->userService->assignTokenToUser($request->id);
+        if (!$loginResponse) {
+            return response()->json(['data' => 'IDを入力して下さい。'], 450);
+        } else {
+            return $loginResponse;
+        }
     }
-
 }

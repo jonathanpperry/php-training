@@ -6,6 +6,7 @@ use App\Services\UserService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\ConfirmRequest;
 
 class UserController extends Controller
 {
@@ -25,24 +26,16 @@ class UserController extends Controller
 
     public function create(UserRequest $request)
     {
-        $request->validated();
         return $this->userService->insertUser($request->only(['nickname']));
     }
 
     public function login(LoginRequest $request)
     {
-        // validationされる
-        $request->validated();
-
-        $result = $this->userService->assignTokenToUser($request->id);
-        return $result;
+        return $this->userService->assignTokenToUser($request->id);
     }
 
     public function confirm(ConfirmRequest $request)
     {
-        // validationされる
-        $request->validated();
-
-
+        return $this->userService->confirmUserToken($request->id, $request->token);
     }
 }

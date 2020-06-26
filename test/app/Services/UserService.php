@@ -23,10 +23,10 @@ class UserService
     /**
      * Insert user data
      *
-     * @param string $user_id
+     * @param int $user_id
      * @return array
      */
-    public function getUserByUserID(string $user_id)
+    public function getUserByUserID(int $user_id)
     {
         $inserted_data = $this->userRepository->getByUserId($user_id);
         return $inserted_data;
@@ -61,8 +61,13 @@ class UserService
         // Create a token
         $token = random_bytes(8);
         $token = substr(bin2hex($token), 0, 8);
-
-        $result = $this->userRepository->assignTokenToUser($UserId, $token);
-        return $token;
+        $userObject = $this->userRepository->getUserByUserID($UserId);
+        if ($userObject) {
+            $this->userRepository->assignTokenToUser($UserId, $token);
+            return $token;
+        } else {
+            return false;
+        }
+        return null;
     }
 }

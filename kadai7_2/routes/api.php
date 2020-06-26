@@ -17,3 +17,4 @@ use Illuminate\Http\Request;
 
 Route::post('/user/create', 'UserController@create');
 Route::post('/user/login', 'UserController@login');
+Route::post('/user/confirm', 'UserController@confirm');

@@ -23,10 +23,10 @@ class UserService
     /**
      * Insert user data
      *
-     * @param string $user_id
+     * @param int $user_id
      * @return array
      */
-    public function getUserByUserID(string $user_id)
+    public function getUserByUserID(int $user_id)
     {
         $inserted_data = $this->userRepository->getByUserId($user_id);
         return $inserted_data;
@@ -62,7 +62,19 @@ class UserService
         $token = random_bytes(8);
         $token = substr(bin2hex($token), 0, 8);
 
-        $result = $this->userRepository->assignTokenToUser($UserId, $token);
+        $this->userRepository->assignTokenToUser($UserId, $token);
         return $token;
+    }
+
+    public function confirmUserToken(int $UserId, string $TokenToCheck)
+    {
+        $userObject = $this->userRepository->getByUserId($UserId);
+        $userToken = $userObject['access_token'];
+        if ($TokenToCheck != $userToken) {
+            echo "不正です";
+            exit();
+        } else {
+            return $userObject;
+        }
     }
 }
