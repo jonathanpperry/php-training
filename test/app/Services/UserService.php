@@ -56,9 +56,13 @@ class UserService
      * @param string $token
      * @return string
      */
-    public function assignTokenToUser(int $UserId, string $token)
+    public function assignTokenToUser(int $UserId)
     {
+        // Create a token
+        $token = random_bytes(8);
+        $token = substr(bin2hex($token), 0, 8);
+
         $result = $this->userRepository->assignTokenToUser($UserId, $token);
-        return $result;
+        return $token;
     }
 }

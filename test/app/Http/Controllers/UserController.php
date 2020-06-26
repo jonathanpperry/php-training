@@ -34,10 +34,15 @@ class UserController extends Controller
         // validationされる
         $request->validated();
 
-        // Create a token
-        $token = random_bytes(8);
-        $token = substr(bin2hex($token), 0, 8);
-        $result = $this->userService->assignTokenToUser($request->id, $token);
-        return $token;
+        $result = $this->userService->assignTokenToUser($request->id);
+        return $result;
+    }
+
+    public function confirm(ConfirmRequest $request)
+    {
+        // validationされる
+        $request->validated();
+
+
     }
 }
