@@ -1,7 +1,6 @@
 <?php
 
 use App\User;
-use App\Http\Controllers\ApiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 

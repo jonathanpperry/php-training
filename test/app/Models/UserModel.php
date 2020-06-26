@@ -15,7 +15,7 @@ class UserModel extends Model
     // The primary key associated with the table.
     protected $primaryKey = 'id';
 
-public $timestamps = false;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
