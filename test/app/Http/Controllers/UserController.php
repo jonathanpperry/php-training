@@ -8,6 +8,8 @@ use App\Http\Requests\UserRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\ConfirmRequest;
 use App\Http\Requests\GameOverRequest;
+use Carbon\Exceptions\Exception;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -59,10 +61,17 @@ class UserController extends Controller
         if ($this->userService->getUserByUserID($request->id) === null) {
             return response()->json(['data' => ['ユーザーは存在しません。']], 200);
         }
-        // First increment the user experience
-        $newExperienceLevel = $this->userService->incrementUserExp($request->id, $request->exp);
-        // Update the level if needed
-        $levelSet = $this->userService->updateLevel($request->id, $newExperienceLevel);
+        DB::beginTransaction();
+        try {
+            // First increment the user experience
+            $newExperienceLevel = $this->userService->incrementUserExp($request->id, $request->exp);
+            // Update the level if needed
+            $levelSet = $this->userService->updateLevel($request->id, $newExperienceLevel);
+            DB::commit();
+        } catch (\Throwable $d) {
+            Log::info("error:: " . $d->getMessage());
+            DB::rollBack();
+        }
         return response()->json(['data' => ["Game over!!! Level set was: {$levelSet}"]], 200);
     }
 }

@@ -124,4 +124,18 @@ class UserService
         $this->userRepository->setLevelForUserById($UserId, $levelToSet);
         return $levelToSet;
     }
+
+    /**
+     * Confirm the passed token is the one initially assigned to the user
+     *
+     * @param int $UserId
+     * @return bool
+     */
+
+    public function userExistsWithId(int $UserId)
+    {
+        $levelToSet = $this->masterDataRepository->userExistsWithId($UserId)[0];
+        $this->userRepository->setLevelForUserById($UserId, $levelToSet);
+        return $levelToSet;
+    }
 }

@@ -18,7 +18,6 @@ class MasterDataRepository
      */
     public function getLevelFromExp(int $ExpVal)
     {
-        var_dump($ExpVal);
         return MasterDataModel::query()->where('exp', '<', $ExpVal)->orderBy('exp', 'DESC')->pluck('id');
     }
 }
