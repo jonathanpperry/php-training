@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\ConfirmRequest;
+use App\Http\Requests\GameOverRequest;
 
 class UserController extends Controller
 {
@@ -50,5 +51,14 @@ class UserController extends Controller
         } else {
             return $confirmResponse;
         }
+    }
+
+    public function gameover(GameOverRequest $request)
+    {
+        // First increment the user experience
+        $newExperienceLevel = $this->userService->incrementUserExp($request->id, $request->exp);
+        // Update the level if needed
+        $this->userService->updateLevel($request->id, $newExperienceLevel);
+        return response()->json(['data' => ['Game over!!!']], 200);
     }
 }

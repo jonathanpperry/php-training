@@ -27,7 +27,7 @@ class UserService
      */
     public function getUserByUserID(int $user_id)
     {
-        $inserted_data = $this->userRepository->getByUserId($user_id);
+        $inserted_data = $this->userRepository->getUserByUserID($user_id);
         return $inserted_data;
     }
 
@@ -88,5 +88,19 @@ class UserService
         }
         // If no errors are thrown, return the user object
         return $userObject;
+    }
+
+    /**
+     * Confirm the passed token is the one initially assigned to the user
+     *
+     * @param int $UserId
+     * @param int $ExperiencePoints
+     * @return int
+     */
+    public function incrementUserExp(int $UserId, int $ExperiencePoints)
+    {
+        $exp = $this->userRepository->getCurrentExpByUserId($UserId);
+        $updatedExperienceVal = $exp + $ExperiencePoints;
+        $this->userRepository->setExpForUserById($UserId, $updatedExperienceVal);
     }
 }

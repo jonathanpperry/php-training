@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('access_token')->nullable()->comment('アクセストークン(英数字8文字)');
             $table->string('nickname')->comment('ニックネーム');
             $table->integer('level')->nullable()->default(1)->comment('レベル');
-            $table->string('exp')->nullable()->default(0)->comment('経験値');
+            $table->integer('exp')->nullable()->default(0)->comment('経験値');
         });
     }
 
