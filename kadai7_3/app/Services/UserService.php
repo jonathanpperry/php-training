@@ -63,7 +63,7 @@ class UserService
             $this->userRepository->assignTokenToUser($UserId, $token);
             return $token;
         } else {
-            return 500;
+            return "E10500";
         }
         return null;
     }
@@ -81,10 +81,10 @@ class UserService
         if ($userObject) {
             $userToken = $userObject['access_token'];
         } else {
-            return 510;
+            return "E10500";
         }
         if ($TokenToCheck != $userToken) {
-            return 511;
+            return "E10510";
         }
         // If no errors are thrown, return the user object
         return $userObject;
