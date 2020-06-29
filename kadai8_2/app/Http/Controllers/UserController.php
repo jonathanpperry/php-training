@@ -55,6 +55,8 @@ class UserController extends Controller
 
     public function gameover(GameOverRequest $request)
     {
+        // Check for request for user ID that doesn't exist
+        
         // First increment the user experience
         $newExperienceLevel = $this->userService->incrementUserExp($request->id, $request->exp);
         // Update the level if needed
