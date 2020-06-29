@@ -18,6 +18,6 @@ class MasterDataRepository
      */
     public function getLevelFromExp(int $ExpVal)
     {
-        return UserModel::query()->where('id', $UserId)->first();
+        return MasterDataModel::query()->whereBetween('exp', )
     }
 }
