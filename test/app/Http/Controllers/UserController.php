@@ -32,10 +32,20 @@ class UserController extends Controller
     public function login(LoginRequest $request)
     {
         $loginResponse = $this->userService->assignTokenToUser($request->id);
-        if ($loginResponse == 500) {
-            return response()->json(['data' => '存在しないIDです。'], 500);
+        if ($loginResponse === 500) {
+            return response()->json(['data' => ['存在しないIDです。']], 500);
         } else {
             return $loginResponse;
+        }
+    }
+
+    public function confirm(ConfirmRequest $request)
+    {
+        $confirmResponse = $this->userService->confirmUserToken($request->id, $request->token);
+        if ($confirmResponse === 500) {
+            return response()->json(['data' => ['存在しないIDです。']], 500);
+        } else {
+            return $confirmResponse;
         }
     }
 }

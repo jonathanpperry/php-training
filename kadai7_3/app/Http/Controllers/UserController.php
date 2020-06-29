@@ -31,11 +31,21 @@ class UserController extends Controller
 
     public function login(LoginRequest $request)
     {
-        return $this->userService->assignTokenToUser($request->id);
+        $loginResponse = $this->userService->assignTokenToUser($request->id);
+        if ($loginResponse === 500) {
+            return response()->json(['data' => ['存在しないIDです。']], 500);
+        } else {
+            return $loginResponse;
+        }
     }
 
     public function confirm(ConfirmRequest $request)
     {
-        return $this->userService->confirmUserToken($request->id, $request->token);
+        $confirmResponse = $this->userService->confirmUserToken($request->id, $request->token);
+        if ($confirmResponse === 500) {
+            return response()->json(['data' => ['存在しないIDです。']], 500);
+        } else {
+            return $confirmResponse;
+        }
     }
 }

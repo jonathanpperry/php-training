@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class BaseRequest extends FormRequest
 {
@@ -13,7 +14,9 @@ class BaseRequest extends FormRequest
      * @return bool
      */
     public function authorize()
-    { }
+    {
+        return true;
+    }
 
     /**
      * [override] バリデーション失敗時ハンドリング
@@ -24,13 +27,11 @@ class BaseRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        $response['data']    = [];
-        $response['status']  = 'NG';
-        $response['summary'] = 'Failed validation.';
-        $response['errors']  = $validator->errors()->toArray();
-
+        if ($validator->errors()->get('id')) {
+            $response['data'] = $validator->errors()->get('id');
+        }
         throw new HttpResponseException(
-            response()->json($response, 422)
+            $response()->json($response, 500)
         );
     }
 }

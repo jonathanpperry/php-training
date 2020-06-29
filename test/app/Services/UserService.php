@@ -7,8 +7,7 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
-use App\Repositories\BaseRepository;
-use Exception;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserService
 {
@@ -32,7 +31,6 @@ class UserService
         return $inserted_data;
     }
 
-
     /**
      * Insert user data
      *
@@ -53,7 +51,6 @@ class UserService
      * Assign the generated token to the user
      *
      * @param int $UserId
-     * @param string $token
      * @return string
      */
     public function assignTokenToUser(int $UserId)
@@ -69,5 +66,30 @@ class UserService
             return 500;
         }
         return null;
+    }
+
+    /**
+     * Confirm the passed token is the one initially assigned to the user
+     *
+     * @param int $UserId
+     * @param string $TokenToCheck
+     * @return string
+     */
+    public function confirmUserToken(int $UserId, string $TokenToCheck)
+    {
+        $userObject = $this->userRepository->getUserByUserID($UserId);
+        if ($userObject) {
+            $userToken = $userObject['access_token'];
+        } else {
+            return 500;
+        }
+        if ($TokenToCheck != $userToken) {
+            $response['data'] = ["不正です"];
+            throw new HttpResponseException(
+                response()->json($response, 500)
+            );
+        } else {
+            return $userObject;
+        }
     }
 }

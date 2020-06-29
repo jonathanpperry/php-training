@@ -31,7 +31,7 @@ class BaseRequest extends FormRequest
             $response['data'] = $validator->errors()->get('id');
         }
         throw new HttpResponseException(
-            response()->json($response, 500)
+            $response()->json($response, 500)
         );
     }
 }
