@@ -81,15 +81,12 @@ class UserService
         if ($userObject) {
             $userToken = $userObject['access_token'];
         } else {
-            return 500;
+            return 510;
         }
         if ($TokenToCheck != $userToken) {
-            $response['data'] = ["不正です"];
-            throw new HttpResponseException(
-                response()->json($response, 500)
-            );
-        } else {
-            return $userObject;
+            return 511;
         }
+        // If no errors are thrown, return the user object
+        return $userObject;
     }
 }

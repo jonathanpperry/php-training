@@ -29,9 +29,15 @@ class BaseRequest extends FormRequest
     {
         if ($validator->errors()->get('id')) {
             $response['data'] = $validator->errors()->get('id');
+            throw new HttpResponseException(
+                response()->json($response, 500)
+            );    
         }
-        throw new HttpResponseException(
-            $response()->json($response, 500)
-        );
+        if ($validator->errors()->get('token')) {
+            $response['data'] = $validator->errors()->get('token');
+            throw new HttpResponseException(
+                response()->json($response, 500)
+            );    
+        }
     }
 }

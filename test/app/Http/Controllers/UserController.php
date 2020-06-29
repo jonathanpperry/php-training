@@ -42,8 +42,11 @@ class UserController extends Controller
     public function confirm(ConfirmRequest $request)
     {
         $confirmResponse = $this->userService->confirmUserToken($request->id, $request->token);
-        if ($confirmResponse === 500) {
-            return response()->json(['data' => ['存在しないIDです。']], 500);
+        if ($confirmResponse === 510) {
+            return response()->json(['data' => ['ユーザーは存在しません。']], 510);
+        } elseif ($confirmResponse === 511) {
+            // The token entered is wrong
+            return response()->json(['data' => ['不正です。']], 511);
         } else {
             return $confirmResponse;
         }
