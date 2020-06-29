@@ -16,9 +16,11 @@ class UserService
     private $masterDataRepository;
 
     public function __construct(
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        MasterDataRepository $masterDataRepository
     ) {
         $this->userRepository = $userRepository;
+        $this->masterDataRepository = $masterDataRepository;
     }
 
     /**
@@ -118,6 +120,8 @@ class UserService
      */
     public function updateLevel(int $UserId, int $ExperiencePoints)
     {
-        $this->masterDataRepository->
+        $levelToSet = $this->masterDataRepository->getLevelFromExp($ExperiencePoints)[0];
+        $this->userRepository->setLevelForUserById($UserId, $levelToSet);
+        return $levelToSet;
     }
 }

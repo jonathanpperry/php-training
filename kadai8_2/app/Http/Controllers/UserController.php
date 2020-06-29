@@ -55,7 +55,10 @@ class UserController extends Controller
 
     public function gameover(GameOverRequest $request)
     {
-        $this->userService->incrementUserExp($request->id, $request->exp);
-        return response()->json(['data' => ['GAME OVER!!!']], 200);
+        // First increment the user experience
+        $newExperienceLevel = $this->userService->incrementUserExp($request->id, $request->exp);
+        // Update the level if needed
+        $levelSet = $this->userService->updateLevel($request->id, $newExperienceLevel);
+        return response()->json(['data' => ["Game over!!! Level set was: {$levelSet}"]], 200);
     }
 }

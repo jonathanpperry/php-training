@@ -7,16 +7,20 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
+use App\Repositories\MasterDataRepository;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserService
 {
     private $userRepository;
+    private $masterDataRepository;
 
     public function __construct(
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        MasterDataRepository $masterDataRepository
     ) {
         $this->userRepository = $userRepository;
+        $this->masterDataRepository = $masterDataRepository;
     }
 
     /**
@@ -100,7 +104,24 @@ class UserService
     public function incrementUserExp(int $UserId, int $ExperiencePoints)
     {
         $exp = $this->userRepository->getCurrentExpByUserId($UserId);
+        // Calculate the new total experience value
         $updatedExperienceVal = $exp + $ExperiencePoints;
+        // Set the new experience value for the user
         $this->userRepository->setExpForUserById($UserId, $updatedExperienceVal);
+        return $updatedExperienceVal;
+    }
+
+    /**
+     * Confirm the passed token is the one initially assigned to the user
+     *
+     * @param int $UserId
+     * @param int $ExperiencePoints
+     * @return int
+     */
+    public function updateLevel(int $UserId, int $ExperiencePoints)
+    {
+        $levelToSet = $this->masterDataRepository->getLevelFromExp($ExperiencePoints)[0];
+        $this->userRepository->setLevelForUserById($UserId, $levelToSet);
+        return $levelToSet;
     }
 }

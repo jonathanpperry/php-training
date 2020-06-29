@@ -58,7 +58,7 @@ class UserController extends Controller
         // First increment the user experience
         $newExperienceLevel = $this->userService->incrementUserExp($request->id, $request->exp);
         // Update the level if needed
-        $this->userService->updateLevel($request->id, $newExperienceLevel);
-        return response()->json(['data' => ['Game over!!!']], 200);
+        $levelSet = $this->userService->updateLevel($request->id, $newExperienceLevel);
+        return response()->json(['data' => ["Game over!!! Level set was: {$levelSet}"]], 200);
     }
 }

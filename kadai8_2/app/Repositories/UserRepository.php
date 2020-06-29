@@ -55,7 +55,7 @@ class UserRepository
         return UserModel::select()->where('id', $UserId)->pluck('exp')[0];
     }
 
-        /**
+    /**
      * Get the exp value for a given user by id
      *
      * @param array $params
@@ -66,4 +66,14 @@ class UserRepository
         return UserModel::select()->where('id', $UserId)->update(['exp' => $ExpVal]);
     }
 
+    /**
+     * Get the exp value for a given user by id
+     *
+     * @param array $params
+     * @return integer containing value of exp for given user if exists
+     */
+    public function setLevelForUserById(int $UserId, int $LevelVal)
+    {
+        return UserModel::select()->where('id', $UserId)->update(['level' => $LevelVal]);
+    }
 }
