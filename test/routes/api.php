@@ -3,7 +3,6 @@
 use App\User;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
-use App\Http\Middleware\CheckUserToken;
 
 
 /*
@@ -21,6 +20,6 @@ Route::post('/user/create', 'UserController@create');
 
 Route::post('/user/login', 'UserController@login');
 
-Route::post('/user/confirm', 'UserController@confirm')->middleware(CheckUserToken::class);
+Route::post('/user/confirm', 'UserController@confirm')->middleware('checktoken');
 
-Route::post('/user/gameover', 'UserController@gameover')->middleware(CheckUserToken::class);
+Route::post('/user/gameover', 'UserController@gameover')->middleware('checktoken');
