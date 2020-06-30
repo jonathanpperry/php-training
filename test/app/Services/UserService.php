@@ -9,6 +9,7 @@ namespace App\Services;
 use App\Repositories\UserRepository;
 use App\Repositories\MasterDataRepository;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\DB;
 
 class UserService
 {
@@ -95,7 +96,31 @@ class UserService
     }
 
     /**
-     * Confirm the passed token is the one initially assigned to the user
+     * Increment experience and update level in a database transaction
+     *
+     * @param int $UserId
+     * @param int $ExperiencePoints
+     * @return Array $userObject
+     */
+    public function incrementExperienceAndUpdateLevel(int $UserId, int $ExperiencePoints)
+    {
+        try {
+            // Start the database transaction
+            DB::beginTransaction();
+            $updatedExp = $this->incrementUserExp($UserId, $ExperiencePoints);
+            $this->updateLevel($UserId, $updatedExp);
+            // If no error is thrown, commit because both transactions succeeded
+            DB::commit();
+            // Return the new user object with the passed user
+            return $this->getUserByUserID($UserId);
+        } catch (Exception $e) {
+            Log::debug("something bad happened");
+            DB::rollBack();
+        }
+    }
+
+    /**
+     * Function to increment the user experience points
      *
      * @param int $UserId
      * @param int $ExperiencePoints
@@ -112,7 +137,7 @@ class UserService
     }
 
     /**
-     * Confirm the passed token is the one initially assigned to the user
+     * Function to update the user level given the new experience point value
      *
      * @param int $UserId
      * @param int $ExperiencePoints
