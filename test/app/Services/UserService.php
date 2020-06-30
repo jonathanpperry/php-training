@@ -8,19 +8,23 @@ namespace App\Services;
 
 use App\Repositories\UserRepository;
 use App\Repositories\MasterDataRepository;
+use App\Repositories\MaintenanceRepository;
 use Illuminate\Support\Facades\DB;
 
 class UserService
 {
     private $userRepository;
     private $masterDataRepository;
+    private $maintenanceRepository;
 
     public function __construct(
         UserRepository $userRepository,
-        MasterDataRepository $masterDataRepository
+        MasterDataRepository $masterDataRepository,
+        MaintenanceRepository $maintenanceRepository
     ) {
         $this->userRepository = $userRepository;
         $this->masterDataRepository = $masterDataRepository;
+        $this->maintenanceRepository = $maintenanceRepository;
     }
 
     /**
@@ -155,11 +159,31 @@ class UserService
      * @param int $UserId
      * @return bool
      */
-
     public function userExistsWithId(int $UserId)
     {
         $levelToSet = $this->masterDataRepository->userExistsWithId($UserId)[0];
         $this->userRepository->setLevelForUserById($UserId, $levelToSet);
         return $levelToSet;
+    }
+
+    /**
+     * Return whether the current time is in the maintenance window
+     *
+     * @return bool
+     */
+
+    public function isInMaintenanceWindow()
+    {
+        $inMaintenance = $this->maintenanceRepository->getMaintenanceWindow();
+        $startTimeString = $inMaintenance->pluck('start')[0];
+        $endTimeString = $inMaintenance->pluck('end')[0];
+        $startTime = strtotime($startTimeString);
+        $endTime = strtotime($endTimeString);
+        $currentTime = strtotime(date("Y-m-d H:i:s"));
+        if ($currentTime >= $startTime && $currentTime <= $endTime) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
