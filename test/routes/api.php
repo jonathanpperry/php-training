@@ -21,6 +21,6 @@ Route::post('/user/create', 'UserController@create');
 
 Route::post('/user/login', 'UserController@login');
 
-Route::post('/user/confirm', 'UserController@confirm');
+Route::post('/user/confirm', 'UserController@confirm')->middleware(CheckUserToken::class);
 
 Route::post('/user/gameover', 'UserController@gameover')->middleware(CheckUserToken::class);

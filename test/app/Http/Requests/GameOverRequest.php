@@ -14,18 +14,21 @@ class GameOverRequest extends BaseRequest
     public function rules()
     {
         return [
+            'exp' => 'required|int',
             'id' => 'required|integer',
-            'exp' => 'required|int'
+            'token' => 'required|string'
         ];
     }
 
     public function messages()
     {
         return [
-            'id.required' => 'IDを入力して下さい。',
-            'id.integer' => '整数を入力してください。',
             'exp.required' => 'expを入力して下さい。',
             'exp.int' => '整数を入力してください。',
+            'id.required' => 'IDを入力して下さい。',
+            'id.integer' => '整数を入力してください。',
+            'token.required' => 'tokenを入力して下さい。',
+            'token.string' => '文字列を入力してください。',
         ];
     }
 }
