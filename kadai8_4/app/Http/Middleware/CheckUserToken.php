@@ -8,7 +8,6 @@ use App\Services\UserService;
 class CheckUserToken
 {
     private $userService;
-
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;

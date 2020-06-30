@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateMaintenanceTable extends Migration
@@ -15,8 +14,9 @@ class CreateMaintenanceTable extends Migration
     public function up()
     {
         Schema::create('maintenance', function (Blueprint $table) {
-            $table->time('start')->Comment('開始時間');
-            $table->time('end')->Comment('終了時間');
+            $table->bigIncrements('id')->comment('primarykey');
+            $table->datetime('start')->Comment('開始時間');
+            $table->datetime('end')->Comment('終了時間');
         });
     }
 

@@ -14,8 +14,9 @@ class CreateMaintenanceTable extends Migration
     public function up()
     {
         Schema::create('maintenance', function (Blueprint $table) {
-            $table->time('start')->default(DB::raw('CURRENT_TIMESTAMP'))->Comment('開始時間');
-            $table->time('end')->Comment('終了時間');
+            $table->bigIncrements('id')->comment('primarykey');
+            $table->datetime('start')->Comment('開始時間');
+            $table->datetime('end')->Comment('終了時間');
         });
     }
 
