@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Facades;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Facade;
 
-class ErrorController extends Controller
+class ErrorFacade extends Facade
 {
     /**
      * Handle an error

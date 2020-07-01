@@ -4,23 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Services\UserService;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\ErrorController;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\ConfirmRequest;
 use App\Http\Requests\GameOverRequest;
+use App\Facades\ErrorFacade;
 
 class UserController extends Controller
 {
     private $userService;
-    private $errorController;
+    private $errorFacade;
 
     public function __construct(
         UserService $userService,
-        ErrorController $errorController
+        ErrorFacade $errorFacade
     ) {
         $this->userService = $userService;
-        $this->errorController = $errorController;
+        $this->errorFacade = $errorFacade;
     }
 
     /**
@@ -45,7 +45,7 @@ class UserController extends Controller
     public function confirm(ConfirmRequest $request)
     {
         $confirmResponse = $this->userService->confirmUserToken($request->id, $request->token);
-        // Errors are now handled in the user service via the error controller
+        // Errors are now handled in the user service via the error Facade
         return $confirmResponse;
     }
 
@@ -53,7 +53,7 @@ class UserController extends Controller
     {
         // Check if the request is for a non-existent user
         if ($this->userService->getUserByUserID($request->id) === null) {
-            $this->errorController->handleError("100011");
+            $this->errorFacade->handleError("100011");
         }
         // Update the level if needed
         $gameoverResponse = $this->userService->incrementExperienceAndUpdateLevel($request->id, $request->exp);
