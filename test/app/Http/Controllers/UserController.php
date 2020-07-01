@@ -8,7 +8,7 @@ use App\Http\Requests\UserRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\ConfirmRequest;
 use App\Http\Requests\GameOverRequest;
-use App\Facades\ErrorFacade;
+use App\Facades\Error;
 
 class UserController extends Controller
 {
@@ -50,7 +50,7 @@ class UserController extends Controller
     {
         // Check if the request is for a non-existent user
         if ($this->userService->getUserByUserID($request->id) === null) {
-            ErrorHandler::handleError("100011");
+            Error::handleError("100011");
         }
         // Update the level if needed
         $gameoverResponse = $this->userService->incrementExperienceAndUpdateLevel($request->id, $request->exp);

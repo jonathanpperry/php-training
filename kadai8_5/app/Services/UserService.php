@@ -10,25 +10,22 @@ use App\Repositories\UserRepository;
 use App\Repositories\MasterDataRepository;
 use App\Repositories\MaintenanceRepository;
 use Illuminate\Support\Facades\DB;
-use App\Facades\ErrorFacade;
+use App\Facades\Error;
 
 class UserService
 {
     private $userRepository;
     private $masterDataRepository;
     private $maintenanceRepository;
-    private $errorFacade;
 
     public function __construct(
         UserRepository $userRepository,
         MasterDataRepository $masterDataRepository,
-        MaintenanceRepository $maintenanceRepository,
-        ErrorFacade $errorFacade
+        MaintenanceRepository $maintenanceRepository
     ) {
         $this->userRepository = $userRepository;
         $this->masterDataRepository = $masterDataRepository;
         $this->maintenanceRepository = $maintenanceRepository;
-        $this->errorFacade = $errorFacade;
     }
 
     /**
@@ -75,7 +72,7 @@ class UserService
             $this->userRepository->assignTokenToUser($UserId, $token);
             return $token;
         } else {
-            return $this->errorFacade->handleError("100011");
+            return Error::handleError("100011");
         }
         return null;
     }
@@ -96,11 +93,11 @@ class UserService
                 var_dump("the token was null");
             }
         } else {
-            return $this->errorFacade->handleError("100011");
+            return Error::handleError("100011");
         }
         // Wrong token was supplied so it's a 不正アクセス
         if ($TokenToCheck != $userToken) {
-            return $this->errorFacade->handleError("100010");
+            return Error::handleError("100010");
         }
         // If no errors are thrown, return the user object
         return $userObject;
@@ -127,7 +124,7 @@ class UserService
         } catch (Exception $e) {
             Log::debug("something bad happened");
             DB::rollBack();
-            return $this->errorFacade->handleError("100012");
+            return Error::handleError("100012");
         }
     }
 

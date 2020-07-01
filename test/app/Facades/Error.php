@@ -4,7 +4,7 @@ namespace app\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class ErrorFacade extends Facade
+class Error extends Facade
 {
     /**
      * Get the registered name of the component.
