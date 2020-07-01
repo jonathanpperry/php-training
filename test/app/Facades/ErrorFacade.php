@@ -7,23 +7,12 @@ use Illuminate\Support\Facades\Facade;
 class ErrorFacade extends Facade
 {
     /**
-     * Handle an error
+     * Get the registered name of the component.
      *
-     * @param string $errorCode
-     * @return JsonResponse
+     * @return string
      */
-
-    public function handleError(string $errorCode)
+    protected static function getFacadeAccessor()
     {
-        switch ($errorCode) {
-            case "100010":
-                return ["code" => "100010", "data" => "不正アクセス"];
-            case "100011":
-                return ["code" => "100011", "data" => "ログインエラー"];
-            case "100012":
-                return ["code" => "100012", "data" => "データベースエラー"];
-            default:
-                return ["code" => "100000", "data" => "デフォルトのエラー"];
-        }
+        return 'errorhandler';
     }
 }

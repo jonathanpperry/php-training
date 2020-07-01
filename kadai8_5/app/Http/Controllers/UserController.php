@@ -13,14 +13,11 @@ use App\Facades\ErrorFacade;
 class UserController extends Controller
 {
     private $userService;
-    private $errorFacade;
 
     public function __construct(
-        UserService $userService,
-        ErrorFacade $errorFacade
+        UserService $userService
     ) {
         $this->userService = $userService;
-        $this->errorFacade = $errorFacade;
     }
 
     /**
@@ -53,7 +50,7 @@ class UserController extends Controller
     {
         // Check if the request is for a non-existent user
         if ($this->userService->getUserByUserID($request->id) === null) {
-            $this->errorFacade->handleError("100011");
+            ErrorHandler::handleError("100011");
         }
         // Update the level if needed
         $gameoverResponse = $this->userService->incrementExperienceAndUpdateLevel($request->id, $request->exp);
