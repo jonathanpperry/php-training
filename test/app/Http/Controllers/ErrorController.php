@@ -22,6 +22,8 @@ class ErrorController extends Controller
                 return ["code" => "100011", "data" => "ログインエラー"];
             case "100012":
                 return ["code" => "100012", "data" => "データベースエラー"];
+            default:
+                return ["code" => "100000", "data" => "デフォルトのエラー"];
         }
     }
 }
