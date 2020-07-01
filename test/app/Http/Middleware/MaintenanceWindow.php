@@ -22,9 +22,9 @@ class MaintenanceWindow
      */
     public function handle($request, Closure $next)
     {
-        $isInMaintenanceWindow = $this->userService->isInMaintenanceWindow();
-        if ($isInMaintenanceWindow) {
-            return response()->json(['data' => ['メンテナンス中です。(開始時間)～(終了時間)']], 200);
+        $returnObject = $this->userService->isInMaintenanceWindow();
+        if ($returnObject) {
+            return response()->json(['data' => ["メンテナンス中です。{$returnObject[0]}～{$returnObject[1]}"]], 200);
         }
         return $next($request);
     }

@@ -181,7 +181,7 @@ class UserService
         $endTime = strtotime($endTimeString);
         $currentTime = strtotime(date("Y-m-d H:i:s"));
         if ($currentTime >= $startTime && $currentTime <= $endTime) {
-            return true;
+            return array($startTimeString, $endTimeString);
         } else {
             return false;
         }
