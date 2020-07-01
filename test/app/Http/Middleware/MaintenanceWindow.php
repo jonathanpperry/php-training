@@ -3,14 +3,14 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Services\UserService;
+use App\Services\MaintenanceService;
 
 class MaintenanceWindow
 {
-    private $userService;
-    public function __construct(UserService $userService)
+    private $maintenanceService;
+    public function __construct(MaintenanceService $maintenanceService)
     {
-        $this->userService = $userService;
+        $this->maintenanceService = $maintenanceService;
     }
 
     /**
@@ -22,7 +22,7 @@ class MaintenanceWindow
      */
     public function handle($request, Closure $next)
     {
-        $returnObject = $this->userService->isInMaintenanceWindow();
+        $returnObject = $this->maintenanceService->isInMaintenanceWindow();
         if ($returnObject) {
             return response()->json(['data' => ["メンテナンス中です。{$returnObject[0]}～{$returnObject[1]}"]], 200);
         }

@@ -165,25 +165,4 @@ class UserService
         $this->userRepository->setLevelForUserById($UserId, $levelToSet);
         return $levelToSet;
     }
-
-    /**
-     * Return whether the current time is in the maintenance window
-     *
-     * @return bool
-     */
-
-    public function isInMaintenanceWindow()
-    {
-        $inMaintenance = $this->maintenanceRepository->getMaintenanceWindow();
-        $startTimeString = $inMaintenance->pluck('start')[0];
-        $endTimeString = $inMaintenance->pluck('end')[0];
-        $startTime = strtotime($startTimeString);
-        $endTime = strtotime($endTimeString);
-        $currentTime = strtotime(date("Y-m-d H:i:s"));
-        if ($currentTime >= $startTime && $currentTime <= $endTime) {
-            return array($startTimeString, $endTimeString);
-        } else {
-            return false;
-        }
-    }
 }
